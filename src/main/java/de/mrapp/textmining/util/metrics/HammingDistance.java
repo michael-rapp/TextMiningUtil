@@ -21,7 +21,7 @@ import static de.mrapp.util.Condition.ensureNotNull;
 /**
  * Allows to calculate the distance of texts according to the Hamming distance. The Hamming distance
  * is defined as the number of characters at corresponding positions that are not equal. It can only
- * be calculated for texts with the same length.
+ * be used for texts with the same length.
  *
  * @author Michael Rapp
  * @since 1.0.0
