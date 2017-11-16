@@ -28,26 +28,75 @@ import static de.mrapp.util.Condition.*;
  */
 public class NGramTokenizer {
 
+    /**
+     * The minimum length of the n-grams, which are created by the tokenizer.
+     */
+    private final int minLength;
+
+    /**
+     * The maximum length of the n-grams, which are created by the tokenizer.
+     */
+    private final int maxLength;
+
+    /**
+     * Creates a new tokenizer, which creates n-grams with all possible lengths.
+     */
+    public NGramTokenizer() {
+        this(1, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Creates a new tokenizer, which creates n-grams with a specific minimum and maximum length.
+     *
+     * @param minLength The minimum length of the n-grams, which should be created by the tokenizer,
+     *                  as an {@link Integer} value. The minimum length must be at least 1
+     * @param maxLength The maximum length of the n-grams, which should be created by the tokenizer,
+     *                  as an {@link Integer} value. The maximum length must be at least the minimum
+     *                  length
+     */
+    public NGramTokenizer(final int minLength, final int maxLength) {
+        ensureAtLeast(minLength, 1, "The minimum length must be at least 1");
+        ensureAtLeast(maxLength, minLength,
+                "The maximum length must be at least the minimum length");
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+    }
+
+    /**
+     * Returns the minimum length of the n-grams, which are created by the tokenizer.
+     *
+     * @return The minimum length of the n-grams, which are created by the tokenizer, as an {@link
+     * Integer} value
+     */
+    public final int getMinLength() {
+        return minLength;
+    }
+
+    /**
+     * Returns the maximum length of the n-grams, which are created by the tokenizer.
+     *
+     * @return The maximum length of the n-grams, which are created by the tokenizer, as an {@link
+     * Integer} value
+     */
+    public final int getMaxLength() {
+        return maxLength;
+    }
+
+    /**
+     * Creates n-grams from a specific text.
+     *
+     * @param text The text, the n-grams should be created from, as a {@link String}. The text may
+     *             neither be null, nor empty
+     * @return A set, which contains the n-grams, which have been created, as an instance of the
+     * type {@link Set}. The set may neither be null, nor empty
+     */
     @NotNull
     public final Set<NGram> tokenize(final String text) {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
-        return tokenize(text, 1, text.length());
-    }
-
-    @NotNull
-    public final Set<NGram> tokenize(@NotNull final String text, final int minLength,
-                                     final int maxLength) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
-        ensureAtLeast(minLength, 1, "The minimum length must be at least 1");
-        ensureAtMaximum(maxLength, text.length(),
-                "The maximum length must be at maximum " + text.length());
-        ensureAtMaximum(minLength, maxLength,
-                "The minimum length must be at maximum the maximum length");
         Set<NGram> nGrams = new HashSet<>();
 
-        for (int n = minLength; n <= maxLength; n++) {
+        for (int n = minLength; n <= Math.min(text.length(), maxLength); n++) {
             for (int i = 0; i <= text.length() - n; i++) {
                 String token = text.substring(i, i + n);
                 nGrams.add(new NGram(token, i));

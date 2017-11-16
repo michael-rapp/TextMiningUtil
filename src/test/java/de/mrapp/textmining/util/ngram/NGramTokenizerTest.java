@@ -28,6 +28,32 @@ import static org.junit.Assert.assertTrue;
 public class NGramTokenizerTest {
 
     @Test
+    public final void testDefaultConstructor() {
+        NGramTokenizer nGramTokenizer = new NGramTokenizer();
+        assertEquals(1, nGramTokenizer.getMinLength());
+        assertEquals(Integer.MAX_VALUE, nGramTokenizer.getMaxLength());
+    }
+
+    @Test
+    public final void testConstructorWithMinAndMaxLengthParameters() {
+        int minLength = 2;
+        int maxLength = 3;
+        NGramTokenizer nGramTokenizer = new NGramTokenizer(minLength, maxLength);
+        assertEquals(minLength, nGramTokenizer.getMinLength());
+        assertEquals(maxLength, nGramTokenizer.getMaxLength());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testConstructorWithMinAndMaxLengthParametersThrowsExceptionIfMinLengthIsLessThanOne() {
+        new NGramTokenizer(0, 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfMaxLengthIsLessThanMinLength() {
+        new NGramTokenizer(2, 1);
+    }
+
+    @Test
     public final void testTokenize() {
         Set<NGram> nGrams = new NGramTokenizer().tokenize("text");
         assertEquals(10, nGrams.size());
@@ -53,34 +79,9 @@ public class NGramTokenizerTest {
         new NGramTokenizer().tokenize("");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfTextIsNull() {
-        new NGramTokenizer().tokenize(null, 1, 1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfTextIsEmpty() {
-        new NGramTokenizer().tokenize("", 1, 1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfMinLengthIsLessThanOne() {
-        new NGramTokenizer().tokenize("text", 0, 1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfMaxLengthIsGreaterThanTextLength() {
-        new NGramTokenizer().tokenize("text", 1, 5);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testTokenizeWithMinAndMaxLengthParametersThrowsExceptionIfMinLengthIsGreaterThanMaxLength() {
-        new NGramTokenizer().tokenize("text", 2, 1);
-    }
-
     @Test
-    public final void testTokenizeWithMinAndMaxLengthParameters1() {
-        Set<NGram> nGrams = new NGramTokenizer().tokenize("text", 2, 3);
+    public final void testTokenizeWithMinAndMaxLength1() {
+        Set<NGram> nGrams = new NGramTokenizer(2, 3).tokenize("text");
         assertEquals(5, nGrams.size());
         assertTrue(nGrams.contains(new NGram("te", 0)));
         assertTrue(nGrams.contains(new NGram("ex", 1)));
@@ -90,8 +91,8 @@ public class NGramTokenizerTest {
     }
 
     @Test
-    public final void testTokenizeWithMinAndMaxLengthParameters2() {
-        Set<NGram> nGrams = new NGramTokenizer().tokenize("text", 2, 2);
+    public final void testTokenizeWithMinAndMaxLength2() {
+        Set<NGram> nGrams = new NGramTokenizer(2, 2).tokenize("text");
         assertEquals(3, nGrams.size());
         assertTrue(nGrams.contains(new NGram("te", 0)));
         assertTrue(nGrams.contains(new NGram("ex", 1)));
