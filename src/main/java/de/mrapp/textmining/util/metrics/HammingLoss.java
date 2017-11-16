@@ -15,33 +15,19 @@ package de.mrapp.textmining.util.metrics;
 
 import org.jetbrains.annotations.NotNull;
 
-import static de.mrapp.util.Condition.ensureEqual;
-import static de.mrapp.util.Condition.ensureNotNull;
-
 /**
- * Allows to calculate the distance of texts according to the Hamming distance. The Hamming distance
- * is defined as the number of characters at corresponding positions that are not equal. It can only
- * be calculated for texts with the same length.
- *
- * @author Michael Rapp
- * @since 1.0.0
+ * Hamming loss is the loss metric pendant to the {@link HammingDistance}. It measures the
+ * percentage of characters at corresponding positions that are not equal. Hamming loss always
+ * evaluates to heuristic values in the interval [0,1]. Texts that evaluate to a greater heuristic
+ * value are considered to be more dissimilar than texts that evaluate to smaller values.
  */
-public class HammingDistance implements TextMetric {
+public class HammingLoss implements TextMetric {
 
     @Override
     public final double evaluate(@NotNull final String text1, @NotNull final String text2) {
-        ensureNotNull(text1, "The first text must not be null");
-        ensureNotNull(text2, "The second text must not be null");
-        ensureEqual(text1.length(), text2.length(), "The texts must have the same length");
-        double distance = 0;
-
-        for (int i = 0; i < text1.length(); i++) {
-            if (text1.charAt(i) != text2.charAt(i)) {
-                distance++;
-            }
-        }
-
-        return distance;
+        double hammingDistance = new HammingDistance().evaluate(text1, text2);
+        int length = text1.length();
+        return length != 0 ? hammingDistance / (double) length : 0;
     }
 
     @Override
@@ -51,7 +37,7 @@ public class HammingDistance implements TextMetric {
 
     @Override
     public final double maxValue() {
-        return Double.MAX_VALUE;
+        return 1;
     }
 
     @Override

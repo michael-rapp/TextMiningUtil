@@ -19,49 +19,49 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 /**
- * Tests the functionality of the class {@link HammingDistance}.
- *
- * @author Michael Rapp
+ * Tests the functionality of the class {@link HammingLoss}.
  */
-public class HammingDistanceTest {
+public class HammingLossTest {
 
     @Test
     public final void testEvaluate() {
-        HammingDistance hammingDistance = new HammingDistance();
-        assertEquals(0, hammingDistance.evaluate("", ""), 0);
-        assertEquals(0, hammingDistance.evaluate("foo", "foo"), 0);
-        assertEquals(1, hammingDistance.evaluate("foo", "for"), 0);
-        assertEquals(3, hammingDistance.evaluate("foo", "bar"), 0);
+        HammingLoss hammingLoss = new HammingLoss();
+        assertEquals(0, hammingLoss.evaluate("", ""), 0);
+        assertEquals(0, hammingLoss.evaluate("text", "text"), 0);
+        assertEquals(0.25, hammingLoss.evaluate("text", "texf"), 0);
+        assertEquals(0.5, hammingLoss.evaluate("text", "teff"), 0);
+        assertEquals(0.75, hammingLoss.evaluate("text", "tfff"), 0);
+        assertEquals(1, hammingLoss.evaluate("text", "ffff"), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
-        new HammingDistance().evaluate(null, "foo");
+        new HammingLoss().evaluate(null, "foo");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfSecondTextIsNull() {
-        new HammingDistance().evaluate("foo", null);
+        new HammingLoss().evaluate("foo", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfTextsHaveDifferentLengths() {
-        new HammingDistance().evaluate("foo", "foo2");
+        new HammingLoss().evaluate("foo", "foo2");
     }
 
     @Test
     public final void testMinValue() {
-        assertEquals(0, new HammingDistance().minValue(), 0);
+        assertEquals(0, new HammingLoss().minValue(), 0);
     }
 
     @Test
     public final void testMaxValue() {
-        assertEquals(Double.MAX_VALUE, new HammingDistance().maxValue(), 0);
+        assertEquals(1, new HammingLoss().maxValue(), 0);
     }
 
     @Test
     public final void testIsGainMetric() {
-        assertFalse(new HammingDistance().isGainMetric());
+        assertFalse(new HammingLoss().isGainMetric());
     }
 
 }

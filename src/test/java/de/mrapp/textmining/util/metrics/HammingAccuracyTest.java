@@ -16,52 +16,52 @@ package de.mrapp.textmining.util.metrics;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Tests the functionality of the class {@link HammingDistance}.
- *
- * @author Michael Rapp
+ * Tests the functionality of the class {@link HammingAccuracy}.
  */
-public class HammingDistanceTest {
+public class HammingAccuracyTest {
 
     @Test
     public final void testEvaluate() {
-        HammingDistance hammingDistance = new HammingDistance();
-        assertEquals(0, hammingDistance.evaluate("", ""), 0);
-        assertEquals(0, hammingDistance.evaluate("foo", "foo"), 0);
-        assertEquals(1, hammingDistance.evaluate("foo", "for"), 0);
-        assertEquals(3, hammingDistance.evaluate("foo", "bar"), 0);
+        HammingAccuracy hammingLoss = new HammingAccuracy();
+        assertEquals(1, hammingLoss.evaluate("", ""), 0);
+        assertEquals(1, hammingLoss.evaluate("text", "text"), 0);
+        assertEquals(0.75, hammingLoss.evaluate("text", "texf"), 0);
+        assertEquals(0.5, hammingLoss.evaluate("text", "teff"), 0);
+        assertEquals(0.25, hammingLoss.evaluate("text", "tfff"), 0);
+        assertEquals(0, hammingLoss.evaluate("text", "ffff"), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
-        new HammingDistance().evaluate(null, "foo");
+        new HammingAccuracy().evaluate(null, "foo");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfSecondTextIsNull() {
-        new HammingDistance().evaluate("foo", null);
+        new HammingAccuracy().evaluate("foo", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testEvaluateThrowsExceptionIfTextsHaveDifferentLengths() {
-        new HammingDistance().evaluate("foo", "foo2");
+        new HammingAccuracy().evaluate("foo", "foo2");
     }
 
     @Test
     public final void testMinValue() {
-        assertEquals(0, new HammingDistance().minValue(), 0);
+        assertEquals(0, new HammingAccuracy().minValue(), 0);
     }
 
     @Test
     public final void testMaxValue() {
-        assertEquals(Double.MAX_VALUE, new HammingDistance().maxValue(), 0);
+        assertEquals(1, new HammingAccuracy().maxValue(), 0);
     }
 
     @Test
     public final void testIsGainMetric() {
-        assertFalse(new HammingDistance().isGainMetric());
+        assertTrue(new HammingAccuracy().isGainMetric());
     }
 
 }

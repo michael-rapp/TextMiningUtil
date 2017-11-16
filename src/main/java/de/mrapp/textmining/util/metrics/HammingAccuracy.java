@@ -15,33 +15,18 @@ package de.mrapp.textmining.util.metrics;
 
 import org.jetbrains.annotations.NotNull;
 
-import static de.mrapp.util.Condition.ensureEqual;
-import static de.mrapp.util.Condition.ensureNotNull;
-
 /**
- * Allows to calculate the distance of texts according to the Hamming distance. The Hamming distance
- * is defined as the number of characters at corresponding positions that are not equal. It can only
- * be calculated for texts with the same length.
- *
- * @author Michael Rapp
- * @since 1.0.0
+ * Hamming accuracy is the gain metric pendant to the {@link HammingDistance}. It measures the
+ * percentage of characters at corresponding positions that are equal. Hamming accuracy always
+ * evaluates to heuristic values within the interval [0,1]. Texts that evaluate to greater heuristic
+ * values are considered to be more similar than texts that evaluate to smaller heuristic values.
  */
-public class HammingDistance implements TextMetric {
+public class HammingAccuracy implements TextMetric {
 
     @Override
     public final double evaluate(@NotNull final String text1, @NotNull final String text2) {
-        ensureNotNull(text1, "The first text must not be null");
-        ensureNotNull(text2, "The second text must not be null");
-        ensureEqual(text1.length(), text2.length(), "The texts must have the same length");
-        double distance = 0;
-
-        for (int i = 0; i < text1.length(); i++) {
-            if (text1.charAt(i) != text2.charAt(i)) {
-                distance++;
-            }
-        }
-
-        return distance;
+        double hammingLoss = new HammingLoss().evaluate(text1, text2);
+        return 1 - hammingLoss;
     }
 
     @Override
@@ -51,12 +36,12 @@ public class HammingDistance implements TextMetric {
 
     @Override
     public final double maxValue() {
-        return Double.MAX_VALUE;
+        return 1;
     }
 
     @Override
     public final boolean isGainMetric() {
-        return false;
+        return true;
     }
 
 }

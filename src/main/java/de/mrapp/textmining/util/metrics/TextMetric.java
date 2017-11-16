@@ -29,24 +29,24 @@ public interface TextMetric {
      *
      * @param text1 The first text as a {@link String}
      * @param text2 The second text as a {@link String}
-     * @return The heuristic value, which has been calculated, as a {@link Long} value. The
+     * @return The heuristic value, which has been calculated, as a {@link Double} value. The
      * heuristic value is at least {@link #minValue()} and at maximum {@link #maxValue()}
      */
-    long evaluate(@NotNull String text1, @NotNull String text2);
+    double evaluate(@NotNull String text1, @NotNull String text2);
 
     /**
      * Returns the minimum value of the metric.
      *
-     * @return The minimum value of the metric as a {@link Long} value
+     * @return The minimum value of the metric as a {@link Double} value
      */
-    long minValue();
+    double minValue();
 
     /**
      * Returns the maximum value of the metric.
      *
-     * @return The maximum value of the metric as a {@link Long} value
+     * @return The maximum value of the metric as a {@link Double} value
      */
-    long maxValue();
+    double maxValue();
 
     /**
      * Returns, whether the metric is a gain metric, i.e. that two strings that evaluate to a
