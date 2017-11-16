@@ -35,16 +35,18 @@ public interface TextMetric {
     double evaluate(@NotNull String text1, @NotNull String text2);
 
     /**
-     * Returns the minimum value of the metric.
+     * Returns the minimum heuristic value, which is possibly calculated by the metric.
      *
-     * @return The minimum value of the metric as a {@link Double} value
+     * @return The minimum heuristic value, which is possible calculated by the metric as a {@link
+     * Double} value
      */
     double minValue();
 
     /**
-     * Returns the maximum value of the metric.
+     * Returns the maximum heuristic value, which is possibly calculated by the metric.
      *
-     * @return The maximum value of the metric as a {@link Double} value
+     * @return The maximum heuristic value, which is possibly calculated by the metric, as a {@link
+     * Double} value
      */
     double maxValue();
 
