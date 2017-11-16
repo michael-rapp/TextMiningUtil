@@ -20,6 +20,8 @@ import static org.junit.Assert.assertFalse;
 
 /**
  * Tests the functionality of the class {@link HammingLoss}.
+ *
+ * @author Michael Rapp
  */
 public class HammingLossTest {
 

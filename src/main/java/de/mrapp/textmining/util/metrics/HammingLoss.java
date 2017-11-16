@@ -20,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
  * percentage of characters at corresponding positions that are not equal. Hamming loss always
  * evaluates to heuristic values in the interval [0,1]. Texts that evaluate to a greater heuristic
  * value are considered to be more dissimilar than texts that evaluate to smaller values.
+ *
+ * @author Michael Rapp
+ * @since 1.0.0
  */
 public class HammingLoss implements TextMetric {
 

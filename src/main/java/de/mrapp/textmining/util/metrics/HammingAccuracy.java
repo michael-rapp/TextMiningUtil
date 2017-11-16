@@ -20,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
  * percentage of characters at corresponding positions that are equal. Hamming accuracy always
  * evaluates to heuristic values within the interval [0,1]. Texts that evaluate to greater heuristic
  * values are considered to be more similar than texts that evaluate to smaller heuristic values.
+ *
+ * @author Michael Rapp
+ * @since 1.0.0
  */
 public class HammingAccuracy implements TextMetric {
 

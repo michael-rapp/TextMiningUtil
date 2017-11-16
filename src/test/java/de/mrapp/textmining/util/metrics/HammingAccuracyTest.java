@@ -20,6 +20,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the functionality of the class {@link HammingAccuracy}.
+ *
+ * @author Michael Rapp
  */
 public class HammingAccuracyTest {
 
