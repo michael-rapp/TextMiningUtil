@@ -199,9 +199,10 @@ public class SubstringTokenizer {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
         Set<Substring> substrings = new HashSet<>();
+        int length = text.length();
 
-        for (int n = minLength; n <= Math.min(text.length() - 1, maxLength); n++) {
-            for (int i = 0; i <= text.length() - n; i++) {
+        for (int n = minLength; n <= Math.min(length - 1, maxLength); n++) {
+            for (int i = 0; i <= length - n; i++) {
                 String token = text.substring(i, i + n);
                 substrings.add(new Substring(token, i));
             }
