@@ -13,8 +13,8 @@
  */
 package de.mrapp.textmining.util.metrics;
 
-import de.mrapp.textmining.util.ngram.NGramTokenizer;
-import de.mrapp.textmining.util.ngram.NGramTokenizer.NGram;
+import de.mrapp.textmining.util.tokenizer.NGramTokenizer;
+import de.mrapp.textmining.util.tokenizer.NGramTokenizer.NGram;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
