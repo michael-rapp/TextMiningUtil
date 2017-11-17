@@ -15,6 +15,7 @@ package de.mrapp.textmining.util.ngram;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,106 @@ import static de.mrapp.util.Condition.*;
  * @since 1.0.0
  */
 public class NGramTokenizer {
+
+    /**
+     * A n-Gram, which consists of a sequence of characters (token), taken from a longer text or
+     * word.
+     */
+    public static class NGram implements Serializable, Cloneable {
+
+        /**
+         * The constant serial version UID.
+         */
+        private static final long serialVersionUID = -5907278359683181663L;
+
+        /**
+         * The n-gram's token.
+         */
+        private final String token;
+
+        /**
+         * The position of the n-gram's token in the original text or word.
+         */
+        private final int position;
+
+        /**
+         * Creates a new n-gram, which consists of a sequence of characters (token).
+         *
+         * @param token    The token of the n-gram as a {@link String}. The token may neither be
+         *                 null, nor empty
+         * @param position The position of the n-gram's token in the original text or word as an
+         *                 {@link Integer} value. The position must be at least 0
+         */
+        public NGram(@NotNull final String token, final int position) {
+            ensureNotNull(token, "The token may not be null");
+            ensureNotEmpty(token, "The token may not be null");
+            ensureAtLeast(position, 0, "The position must be at least 0");
+            this.token = token;
+            this.position = position;
+        }
+
+        /**
+         * Returns the token of the n-gram.
+         *
+         * @return The token of the n-gram as a {@link String}. The token may neither be null, nor
+         * empty
+         */
+        @NotNull
+        public final String getToken() {
+            return token;
+        }
+
+        /**
+         * Returns the position of the n-gram's token in the original text or word.
+         *
+         * @return The position of the n-gram's token as an {@link Integer} value. The position must
+         * be at least 0
+         */
+        public final int getPosition() {
+            return position;
+        }
+
+        /**
+         * Returns the length of the n-gram's token.
+         *
+         * @return The length of the n-gram's token as an {@link Integer} value
+         */
+        public final int length() {
+            return token.length();
+        }
+
+        @Override
+        public final NGram clone() {
+            return new NGram(token, position);
+        }
+
+        @Override
+        public final String toString() {
+            return "NGram [token=" + token + ", position=" + position + "]";
+        }
+
+        @Override
+        public final int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + token.hashCode();
+            result = prime * result + position;
+            return result;
+        }
+
+        @Override
+        public final boolean equals(final Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            NGram other = (NGram) obj;
+            return token.equals(other.token) && position == other.position;
+        }
+
+    }
 
     /**
      * The minimum length of the n-grams, which are created by the tokenizer.
@@ -95,12 +196,16 @@ public class NGramTokenizer {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
         Set<NGram> nGrams = new HashSet<>();
+        int length = text.length();
 
-        for (int n = minLength; n <= Math.min(text.length(), maxLength); n++) {
-            for (int i = 0; i <= text.length() - n; i++) {
-                String token = text.substring(i, i + n);
-                nGrams.add(new NGram(token, i));
-            }
+        for (int n = minLength; n <= Math.min(maxLength, length - 1); n++) {
+            String token = text.substring(0, n);
+            nGrams.add(new NGram(token, 0));
+        }
+
+        for (int i = 1; i <= length - minLength; i++) {
+            String token = text.substring(i, i + Math.min(maxLength, length - i));
+            nGrams.add(new NGram(token, i));
         }
 
         return nGrams;
