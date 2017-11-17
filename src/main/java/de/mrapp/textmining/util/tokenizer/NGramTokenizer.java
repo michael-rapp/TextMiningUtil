@@ -22,7 +22,9 @@ import java.util.Set;
 import static de.mrapp.util.Condition.*;
 
 /**
- * Allows to create n-grams from texts.
+ * Allows to create n-grams from texts. E.g. the substrings "t", "te", "tex", "ext", "xt" and "t"
+ * can be created from the text "text". In general, the {@link NGramTokenizer} splits texts into
+ * less tokens than the class {@link SubstringTokenizer}.
  *
  * @author Michael Rapp
  * @since 1.0.0
