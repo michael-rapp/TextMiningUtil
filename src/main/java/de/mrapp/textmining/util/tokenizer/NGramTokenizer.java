@@ -16,8 +16,7 @@ package de.mrapp.textmining.util.tokenizer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static de.mrapp.util.Condition.*;
 
@@ -48,24 +47,44 @@ public class NGramTokenizer {
         private final String token;
 
         /**
-         * The position of the n-gram's token in the original text or word.
+         * The positions of the n-gram's token in the original text or word.
          */
-        private final int position;
+        private final Set<Integer> positions;
+
+        /**
+         * Creates a new n-gram, which consists of a sequence of characters.
+         *
+         * @param token     The token of the n-gram as a {@link String}. The token may neither be
+         *                  null, nor empty
+         * @param positions A collection, which contains the positions of the n-gram's token in the
+         *                  original text or word, as an instance of the type {@link Collection}.
+         *                  The collection may not be null
+         */
+        private NGram(@NotNull final String token, final Collection<Integer> positions) {
+            ensureNotNull(token, "The token may not be null");
+            ensureNotEmpty(token, "The token may not be null");
+            ensureNotNull(positions, "The collection may not be null");
+            this.token = token;
+            this.positions = new HashSet<>();
+            this.positions.addAll(positions);
+        }
 
         /**
          * Creates a new n-gram, which consists of a sequence of characters (token).
          *
-         * @param token    The token of the n-gram as a {@link String}. The token may neither be
-         *                 null, nor empty
-         * @param position The position of the n-gram's token in the original text or word as an
-         *                 {@link Integer} value. The position must be at least 0
+         * @param token     The token of the n-gram as a {@link String}. The token may neither be
+         *                  null, nor empty
+         * @param positions An array, which contains the positions of the n-gram's token in the
+         *                  original text or word as an {@link Integer} array. The array may neither
+         *                  be null, nor empty
          */
-        public NGram(@NotNull final String token, final int position) {
-            ensureNotNull(token, "The token may not be null");
-            ensureNotEmpty(token, "The token may not be null");
-            ensureAtLeast(position, 0, "The position must be at least 0");
-            this.token = token;
-            this.position = position;
+        public NGram(@NotNull final String token, final int... positions) {
+            this(token, Collections.emptyList());
+            ensureAtLeast(positions.length, 1, "The array must contain at least one position");
+
+            for (int position : positions) {
+                addPosition(position);
+            }
         }
 
         /**
@@ -80,13 +99,24 @@ public class NGramTokenizer {
         }
 
         /**
-         * Returns the position of the n-gram's token in the original text or word.
+         * Returns the positions of the n-gram's token in the original text or word.
          *
-         * @return The position of the n-gram's token as an {@link Integer} value. The position must
-         * be at least 0
+         * @return A set, which contains the positions of the n-gram's token, as an instance of the
+         * type {@link Set}
          */
-        public final int getPosition() {
-            return position;
+        public final Set<Integer> getPositions() {
+            return Collections.unmodifiableSet(positions);
+        }
+
+        /**
+         * Adds a new position of the n-gram's token in the original text or word.
+         *
+         * @param position The position, which should be added, as an {@link Integer} value. The
+         *                 position must be at least 0
+         */
+        public final void addPosition(final int position) {
+            ensureAtLeast(position, 0, "The position must be at least 0");
+            this.positions.add(position);
         }
 
         /**
@@ -100,12 +130,12 @@ public class NGramTokenizer {
 
         @Override
         public final NGram clone() {
-            return new NGram(token, position);
+            return new NGram(token, positions);
         }
 
         @Override
         public final String toString() {
-            return "NGram [token=" + token + ", position=" + position + "]";
+            return "NGram [token=" + token + ", positions=" + positions + "]";
         }
 
         @Override
@@ -113,7 +143,6 @@ public class NGramTokenizer {
             final int prime = 31;
             int result = 1;
             result = prime * result + token.hashCode();
-            result = prime * result + position;
             return result;
         }
 
@@ -126,7 +155,7 @@ public class NGramTokenizer {
             if (getClass() != obj.getClass())
                 return false;
             NGram other = (NGram) obj;
-            return token.equals(other.token) && position == other.position;
+            return token.equals(other.token);
         }
 
     }
@@ -142,10 +171,41 @@ public class NGramTokenizer {
     private final int maxLength;
 
     /**
+     * Adds a new n-gram to a map, if it is not already contained. Otherwise, the n-grams position
+     * is added to the existing n-gram.
+     *
+     * @param nGrams   A map, which contains n-grams mapped to their tokens, as an instance of the
+     *                 type {@link Map}. The map may not be null
+     * @param token    The token of the n-gram, which should be created, as a {@link String}
+     * @param position The position of the n-gram, which should be created, as an {@link Integer}
+     *                 value
+     */
+    private void addNGram(final Map<String, NGram> nGrams, final String token, final int position) {
+        NGram nGram = nGrams.get(token);
+
+        if (nGram == null) {
+            nGram = new NGram(token, position);
+            nGrams.put(token, nGram);
+        } else {
+            nGram.addPosition(position);
+        }
+    }
+
+    /**
      * Creates a new tokenizer, which creates n-grams with all possible lengths.
      */
     public NGramTokenizer() {
         this(1, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Creates a new tokenizer, which creates n-grams with a specific maximum length.
+     *
+     * @param maxLength The maximum length of the n-grams, which should be created by the tokenizer,
+     *                  as an {@link Integer} value. The maximum length must be at least 1
+     */
+    public NGramTokenizer(final int maxLength) {
+        this(1, maxLength);
     }
 
     /**
@@ -197,20 +257,20 @@ public class NGramTokenizer {
     public final Set<NGram> tokenize(final String text) {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
-        Set<NGram> nGrams = new HashSet<>();
+        Map<String, NGram> nGrams = new HashMap<>();
         int length = text.length();
 
         for (int n = minLength; n <= Math.min(maxLength, length - 1); n++) {
             String token = text.substring(0, n);
-            nGrams.add(new NGram(token, 0));
+            addNGram(nGrams, token, 0);
         }
 
         for (int i = 1; i <= length - minLength; i++) {
             String token = text.substring(i, i + Math.min(maxLength, length - i));
-            nGrams.add(new NGram(token, i));
+            addNGram(nGrams, token, i);
         }
 
-        return nGrams;
+        return new HashSet<>(nGrams.values());
     }
 
 }

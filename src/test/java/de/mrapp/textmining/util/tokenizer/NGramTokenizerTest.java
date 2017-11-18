@@ -33,7 +33,8 @@ public class NGramTokenizerTest {
         int position = 1;
         NGram nGram = new NGram(token, position);
         assertEquals(token, nGram.getToken());
-        assertEquals(position, nGram.getPosition());
+        assertEquals(1, nGram.getPositions().size());
+        assertTrue(nGram.getPositions().contains(position));
         assertEquals(token.length(), nGram.length());
     }
 
@@ -57,7 +58,8 @@ public class NGramTokenizerTest {
         NGram nGram = new NGram("token", 1);
         NGram clone = nGram.clone();
         assertEquals(nGram.getToken(), clone.getToken());
-        assertEquals(nGram.getPosition(), clone.getPosition());
+        assertEquals(nGram.getPositions().size(), clone.getPositions().size());
+        assertTrue(clone.getPositions().contains(nGram.getPositions().iterator().next()));
     }
 
     @Test
@@ -65,7 +67,7 @@ public class NGramTokenizerTest {
         String token = "token";
         int position = 1;
         NGram nGram = new NGram(token, position);
-        assertEquals("NGram [token=" + token + ", position=" + position + "]",
+        assertEquals("NGram [token=" + token + ", positions=[" + position + "]]",
                 nGram.toString());
     }
 
@@ -76,8 +78,6 @@ public class NGramTokenizerTest {
         assertEquals(nGram1.hashCode(), nGram1.hashCode());
         assertEquals(nGram1.hashCode(), nGram2.hashCode());
         nGram1 = new NGram("foo", 0);
-        assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
-        nGram1 = new NGram("token", 1);
         assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
     }
 
@@ -91,8 +91,6 @@ public class NGramTokenizerTest {
         assertTrue(nGram1.equals(nGram2));
         nGram1 = new NGram("foo", 0);
         assertFalse(nGram1.equals(nGram2));
-        nGram1 = new NGram("token", 1);
-        assertFalse(nGram1.equals(nGram2));
     }
 
     @Test
@@ -100,6 +98,19 @@ public class NGramTokenizerTest {
         NGramTokenizer nGramTokenizer = new NGramTokenizer();
         assertEquals(1, nGramTokenizer.getMinLength());
         assertEquals(Integer.MAX_VALUE, nGramTokenizer.getMaxLength());
+    }
+
+    @Test
+    public final void testConstructorWithMaxLengthParameter() {
+        int maxLength = 3;
+        NGramTokenizer nGramTokenizer = new NGramTokenizer(maxLength);
+        assertEquals(1, nGramTokenizer.getMinLength());
+        assertEquals(maxLength, nGramTokenizer.getMaxLength());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testTokenizeWithMaxLengthParameterThrowsExceptionIfMaxLengthIsLessThanOne() {
+        new NGramTokenizer(0);
     }
 
     @Test
@@ -125,12 +136,31 @@ public class NGramTokenizerTest {
     public final void testTokenize() {
         Set<NGram> nGrams = new NGramTokenizer().tokenize("wirk");
         assertEquals(6, nGrams.size());
-        assertTrue(nGrams.contains(new NGram("w", 0)));
-        assertTrue(nGrams.contains(new NGram("wi", 0)));
-        assertTrue(nGrams.contains(new NGram("wir", 0)));
-        assertTrue(nGrams.contains(new NGram("irk", 1)));
-        assertTrue(nGrams.contains(new NGram("rk", 2)));
-        assertTrue(nGrams.contains(new NGram("k", 3)));
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "w":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "wi":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "wir":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "irk":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "rk":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                case "k":
+                    assertTrue(nGram.getPositions().contains(3));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -147,30 +177,98 @@ public class NGramTokenizerTest {
     public final void testTokenizeWithMinAndMaxLength1() {
         Set<NGram> nGrams = new NGramTokenizer(2, 3).tokenize("wirk");
         assertEquals(4, nGrams.size());
-        assertTrue(nGrams.contains(new NGram("wi", 0)));
-        assertTrue(nGrams.contains(new NGram("wir", 0)));
-        assertTrue(nGrams.contains(new NGram("irk", 1)));
-        assertTrue(nGrams.contains(new NGram("rk", 2)));
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "wi":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "wir":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "irk":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "rk":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Test
     public final void testTokenizeWithMinAndMaxLength2() {
         Set<NGram> nGrams = new NGramTokenizer(1, 2).tokenize("wirk");
         assertEquals(5, nGrams.size());
-        assertTrue(nGrams.contains(new NGram("w", 0)));
-        assertTrue(nGrams.contains(new NGram("wi", 0)));
-        assertTrue(nGrams.contains(new NGram("ir", 1)));
-        assertTrue(nGrams.contains(new NGram("rk", 2)));
-        assertTrue(nGrams.contains(new NGram("k", 3)));
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "w":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "wi":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "ir":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "rk":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                case "k":
+                    assertTrue(nGram.getPositions().contains(3));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Test
     public final void testTokenizeWithMinAndMaxLength3() {
         Set<NGram> nGrams = new NGramTokenizer(2, 2).tokenize("wirk");
         assertEquals(3, nGrams.size());
-        assertTrue(nGrams.contains(new NGram("wi", 0)));
-        assertTrue(nGrams.contains(new NGram("ir", 1)));
-        assertTrue(nGrams.contains(new NGram("rk", 2)));
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "wi":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "ir":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "rk":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Test
+    public final void testTokenizeWithMinAndMaxLength4() {
+        Set<NGram> nGrams = new NGramTokenizer(1, 1).tokenize("text");
+        assertEquals(3, nGrams.size());
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "t":
+                    assertTrue(nGram.getPositions().contains(0));
+                    assertTrue(nGram.getPositions().contains(3));
+                    break;
+                case "e":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "x":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }
