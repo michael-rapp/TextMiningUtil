@@ -31,6 +31,19 @@ public class DiceCoefficientTest {
     }
 
     @Test
+    public final void testConstructorWithMaxLengthParameter() {
+        int maxLength = 3;
+        DiceCoefficient diceCoefficient = new DiceCoefficient(maxLength);
+        assertEquals(1, diceCoefficient.getMinLength());
+        assertEquals(maxLength, diceCoefficient.getMaxLength());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testConstructorWithMaxLengthParameterThrowsExceptionIfMaxLengthIsLessThanOne() {
+        new DiceCoefficient(0);
+    }
+
+    @Test
     public final void testConstructorWithMinAndMaxLengthParameters() {
         int minLength = 2;
         int maxLength = 3;
@@ -62,8 +75,8 @@ public class DiceCoefficientTest {
         DiceCoefficient diceCoefficient = new DiceCoefficient(1, 1);
         assertEquals(1, diceCoefficient.evaluate("abcd", "abcd"), 0);
         assertEquals(0.75, diceCoefficient.evaluate("abcd", "abcx"), 0);
-        assertEquals(0.5, diceCoefficient.evaluate("abcd", "abxx"), 0);
-        assertEquals(0.25, diceCoefficient.evaluate("abcd", "axxx"), 0);
+        assertEquals(0.57, diceCoefficient.evaluate("abcd", "abxx"), 0.1);
+        assertEquals(0.33, diceCoefficient.evaluate("abcd", "axxx"), 0.1);
         assertEquals(0, diceCoefficient.evaluate("abcd", "xxxx"), 0);
     }
 

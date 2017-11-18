@@ -42,6 +42,17 @@ public class DiceCoefficient implements TextMetric {
     }
 
     /**
+     * Creates a new dice coefficient, which is calculated based on n-grams with a specific maximum
+     * length.
+     *
+     * @param maxLength The maximum length of the n-grams, which should be taken into account, as an
+     *                  {@link Integer} value. The maximum length must be at least 1
+     */
+    public DiceCoefficient(final int maxLength) {
+        this.nGramTokenizer = new NGramTokenizer(maxLength);
+    }
+
+    /**
      * Creates a new dice coefficient, which is calculated based on n-grams with a specific minimum
      * and maximum length.
      *
