@@ -33,7 +33,8 @@ public class SubstringTokenizerTest {
         int position = 1;
         Substring substring = new Substring(token, position);
         assertEquals(token, substring.getToken());
-        assertEquals(position, substring.getPosition());
+        assertEquals(1, substring.getPositions().size());
+        assertTrue(substring.getPositions().contains(position));
         assertEquals(token.length(), substring.length());
     }
 
@@ -57,7 +58,8 @@ public class SubstringTokenizerTest {
         Substring substring = new Substring("token", 1);
         Substring clone = substring.clone();
         assertEquals(substring.getToken(), clone.getToken());
-        assertEquals(substring.getPosition(), clone.getPosition());
+        assertEquals(substring.getPositions().size(), clone.getPositions().size());
+        assertTrue(clone.getPositions().contains(substring.getPositions().iterator().next()));
     }
 
     @Test
@@ -65,7 +67,7 @@ public class SubstringTokenizerTest {
         String token = "token";
         int position = 1;
         Substring substring = new Substring(token, position);
-        assertEquals("Substring [token=" + token + ", position=" + position + "]",
+        assertEquals("Substring [token=" + token + ", positions=[" + position + "]]",
                 substring.toString());
     }
 
@@ -76,8 +78,6 @@ public class SubstringTokenizerTest {
         assertEquals(substring1.hashCode(), substring1.hashCode());
         assertEquals(substring1.hashCode(), substring2.hashCode());
         substring1 = new Substring("foo", 0);
-        assertNotEquals(substring1.hashCode(), substring2.hashCode());
-        substring1 = new Substring("token", 1);
         assertNotEquals(substring1.hashCode(), substring2.hashCode());
     }
 
@@ -90,8 +90,6 @@ public class SubstringTokenizerTest {
         assertTrue(substring1.equals(substring1));
         assertTrue(substring1.equals(substring2));
         substring1 = new Substring("foo", 0);
-        assertFalse(substring1.equals(substring2));
-        substring1 = new Substring("token", 1);
         assertFalse(substring1.equals(substring2));
     }
 
@@ -124,16 +122,40 @@ public class SubstringTokenizerTest {
     @Test
     public final void testTokenize() {
         Set<Substring> substrings = new SubstringTokenizer().tokenize("text");
-        assertEquals(9, substrings.size());
-        assertTrue(substrings.contains(new Substring("t", 0)));
-        assertTrue(substrings.contains(new Substring("e", 1)));
-        assertTrue(substrings.contains(new Substring("x", 2)));
-        assertTrue(substrings.contains(new Substring("t", 3)));
-        assertTrue(substrings.contains(new Substring("te", 0)));
-        assertTrue(substrings.contains(new Substring("ex", 1)));
-        assertTrue(substrings.contains(new Substring("xt", 2)));
-        assertTrue(substrings.contains(new Substring("tex", 0)));
-        assertTrue(substrings.contains(new Substring("ext", 1)));
+        assertEquals(8, substrings.size());
+
+        for (Substring substring : substrings) {
+            switch (substring.getToken()) {
+                case "t":
+                    assertTrue(substring.getPositions().contains(0));
+                    assertTrue(substring.getPositions().contains(3));
+                    break;
+                case "e":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                case "x":
+                    assertTrue(substring.getPositions().contains(2));
+                    break;
+                case "te":
+                    assertTrue(substring.getPositions().contains(0));
+                    break;
+                case "ex":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                case "xt":
+                    assertTrue(substring.getPositions().contains(2));
+                    break;
+                case "tex":
+                    assertTrue(substring.getPositions().contains(0));
+                    break;
+                case "ext":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                default:
+                    fail();
+                    break;
+            }
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -150,20 +172,52 @@ public class SubstringTokenizerTest {
     public final void testTokenizeWithMinAndMaxLength1() {
         Set<Substring> substrings = new SubstringTokenizer(2, 3).tokenize("text");
         assertEquals(5, substrings.size());
-        assertTrue(substrings.contains(new Substring("te", 0)));
-        assertTrue(substrings.contains(new Substring("ex", 1)));
-        assertTrue(substrings.contains(new Substring("xt", 2)));
-        assertTrue(substrings.contains(new Substring("tex", 0)));
-        assertTrue(substrings.contains(new Substring("ext", 1)));
+
+        for (Substring substring : substrings) {
+            switch (substring.getToken()) {
+                case "te":
+                    assertTrue(substring.getPositions().contains(0));
+                    break;
+                case "ex":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                case "xt":
+                    assertTrue(substring.getPositions().contains(2));
+                    break;
+                case "tex":
+                    assertTrue(substring.getPositions().contains(0));
+                    break;
+                case "ext":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                default:
+                    fail();
+                    break;
+            }
+        }
     }
 
     @Test
     public final void testTokenizeWithMinAndMaxLength2() {
         Set<Substring> substrings = new SubstringTokenizer(2, 2).tokenize("text");
         assertEquals(3, substrings.size());
-        assertTrue(substrings.contains(new Substring("te", 0)));
-        assertTrue(substrings.contains(new Substring("ex", 1)));
-        assertTrue(substrings.contains(new Substring("xt", 2)));
+
+        for (Substring substring : substrings) {
+            switch (substring.getToken()) {
+                case "te":
+                    assertTrue(substring.getPositions().contains(0));
+                    break;
+                case "ex":
+                    assertTrue(substring.getPositions().contains(1));
+                    break;
+                case "xt":
+                    assertTrue(substring.getPositions().contains(2));
+                    break;
+                default:
+                    fail();
+                    break;
+            }
+        }
     }
 
 }

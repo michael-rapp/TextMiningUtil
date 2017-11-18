@@ -16,8 +16,7 @@ package de.mrapp.textmining.util.tokenizer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static de.mrapp.util.Condition.*;
 
@@ -47,24 +46,44 @@ public class SubstringTokenizer {
         private final String token;
 
         /**
-         * The position of the substring's token in the original text or word.
+         * The positions of the substring's token in the original text or word.
          */
-        private final int position;
+        private final Set<Integer> positions;
 
         /**
-         * Creates a new substring, which consists of a sequence of characters (token).
+         * Creates a new substring, which consists of a sequence of characters.
          *
-         * @param token    The token of the substring as a {@link String}. The token may neither be
-         *                 null, nor empty
-         * @param position The position of the substring's token in the original text or word as an
-         *                 {@link Integer} value. The position must be at least 0
+         * @param token     The token of the substring as a {@link String}. The token may neither be
+         *                  null, nor empty
+         * @param positions A collection, which contains the positions of the substring's token in
+         *                  the original text or word, as an instance of the type {@link
+         *                  Collection}. The collection may not be null
          */
-        public Substring(@NotNull final String token, final int position) {
+        private Substring(@NotNull final String token, final Collection<Integer> positions) {
             ensureNotNull(token, "The token may not be null");
             ensureNotEmpty(token, "The token may not be null");
-            ensureAtLeast(position, 0, "The position must be at least 0");
+            ensureNotNull(positions, "The collection may not be null");
             this.token = token;
-            this.position = position;
+            this.positions = new HashSet<>();
+            this.positions.addAll(positions);
+        }
+
+        /**
+         * Creates a new substring, which consists of a sequence of characters.
+         *
+         * @param token     The token of the substring as a {@link String}. The token may neither be
+         *                  null, nor empty
+         * @param positions An array, which contains the positions of the substring's token in the
+         *                  original text or word as an {@link Integer} array. The array may neither
+         *                  be null, nor empty
+         */
+        public Substring(@NotNull final String token, final int... positions) {
+            this(token, Collections.emptyList());
+            ensureAtLeast(positions.length, 1, "The array must contain at least one position");
+
+            for (int position : positions) {
+                addPosition(position);
+            }
         }
 
         /**
@@ -79,13 +98,25 @@ public class SubstringTokenizer {
         }
 
         /**
-         * Returns the position of the substring's token in the original text or word.
+         * Returns the positions of the substring's token in the original text or word.
          *
-         * @return The position of the substring's token as an {@link Integer} value. The position
-         * must be at least 0
+         * @return A set, which contains the positions of the substring's token as an instance of
+         * the type {@link Set}
          */
-        public final int getPosition() {
-            return position;
+        @NotNull
+        public final Set<Integer> getPositions() {
+            return Collections.unmodifiableSet(positions);
+        }
+
+        /**
+         * Adds a new position of the substring's token in the original text or word.
+         *
+         * @param position The position, which should be added, as an {@link Integer} value. The
+         *                 position must be at least 0
+         */
+        public final void addPosition(final int position) {
+            ensureAtLeast(position, 0, "The position must be at least 0");
+            this.positions.add(position);
         }
 
         /**
@@ -99,12 +130,12 @@ public class SubstringTokenizer {
 
         @Override
         public final Substring clone() {
-            return new Substring(token, position);
+            return new Substring(token, positions);
         }
 
         @Override
         public final String toString() {
-            return "Substring [token=" + token + ", position=" + position + "]";
+            return "Substring [token=" + token + ", positions=" + positions + "]";
         }
 
         @Override
@@ -112,7 +143,6 @@ public class SubstringTokenizer {
             final int prime = 31;
             int result = 1;
             result = prime * result + token.hashCode();
-            result = prime * result + position;
             return result;
         }
 
@@ -125,7 +155,7 @@ public class SubstringTokenizer {
             if (getClass() != obj.getClass())
                 return false;
             Substring other = (Substring) obj;
-            return token.equals(other.token) && position == other.position;
+            return token.equals(other.token);
         }
 
     }
@@ -198,17 +228,24 @@ public class SubstringTokenizer {
     public final Set<Substring> tokenize(final String text) {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
-        Set<Substring> substrings = new HashSet<>();
+        Map<String, Substring> substrings = new HashMap<>();
         int length = text.length();
 
         for (int n = minLength; n <= Math.min(length - 1, maxLength); n++) {
             for (int i = 0; i <= length - n; i++) {
                 String token = text.substring(i, i + n);
-                substrings.add(new Substring(token, i));
+                Substring substring = substrings.get(token);
+
+                if (substring == null) {
+                    substring = new Substring(token, i);
+                    substrings.put(token, substring);
+                } else {
+                    substring.addPosition(i);
+                }
             }
         }
 
-        return substrings;
+        return new HashSet<>(substrings.values());
     }
 
 }
