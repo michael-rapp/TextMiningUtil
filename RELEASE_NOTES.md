@@ -1,5 +1,12 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 1.1.0 (Nov. 19th 2017)
+
+A feature release, which provides the following changes:
+
+- Tokenizers do not return multiple n-grams or substrings with the same token anymore. Instead, the positions off all duplicates are aggregated in one `NGram` or `Substring`.
+- Added constructors, which only allows to specify a maximum length, but no minimum length, to the classes `NGramTokenizer` and `DiceCoefficient`.
+
 ## Version 1.0.0 (Nov. 17th 2017)
 
 The first stable release of the library, which provides the following utility classes:
