@@ -153,7 +153,6 @@ public class SubstringTokenizerTest {
                     break;
                 default:
                     fail();
-                    break;
             }
         }
     }
@@ -192,7 +191,6 @@ public class SubstringTokenizerTest {
                     break;
                 default:
                     fail();
-                    break;
             }
         }
     }
@@ -215,7 +213,6 @@ public class SubstringTokenizerTest {
                     break;
                 default:
                     fail();
-                    break;
             }
         }
     }

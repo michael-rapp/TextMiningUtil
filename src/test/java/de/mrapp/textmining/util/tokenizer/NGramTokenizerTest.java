@@ -133,7 +133,7 @@ public class NGramTokenizerTest {
     }
 
     @Test
-    public final void testTokenize() {
+    public final void testTokenize1() {
         Set<NGram> nGrams = new NGramTokenizer().tokenize("wirk");
         assertEquals(6, nGrams.size());
 
@@ -158,7 +158,51 @@ public class NGramTokenizerTest {
                     assertTrue(nGram.getPositions().contains(3));
                     break;
                 default:
+                    fail();
+            }
+        }
+    }
+
+    @Test
+    public final void testTokenize2() {
+        Set<NGram> nGrams = new NGramTokenizer().tokenize("wi");
+        assertEquals(2, nGrams.size());
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "w":
+                    assertTrue(nGram.getPositions().contains(0));
                     break;
+                case "i":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                default:
+                    fail();
+            }
+        }
+    }
+
+    @Test
+    public final void testTokenize3() {
+        Set<NGram> nGrams = new NGramTokenizer().tokenize("wir");
+        assertEquals(4, nGrams.size());
+
+        for (NGram nGram : nGrams) {
+            switch (nGram.getToken()) {
+                case "w":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "wi":
+                    assertTrue(nGram.getPositions().contains(0));
+                    break;
+                case "ir":
+                    assertTrue(nGram.getPositions().contains(1));
+                    break;
+                case "r":
+                    assertTrue(nGram.getPositions().contains(2));
+                    break;
+                default:
+                    fail();
             }
         }
     }
@@ -193,7 +237,7 @@ public class NGramTokenizerTest {
                     assertTrue(nGram.getPositions().contains(2));
                     break;
                 default:
-                    break;
+                    fail();
             }
         }
     }
@@ -221,7 +265,7 @@ public class NGramTokenizerTest {
                     assertTrue(nGram.getPositions().contains(3));
                     break;
                 default:
-                    break;
+                    fail();
             }
         }
     }
@@ -243,7 +287,7 @@ public class NGramTokenizerTest {
                     assertTrue(nGram.getPositions().contains(2));
                     break;
                 default:
-                    break;
+                    fail();
             }
         }
     }
@@ -266,7 +310,7 @@ public class NGramTokenizerTest {
                     assertTrue(nGram.getPositions().contains(2));
                     break;
                 default:
-                    break;
+                    fail();
             }
         }
     }
