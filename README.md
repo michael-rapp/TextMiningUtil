@@ -19,7 +19,7 @@ Alternatively, the library can be added to your project as a Gradle dependency b
 
 ```groovy
 dependencies {
-    compile 'com.github.michael-rapp:text-mining-util:1.1.0'
+    compile 'com.github.michael-rapp:text-mining-util:1.1.1'
 }
 ```
 
@@ -29,7 +29,7 @@ When using Maven, the following dependency can be added to the `pom.xml`:
 <dependency>
     <groupId>com.github.michael-rapp</groupId>
     <artifactId>text-mining-util</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
