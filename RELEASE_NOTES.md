@@ -1,5 +1,11 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 1.1.1 (Apr. 29th 2018)
+
+A minor release, which provides the following changes:
+
+- Updated dependency "JavaUtil" to version 1.2.0.
+
 ## Version 1.1.0 (Nov. 19th 2017)
 
 A feature release, which provides the following changes:
