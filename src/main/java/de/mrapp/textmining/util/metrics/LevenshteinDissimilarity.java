@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Levenshtein dissimilarity is the loss metric pendant to the {@link LevenshteinDistance}. It
  * measures the percentage of single-character edits (insertions, deletions, or substitutions) that
- * are necessary to change one text into another among the number of characters of the longer of
+ * are necessary to change one text into another, among the number of characters of the longer of
  * both texts. Levenshtein dissimilarity always evaluates to heuristic values within the interval
  * [0,1]. Texts that evaluate to greater heuristic values are considered to be less similar than
  * texts that evaluate to smaller heuristic values.

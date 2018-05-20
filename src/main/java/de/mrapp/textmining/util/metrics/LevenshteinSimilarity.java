@@ -17,10 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Levenshtein similarity is the gain metric pendant to the {@link LevenshteinDistance}. It measures
- * the percentage of characters that must not be edited when changing one text into another, among
- * the number of characters of the longer of both texts. Levenshtein similarity always evaluates to
- * heuristic values within the interval [0,1]. Texts that evaluate to greater heuristic values are
- * considered to be more similar than texts that evaluate to smaller heuristic values.
+ * the percentage of single-character edits (insertions, deletions, or substitutions) that are
+ * necessary to change one text into another, among the number of characters of the longer of both
+ * texts. Levenshtein similarity always evaluates to heuristic values within the interval [0,1].
+ * Texts that evaluate to greater heuristic values are considered to be more similar than texts that
+ * evaluate to smaller heuristic values.
  *
  * @author Michael Rapp
  * @since 1.0.0
