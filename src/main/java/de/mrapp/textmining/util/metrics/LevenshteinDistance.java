@@ -20,7 +20,7 @@ import static de.mrapp.util.Condition.ensureNotNull;
 /**
  * Allows to calculate the distance of texts according to the Levenshtein distance. The Levenshtein
  * distance measures the number of single-character edits (insertions, deletions or substitutions)
- * that are necessary to change one text into another. It can also used for texts with different
+ * that are necessary to change one text into another. It can also be used for texts with different
  * lengths.
  *
  * @author Michael Rapp
