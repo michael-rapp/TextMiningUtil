@@ -29,8 +29,7 @@ import static de.mrapp.util.Condition.*;
 public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substring> {
 
     /**
-     * A substring, which consists of a sequence of characters (token), taken from a longer text or
-     * word.
+     * A substring, which consists of a sequence of characters, taken from a longer text or word.
      */
     public static class Substring implements Tokenizer.Token {
 
