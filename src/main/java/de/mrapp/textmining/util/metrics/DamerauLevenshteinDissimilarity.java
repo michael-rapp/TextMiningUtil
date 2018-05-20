@@ -15,8 +15,6 @@ package de.mrapp.textmining.util.metrics;
 
 import org.jetbrains.annotations.NotNull;
 
-import static de.mrapp.util.Condition.ensureNotNull;
-
 /**
  * Damerau-Levenshtein dissimilarity is the loss metric pendant to the {@link
  * DamerauLevenshteinDistance}. It measures the percentage of single-character edits (insertions,
@@ -33,8 +31,6 @@ public class DamerauLevenshteinDissimilarity implements TextMetric {
 
     @Override
     public final double evaluate(@NotNull final String text1, @NotNull final String text2) {
-        ensureNotNull(text1, "The first text may not be null");
-        ensureNotNull(text2, "The second text may not be null");
         double damerauLevenshteinDistance = new DamerauLevenshteinDistance().evaluate(text1, text2);
         int length = Math.max(text1.length(), text2.length());
         return length != 0 ? damerauLevenshteinDistance / (double) length : 0;
