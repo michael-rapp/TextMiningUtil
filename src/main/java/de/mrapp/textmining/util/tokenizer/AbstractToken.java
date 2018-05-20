@@ -53,7 +53,8 @@ public abstract class AbstractToken implements Tokenizer.Token {
      *                  text, as an instance of the type {@link Collection}. The collection may not
      *                  be null
      */
-    public AbstractToken(@NotNull final String token, final Collection<Integer> positions) {
+    public AbstractToken(@NotNull final String token,
+                         @NotNull final Collection<Integer> positions) {
         ensureNotNull(token, "The token may not be null");
         ensureNotEmpty(token, "The token may not be null");
         ensureNotNull(positions, "The collection may not be null");
@@ -69,7 +70,7 @@ public abstract class AbstractToken implements Tokenizer.Token {
      * @param positions An array, which contains the position(s) of the token in the original text
      *                  as an {@link Integer} array. The array may neither be null, nor empty
      */
-    public AbstractToken(@NotNull final String token, final int... positions) {
+    public AbstractToken(@NotNull final String token, @NotNull final int... positions) {
         this(token, Collections.emptyList());
         ensureAtLeast(positions.length, 1, "The array must contain at least one position");
 

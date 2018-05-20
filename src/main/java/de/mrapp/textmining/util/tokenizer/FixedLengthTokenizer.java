@@ -49,7 +49,8 @@ public class FixedLengthTokenizer implements Tokenizer<FixedLengthTokenizer.Subs
          *                  the original text, as an instance of the type {@link Collection}. The
          *                  collection may not be null
          */
-        private Substring(@NotNull final String token, final Collection<Integer> positions) {
+        private Substring(@NotNull final String token,
+                          @NotNull final Collection<Integer> positions) {
             super(token, positions);
         }
 
@@ -63,7 +64,7 @@ public class FixedLengthTokenizer implements Tokenizer<FixedLengthTokenizer.Subs
          *                  original text as an {@link Integer} array. The array may neither be
          *                  null, nor empty
          */
-        public Substring(@NotNull final String token, final int... positions) {
+        public Substring(@NotNull final String token, @NotNull final int... positions) {
             super(token, positions);
         }
 
