@@ -16,9 +16,9 @@ package de.mrapp.textmining.util.metrics;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Hamming similarity is the gain metric pendant to the {@link LevenshteinDistance}. It measures the
- * percentage of characters that must not be edited when changing one text into another, among the
- * number of characters of the longer of both texts. Hamming similarity always evaluates to
+ * Levenshtein similarity is the gain metric pendant to the {@link LevenshteinDistance}. It measures
+ * the percentage of characters that must not be edited when changing one text into another, among
+ * the number of characters of the longer of both texts. Hamming similarity always evaluates to
  * heuristic values within the interval [0,1]. Texts that evaluate to greater heuristic values are
  * considered to be more similar than texts that evaluate to smaller heuristic values.
  *
