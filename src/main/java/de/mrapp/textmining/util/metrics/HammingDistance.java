@@ -32,10 +32,12 @@ public class HammingDistance implements TextMetric {
     public final double evaluate(@NotNull final String text1, @NotNull final String text2) {
         ensureNotNull(text1, "The first text must not be null");
         ensureNotNull(text2, "The second text must not be null");
-        ensureEqual(text1.length(), text2.length(), "The texts must have the same length");
+        int length1 = text1.length();
+        int length2 = text2.length();
+        ensureEqual(length1, length2, "The texts must have the same length");
         double distance = 0;
 
-        for (int i = 0; i < text1.length(); i++) {
+        for (int i = 0; i < length1; i++) {
             if (text1.charAt(i) != text2.charAt(i)) {
                 distance++;
             }
