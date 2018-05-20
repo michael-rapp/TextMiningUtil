@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the functionality of the class {@link FixedLengthTokenizerTest}.
  *
- * @since 1.2.0
+ * @author Michael Rapp
  */
 public class FixedLengthTokenizerTest {
 

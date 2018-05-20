@@ -20,6 +20,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the functionality of the class {@link DiceCoefficient}.
+ *
+ * @author Michael Rapp
  */
 public class DiceCoefficientTest {
 

@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the functionality of the class {@link SubstringTokenizer}.
  *
- * @since 1.0.0
+ * @author Michael Rapp
  */
 public class SubstringTokenizerTest {
 

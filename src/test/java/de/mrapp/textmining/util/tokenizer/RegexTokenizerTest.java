@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the functionality of the class {@link RegexTokenizer}.
  *
- * @since 1.2.0
+ * @author Michael Rapp
  */
 public class RegexTokenizerTest {
 

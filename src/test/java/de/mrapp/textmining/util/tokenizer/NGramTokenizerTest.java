@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the functionality of the class {@link NGramTokenizer}.
  *
- * @since 1.0.0
+ * @author Michael Rapp
  */
 public class NGramTokenizerTest {
 
