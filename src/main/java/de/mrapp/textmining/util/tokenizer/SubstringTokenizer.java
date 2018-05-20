@@ -29,7 +29,7 @@ import static de.mrapp.util.Condition.*;
 public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substring> {
 
     /**
-     * A substring, which consists of a sequence of characters, taken from a longer text or word.
+     * A substring, which consists of a sequence of characters, taken from a longer text.
      */
     public static class Substring implements Tokenizer.Token {
 
@@ -44,7 +44,7 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
         private final String token;
 
         /**
-         * The positions of the substring's token in the original text or word.
+         * The positions of the substring's token in the original text.
          */
         private final Set<Integer> positions;
 
@@ -54,8 +54,8 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
          * @param token     The token of the substring as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions A collection, which contains the positions of the substring's token in
-         *                  the original text or word, as an instance of the type {@link
-         *                  Collection}. The collection may not be null
+         *                  the original text, as an instance of the type {@link Collection}. The
+         *                  collection may not be null
          */
         private Substring(@NotNull final String token, final Collection<Integer> positions) {
             ensureNotNull(token, "The token may not be null");
@@ -72,8 +72,8 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
          * @param token     The token of the substring as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions An array, which contains the positions of the substring's token in the
-         *                  original text or word as an {@link Integer} array. The array may neither
-         *                  be null, nor empty
+         *                  original text as an {@link Integer} array. The array may neither be
+         *                  null, nor empty
          */
         public Substring(@NotNull final String token, final int... positions) {
             this(token, Collections.emptyList());
@@ -85,7 +85,7 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
         }
 
         /**
-         * Adds a new position of the substring's token in the original text or word.
+         * Adds a new position of the substring's token in the original text.
          *
          * @param position The position, which should be added, as an {@link Integer} value. The
          *                 position must be at least 0

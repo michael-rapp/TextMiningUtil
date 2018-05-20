@@ -46,7 +46,7 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
         private final String token;
 
         /**
-         * The positions of the n-gram's token in the original text or word.
+         * The positions of the n-gram's token in the original text.
          */
         private final Set<Integer> positions;
 
@@ -56,8 +56,8 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
          * @param token     The token of the n-gram as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions A collection, which contains the positions of the n-gram's token in the
-         *                  original text or word, as an instance of the type {@link Collection}.
-         *                  The collection may not be null
+         *                  original text, as an instance of the type {@link Collection}. The
+         *                  collection may not be null
          */
         private NGram(@NotNull final String token, final Collection<Integer> positions) {
             ensureNotNull(token, "The token may not be null");
@@ -74,8 +74,8 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
          * @param token     The token of the n-gram as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions An array, which contains the positions of the n-gram's token in the
-         *                  original text or word as an {@link Integer} array. The array may neither
-         *                  be null, nor empty
+         *                  original text as an {@link Integer} array. The array may neither be
+         *                  null, nor empty
          */
         public NGram(@NotNull final String token, final int... positions) {
             this(token, Collections.emptyList());
@@ -87,7 +87,7 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
         }
 
         /**
-         * Adds a new position of the n-gram's token in the original text or word.
+         * Adds a new position of the n-gram's token in the original text.
          *
          * @param position The position, which should be added, as an {@link Integer} value. The
          *                 position must be at least 0
