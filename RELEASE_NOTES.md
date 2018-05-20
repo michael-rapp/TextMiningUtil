@@ -1,5 +1,13 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 1.2.0 (May. 21th 2018)
+
+A feature release, which introduces the following changes:
+
+- Added the metrics `OptimalStringAlignmentDistance`, `OptimalStringAlignmentDissimilarity` and `OptimalStringAlignmentSimilarity`.
+- Added the metrics `DamerauLevenshteinDistance`, `DamerauLevenshteinDissimilarity` and `DamerauLevenshteinSimilarity`.
+- Added the tokenizers `FixedLengthTokenizer` and `RegexTokenizer`.
+
 ## Version 1.1.1 (Apr. 29th 2018)
 
 A minor release, which provides the following changes:
