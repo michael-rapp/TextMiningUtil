@@ -213,9 +213,10 @@ public class RegexTokenizerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RuntimeException.class)
     public final void testSplitByDelimitersWithIterableArgumentThrowsExceptionIfIterableIsNull() {
-        RegexTokenizer.splitByDelimiters((Iterable) null);
+        Iterable<String> iterable = null;
+        RegexTokenizer.splitByDelimiters(iterable);
     }
 
     @Test(expected = IllegalArgumentException.class)
