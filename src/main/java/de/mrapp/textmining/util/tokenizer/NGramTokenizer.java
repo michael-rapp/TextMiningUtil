@@ -40,39 +40,89 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
         private static final long serialVersionUID = -5907278359683181663L;
 
         /**
+         * The degree of the n-grams, which are created by the tokenizer, which created this
+         * n-gram.
+         */
+        private final int n;
+
+        /**
          * Creates a new n-gram, which consists of a sequence of characters.
          *
+         * @param n         The degree of the n-grams, which are created by the tokenizer, which
+         *                  created this n-gram, as an {@link Integer} value
          * @param token     The token of the n-gram as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions A collection, which contains the position(s) of the n-gram's token in
          *                  the original text, as an instance of the type {@link Collection}. The
          *                  collection may not be null
          */
-        private NGram(@NotNull final String token, @NotNull final Collection<Integer> positions) {
+        private NGram(final int n, @NotNull final String token,
+                      @NotNull final Collection<Integer> positions) {
             super(token, positions);
+            ensureAtLeast(n, 1, "The degree of the n-gram must be at least 1");
+            this.n = n;
         }
 
         /**
          * Creates a new n-gram, which consists of a sequence of characters.
          *
+         * @param n         The degree of the n-grams, which are created by the tokenizer, which
+         *                  created this n-gram, as an {@link Integer} value
          * @param token     The token of the n-gram as a {@link String}. The token may neither be
          *                  null, nor empty
          * @param positions An array, which contains the position(s) of the n-gram's token in the
          *                  original text as an {@link Integer} array. The array may neither be
          *                  null, nor empty
          */
-        public NGram(@NotNull final String token, @NotNull final int... positions) {
+        public NGram(final int n, @NotNull final String token, @NotNull final int... positions) {
             super(token, positions);
+            ensureAtLeast(n, 1, "The degree of the n-gram must be at least 1");
+            this.n = n;
+        }
+
+        /**
+         * Returns the degree of the n-grams, which are created by the tokenizer, which created this
+         * n-gram.
+         *
+         * @return The degree of the n-grams as an {@link Integer} value
+         */
+        public final int getN() {
+            return n;
         }
 
         @Override
         public final NGram clone() {
-            return new NGram(getToken(), getPositions());
+            return new NGram(getN(), getToken(), getPositions());
         }
 
         @Override
         public final String toString() {
-            return "NGram [token=" + getToken() + ", positions=" + getPositions() + "]";
+            return "NGram [n=" + n + ", token=" + getToken() + ", positions=" + getPositions() +
+                    "]";
+        }
+
+        @Override
+        public final int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + n;
+            return result;
+        }
+
+        @Override
+        public final boolean equals(final Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            if (!super.equals(obj))
+                return false;
+            NGram other = (NGram) obj;
+            if (n != other.n)
+                return false;
+            return true;
         }
 
     }
@@ -101,7 +151,7 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
         NGram nGram = nGrams.get(token);
 
         if (nGram == null) {
-            nGram = new NGram(token, position);
+            nGram = new NGram(getMaxLength(), token, position);
             nGrams.put(token, nGram);
         } else {
             nGram.addPosition(position);

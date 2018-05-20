@@ -29,9 +29,11 @@ public class NGramTokenizerTest {
 
     @Test
     public final void testNGramConstructor() {
+        int n = 2;
         String token = "token";
         int position = 1;
-        NGram nGram = new NGram(token, position);
+        NGram nGram = new NGram(n, token, position);
+        assertEquals(n, nGram.getN());
         assertEquals(token, nGram.getToken());
         assertEquals(1, nGram.getPositions().size());
         assertTrue(nGram.getPositions().contains(position));
@@ -40,23 +42,29 @@ public class NGramTokenizerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public final void testNGramConstructorThrowsExceptionIfTokenIsNull() {
-        new NGram(null, 0);
+        new NGram(1, null, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testNGramConstructorThrowsExceptionIfTokenIsEmpty() {
-        new NGram("", 0);
+        new NGram(1, "", 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testConstructorThrowsExceptionIfPositionIsLessThanZero() {
-        new NGram("token", -1);
+        new NGram(1, "token", -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testConstructorThrowsExceptionIfDegreeIsLessThanZero() {
+        new NGram(0, "token", 0);
     }
 
     @Test
     public final void testNGramClone() {
-        NGram nGram = new NGram("token", 1);
+        NGram nGram = new NGram(2, "token", 1);
         NGram clone = nGram.clone();
+        assertEquals(nGram.getN(), clone.getN());
         assertEquals(nGram.getToken(), clone.getToken());
         assertEquals(nGram.getPositions().size(), clone.getPositions().size());
         assertTrue(clone.getPositions().contains(nGram.getPositions().iterator().next()));
@@ -64,32 +72,37 @@ public class NGramTokenizerTest {
 
     @Test
     public final void testNGramToString() {
+        int n = 2;
         String token = "token";
         int position = 1;
-        NGram nGram = new NGram(token, position);
-        assertEquals("NGram [token=" + token + ", positions=[" + position + "]]",
+        NGram nGram = new NGram(n, token, position);
+        assertEquals("NGram [n=" + n + ", token=" + token + ", positions=[" + position + "]]",
                 nGram.toString());
     }
 
     @Test
     public final void testNGramHashCode() {
-        NGram nGram1 = new NGram("token", 0);
-        NGram nGram2 = new NGram("token", 0);
+        NGram nGram1 = new NGram(1, "token", 0);
+        NGram nGram2 = new NGram(1, "token", 0);
         assertEquals(nGram1.hashCode(), nGram1.hashCode());
         assertEquals(nGram1.hashCode(), nGram2.hashCode());
-        nGram1 = new NGram("foo", 0);
+        nGram1 = new NGram(1, "foo", 0);
+        assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
+        nGram1 = new NGram(2, "token", 0);
         assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
     }
 
     @Test
     public final void testNGramEquals() {
-        NGram nGram1 = new NGram("token", 0);
-        NGram nGram2 = new NGram("token", 0);
+        NGram nGram1 = new NGram(1, "token", 0);
+        NGram nGram2 = new NGram(1, "token", 0);
         assertFalse(nGram1.equals(null));
         assertFalse(nGram1.equals(new Object()));
         assertTrue(nGram1.equals(nGram1));
         assertTrue(nGram1.equals(nGram2));
-        nGram1 = new NGram("foo", 0);
+        nGram1 = new NGram(1, "foo", 0);
+        assertFalse(nGram1.equals(nGram2));
+        nGram1 = new NGram(2, "token", 0);
         assertFalse(nGram1.equals(nGram2));
     }
 
@@ -223,6 +236,8 @@ public class NGramTokenizerTest {
         assertEquals(4, nGrams.size());
 
         for (NGram nGram : nGrams) {
+            assertEquals(nGram.getN(), 3);
+
             switch (nGram.getToken()) {
                 case "wi":
                     assertTrue(nGram.getPositions().contains(0));
@@ -248,6 +263,8 @@ public class NGramTokenizerTest {
         assertEquals(5, nGrams.size());
 
         for (NGram nGram : nGrams) {
+            assertEquals(nGram.getN(), 2);
+
             switch (nGram.getToken()) {
                 case "w":
                     assertTrue(nGram.getPositions().contains(0));
@@ -276,6 +293,8 @@ public class NGramTokenizerTest {
         assertEquals(3, nGrams.size());
 
         for (NGram nGram : nGrams) {
+            assertEquals(nGram.getN(), 2);
+
             switch (nGram.getToken()) {
                 case "wi":
                     assertTrue(nGram.getPositions().contains(0));
@@ -298,6 +317,8 @@ public class NGramTokenizerTest {
         assertEquals(3, nGrams.size());
 
         for (NGram nGram : nGrams) {
+            assertEquals(nGram.getN(), 1);
+
             switch (nGram.getToken()) {
                 case "t":
                     assertTrue(nGram.getPositions().contains(0));
