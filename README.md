@@ -43,13 +43,16 @@ The library comes with various metrics for measuring the similarity or dissimila
 
 - `DiceCoefficient`: Measures the similarity of texts by splitting them into n-grams and calculating the percentage of n-grams that occur in both texts.
 - `HammingDistance`: Measures the distance between texts by counting the number of corresponding characters that are not equal (can only be applied to texts with the same length). `HammingLoss` and `HammingAccuracy` measure the dissimilarity, respectively similarity as a percentage.
-- `LevenshteinDistance`: Measures the distance between texts by counting the number of single-character edits that are necessary to change one text to another (can be applied to text with different lengths). `LevenshteinDissimilarity` and `LevenshteinSimilarity` measure the dissimilarity, respectively similarity, as a percentage.
+- `LevenshteinDistance`: Measures the distance between texts by counting the number of single-character edits that are necessary to change one text to another (can be applied to texts with different lengths). `LevenshteinDissimilarity` and `LevenshteinSimilarity` measure the dissimilarity, respectively similarity, as a percentage.
+- `OptimalStringAlignmentDistance`: Measures the distance between text by counting the number of single-character edits and transpositions of adjacent characters that are necessary to change on the to another (only one edit is allowed per substring; can be applied to texts with different lengths). `OptimalStringAlignmentDissimilarity` and `OptimalStringAlignmentSimilarity` measure the dissimilarity, respectively similarity, as a percentage.
 
 ### Tokenizers
 
 Tokenizers allow to split texts into shorter subtexts. The library provides the following implementations:
 
-- `SubstringTokenizer`: Allows to split texts into substrings of specific lenghts.
+- `SubstringTokenizer`: Allows to split texts into all possible substrings.
+- `FixedLengthTokenizer`: Allows to split texts into substrings with a specific length.
+- `RegexTokenizer`: Allows to split texts based on regular expressions (e.g. at whitespace or at certain delimiters).
 - `NGramTokenizer`: Allows to split texts into n-grams of specific lengths.
 
 ## Contact information
