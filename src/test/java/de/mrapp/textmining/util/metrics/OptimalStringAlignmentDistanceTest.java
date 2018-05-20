@@ -33,6 +33,10 @@ public class OptimalStringAlignmentDistanceTest {
         assertEquals(0, osaDistance.evaluate("", ""), 0);
         assertEquals(0, osaDistance.evaluate("CA", "CA"), 0);
         assertEquals(0, osaDistance.evaluate("ABC", "ABC"), 0);
+        assertEquals(1, osaDistance.evaluate("ABC", "ABD"), 0);
+        assertEquals(1, osaDistance.evaluate("ABD", "ABC"), 0);
+        assertEquals(1, osaDistance.evaluate("ABC", "ACB"), 0);
+        assertEquals(1, osaDistance.evaluate("ACB", "ABC"), 0);
         assertEquals(3, osaDistance.evaluate("CA", "ABC"), 0);
         assertEquals(3, osaDistance.evaluate("ABC", "CA"), 0);
     }
