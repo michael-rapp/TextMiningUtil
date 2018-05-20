@@ -11,29 +11,29 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mrapp.textmining.util.converter;
+package de.mrapp.textmining.util.parser;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Defines the interface, a class, which allows to convert text into data of another type, must
- * implement.
+ * Defines the interface, a class, which allows to parse text in order to convert it into data of
+ * another type, must implement.
  *
  * @param <ResultType> The type of the data, the text should be converted to
  * @author Michael Rapp
  * @since 1.3.0
  */
-public interface Converter<ResultType> {
+public interface TextParser<ResultType> {
 
     /**
-     * Converts a specific text into data of another type.
+     * Parses a specific text in order to convert it into data of another type.
      *
-     * @param text The text, which should be converted, as a {@link String}. The text may neither be
+     * @param text The text, which should be parsed, as a {@link String}. The text may neither be
      *             null, or empty
      * @return The data, the given text has been converted to, as an instance of the generic type
      * {@link ResultType}. The data may not be null
      */
     @NotNull
-    ResultType convert(@NotNull String text);
+    ResultType parse(@NotNull String text);
 
 }
