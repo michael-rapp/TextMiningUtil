@@ -15,7 +15,10 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static de.mrapp.util.Condition.*;
 
@@ -26,58 +29,9 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substring> {
+public class SubstringTokenizer implements Tokenizer<Substring> {
 
-    /**
-     * A substring, which consists of a sequence of characters, taken from a longer text.
-     */
-    public static class Substring extends AbstractToken {
-
-        /**
-         * The constant serial version UID.
-         */
-        private static final long serialVersionUID = -5907278359683181663L;
-
-        /**
-         * Creates a new substring, which consists of a sequence of characters.
-         *
-         * @param token     The token of the substring as a {@link String}. The token may neither be
-         *                  null, nor empty
-         * @param positions A collection, which contains the position(s) of the substring's token in
-         *                  the original text, as an instance of the type {@link Collection}. The
-         *                  collection may not be null
-         */
-        private Substring(@NotNull final String token,
-                          @NotNull final Collection<Integer> positions) {
-            super(token, positions);
-        }
-
-        /**
-         * Creates a new substring, which consists of a sequence of characters.
-         *
-         * @param token     The token of the substring as a {@link String}. The token may neither be
-         *                  null, nor empty
-         * @param positions An array, which contains the position(s) of the substring's token in the
-         *                  original text as an {@link Integer} array. The array may neither be
-         *                  null, nor empty
-         */
-        public Substring(@NotNull final String token, @NotNull final int... positions) {
-            super(token, positions);
-        }
-
-        @Override
-        public final Substring clone() {
-            return new Substring(getToken(), getPositions());
-        }
-
-        @Override
-        public final String toString() {
-            return "Substring [token=" + getToken() + ", positions=" + getPositions() + "]";
-        }
-
-    }
-
-    /**
+    /*
      * The minimum length of the substrings, which are created by the tokenizer.
      */
     private final int minLength;

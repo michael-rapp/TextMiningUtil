@@ -27,56 +27,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.2.0
  */
-public class RegexTokenizer implements Tokenizer<RegexTokenizer.Substring> {
-
-    /**
-     * A substring, which consists of a sequence of characters, taken from a longer text.
-     */
-    public static class Substring extends AbstractToken {
-
-        /**
-         * The constant serial version UID.
-         */
-        private static final long serialVersionUID = -179438678035961056L;
-
-        /**
-         * Creates a new substring, which consists of a sequence of characters.
-         *
-         * @param token     The token of the substring as a {@link String}. The token may neither be
-         *                  null, nor empty
-         * @param positions A collection, which contains the position(s) of the substring's token in
-         *                  the original text, as an instance of the type {@link Collection}. The
-         *                  collection may not be null
-         */
-        private Substring(@NotNull final String token,
-                          @NotNull final Collection<Integer> positions) {
-            super(token, positions);
-        }
-
-        /**
-         * Creates a new substring, which consists of a sequence of characters.
-         *
-         * @param token     The token of the substring as a {@link String}. The token may neither be
-         *                  null, nor empty
-         * @param positions An array, which contains the position(s) of the substring's token in the
-         *                  original text as an {@link Integer} array. The array may neither be
-         *                  null, nor empty
-         */
-        public Substring(@NotNull final String token, @NotNull final int... positions) {
-            super(token, positions);
-        }
-
-        @Override
-        public final Substring clone() {
-            return new Substring(getToken(), getPositions());
-        }
-
-        @Override
-        public final String toString() {
-            return "Substring [token=" + getToken() + ", positions=" + getPositions() + "]";
-        }
-
-    }
+public class RegexTokenizer implements Tokenizer<Substring> {
 
     /**
      * The delimiters, which are used to split texts.

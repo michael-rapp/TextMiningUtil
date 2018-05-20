@@ -13,7 +13,6 @@
  */
 package de.mrapp.textmining.util.tokenizer;
 
-import de.mrapp.textmining.util.tokenizer.RegexTokenizer.Substring;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -30,72 +29,6 @@ import static org.junit.Assert.*;
  * @since 1.2.0
  */
 public class RegexTokenizerTest {
-
-    @Test
-    public final void testSubstringConstructor() {
-        String token = "token";
-        int position = 1;
-        Substring substring = new Substring(token, position);
-        assertEquals(token, substring.getToken());
-        assertEquals(1, substring.getPositions().size());
-        assertTrue(substring.getPositions().contains(position));
-        assertEquals(token.length(), substring.length());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testSubstringConstructorThrowsExceptionIfTokenIsNull() {
-        new Substring(null, 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testSubstringConstructorThrowsExceptionIfTokenIsEmpty() {
-        new Substring("", 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public final void testConstructorThrowsExceptionIfPositionIsLessThanZero() {
-        new Substring("token", -1);
-    }
-
-    @Test
-    public final void testSubstringClone() {
-        Substring substring = new Substring("token", 1);
-        Substring clone = substring.clone();
-        assertEquals(substring.getToken(), clone.getToken());
-        assertEquals(substring.getPositions().size(), clone.getPositions().size());
-        assertTrue(clone.getPositions().contains(substring.getPositions().iterator().next()));
-    }
-
-    @Test
-    public final void testSubstringToString() {
-        String token = "token";
-        int position = 1;
-        Substring substring = new Substring(token, position);
-        assertEquals("Substring [token=" + token + ", positions=[" + position + "]]",
-                substring.toString());
-    }
-
-    @Test
-    public final void testSubstringHashCode() {
-        Substring substring1 = new Substring("token", 0);
-        Substring substring2 = new Substring("token", 0);
-        assertEquals(substring1.hashCode(), substring1.hashCode());
-        assertEquals(substring1.hashCode(), substring2.hashCode());
-        substring1 = new Substring("foo", 0);
-        assertNotEquals(substring1.hashCode(), substring2.hashCode());
-    }
-
-    @Test
-    public final void testSubstringEquals() {
-        Substring substring1 = new Substring("token", 0);
-        Substring substring2 = new Substring("token", 0);
-        assertFalse(substring1.equals(null));
-        assertFalse(substring1.equals(new Object()));
-        assertTrue(substring1.equals(substring1));
-        assertTrue(substring1.equals(substring2));
-        substring1 = new Substring("foo", 0);
-        assertFalse(substring1.equals(substring2));
-    }
 
     @Test
     public final void testConstructorWithPatternArgument() {
