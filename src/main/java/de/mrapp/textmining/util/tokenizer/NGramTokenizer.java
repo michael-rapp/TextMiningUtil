@@ -15,9 +15,11 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.BiFunction;
 
-import static de.mrapp.util.Condition.*;
+import static de.mrapp.util.Condition.ensureAtLeast;
 
 /**
  * Allows to create n-grams from texts. E.g. the substrings "t", "te", "tex", "ext", "xt" and "t"
@@ -27,7 +29,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
+public class NGramTokenizer extends AbstractTokenizer<NGramTokenizer.NGram> {
 
     /**
      * A n-Gram, which consists of a sequence of characters, taken from a longer text or word.
@@ -138,27 +140,6 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
     private final int maxLength;
 
     /**
-     * Adds a new n-gram to a map, if it is not already contained. Otherwise, the n-grams position
-     * is added to the existing n-gram.
-     *
-     * @param nGrams   A map, which contains n-grams mapped to their tokens, as an instance of the
-     *                 type {@link Map}. The map may not be null
-     * @param token    The token of the n-gram, which should be created, as a {@link String}
-     * @param position The position of the n-gram, which should be created, as an {@link Integer}
-     *                 value
-     */
-    private void addNGram(final Map<String, NGram> nGrams, final String token, final int position) {
-        NGram nGram = nGrams.get(token);
-
-        if (nGram == null) {
-            nGram = new NGram(getMaxLength(), token, position);
-            nGrams.put(token, nGram);
-        } else {
-            nGram.addPosition(position);
-        }
-    }
-
-    /**
      * Creates a new tokenizer, which creates n-grams with all possible lengths.
      */
     public NGramTokenizer() {
@@ -212,25 +193,22 @@ public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
         return maxLength;
     }
 
-    @NotNull
     @Override
-    public final Set<NGram> tokenize(@NotNull final String text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
-        Map<String, NGram> nGrams = new HashMap<>();
+    protected final void onTokenize(@NotNull final String text,
+                                    @NotNull final Map<String, NGram> tokens) {
         int length = text.length();
+        BiFunction<String, Integer, NGram> nGramFactory = (token, position) ->
+                new NGram(getMaxLength(), token, position);
 
         for (int n = minLength; n <= Math.min(maxLength, length - 1); n++) {
             String token = text.substring(0, n);
-            addNGram(nGrams, token, 0);
+            addToken(tokens, token, 0, nGramFactory);
         }
 
         for (int i = 1; i <= length - minLength; i++) {
             String token = text.substring(i, i + Math.min(maxLength, length - i));
-            addNGram(nGrams, token, i);
+            addToken(tokens, token, i, nGramFactory);
         }
-
-        return new HashSet<>(nGrams.values());
     }
 
 }

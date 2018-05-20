@@ -15,12 +15,9 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import static de.mrapp.util.Condition.*;
+import static de.mrapp.util.Condition.ensureAtLeast;
 
 /**
  * Allows to create substrings from texts. E.g. the substrings "t", "e", "x", "t", "te", "ex", "xt",
@@ -29,7 +26,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class SubstringTokenizer implements Tokenizer<Substring> {
+public class SubstringTokenizer extends AbstractTokenizer<Substring> {
 
     /*
      * The minimum length of the substrings, which are created by the tokenizer.
@@ -87,29 +84,17 @@ public class SubstringTokenizer implements Tokenizer<Substring> {
         return maxLength;
     }
 
-    @NotNull
     @Override
-    public final Set<Substring> tokenize(@NotNull final String text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
-        Map<String, Substring> substrings = new HashMap<>();
+    protected final void onTokenize(@NotNull final String text,
+                                    @NotNull final Map<String, Substring> tokens) {
         int length = text.length();
 
         for (int n = minLength; n <= Math.min(length - 1, maxLength); n++) {
             for (int i = 0; i <= length - n; i++) {
                 String token = text.substring(i, i + n);
-                Substring substring = substrings.get(token);
-
-                if (substring == null) {
-                    substring = new Substring(token, i);
-                    substrings.put(token, substring);
-                } else {
-                    substring.addPosition(i);
-                }
+                addToken(tokens, token, i, Substring::new);
             }
         }
-
-        return new HashSet<>(substrings.values());
     }
 
 }

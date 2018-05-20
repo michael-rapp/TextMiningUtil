@@ -15,7 +15,8 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.2.0
  */
-public class RegexTokenizer implements Tokenizer<Substring> {
+public class RegexTokenizer extends AbstractTokenizer<Substring> {
 
     /**
      * The delimiters, which are used to split texts.
@@ -123,40 +124,20 @@ public class RegexTokenizer implements Tokenizer<Substring> {
         return pattern;
     }
 
-    @NotNull
     @Override
-    public final Set<Substring> tokenize(@NotNull final String text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
-        Map<String, Substring> substrings = new HashMap<>();
+    protected final void onTokenize(@NotNull final String text,
+                                    @NotNull final Map<String, Substring> tokens) {
         int i = 0;
         Matcher matcher = pattern.matcher(text);
 
         while (matcher.find()) {
             String token = text.substring(i, matcher.start());
-            Substring substring = substrings.get(token);
-
-            if (substring == null) {
-                substring = new Substring(token, i);
-                substrings.put(token, substring);
-            } else {
-                substring.addPosition(i);
-            }
-
+            addToken(tokens, token, i, Substring::new);
             i = matcher.end();
         }
 
         String token = text.substring(i, text.length());
-        Substring substring = substrings.get(token);
-
-        if (substring == null) {
-            substring = new Substring(token, i);
-            substrings.put(token, substring);
-        } else {
-            substring.addPosition(i);
-        }
-
-        return new HashSet<>(substrings.values());
+        addToken(tokens, token, i, Substring::new);
     }
 
 }

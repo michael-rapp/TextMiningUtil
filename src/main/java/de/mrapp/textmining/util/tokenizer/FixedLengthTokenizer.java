@@ -15,12 +15,10 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import static de.mrapp.util.Condition.*;
+import static de.mrapp.util.Condition.ensureAtLeast;
+import static de.mrapp.util.Condition.ensureTrue;
 
 /**
  * Allows to split texts into substrings with a fixed length. E.g. given the length 2, the text
@@ -29,7 +27,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.2.0
  */
-public class FixedLengthTokenizer implements Tokenizer<Substring> {
+public class FixedLengthTokenizer extends AbstractTokenizer<Substring> {
 
     /**
      * The length of the substrings, which are created by the tokenizer.
@@ -58,30 +56,17 @@ public class FixedLengthTokenizer implements Tokenizer<Substring> {
         return length;
     }
 
-    @NotNull
     @Override
-    public final Set<Substring> tokenize(@NotNull final String text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
-        ensureTrue(text.length() % length == 0,
-                "The length of the text must be dividable by " + length);
-        Map<String, Substring> substrings = new HashMap<>();
+    protected final void onTokenize(@NotNull final String text,
+                                    @NotNull final Map<String, Substring> tokens) {
         int length = text.length();
+        ensureTrue(length % this.length == 0,
+                "The length of the text must be dividable by " + this.length);
 
         for (int i = 0; i <= length - this.length; i += this.length) {
             String token = text.substring(i, i + this.length);
-            Substring substring = substrings.get(token);
-
-            if (substring == null) {
-                substring = new Substring(token, i);
-                substrings.put(token, substring);
-            } else {
-                substring.addPosition(i);
-            }
+            addToken(tokens, token, i, Substring::new);
         }
-
-        return new HashSet<>(substrings.values());
     }
-
 
 }
