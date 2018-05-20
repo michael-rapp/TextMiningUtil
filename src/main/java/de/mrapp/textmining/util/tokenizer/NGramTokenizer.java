@@ -15,7 +15,6 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static de.mrapp.util.Condition.*;
@@ -28,13 +27,13 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class NGramTokenizer {
+public class NGramTokenizer implements Tokenizer<NGramTokenizer.NGram> {
 
     /**
      * A n-Gram, which consists of a sequence of characters (token), taken from a longer text or
      * word.
      */
-    public static class NGram implements Serializable, Cloneable {
+    public static class NGram implements Tokenizer.Token {
 
         /**
          * The constant serial version UID.
@@ -88,27 +87,6 @@ public class NGramTokenizer {
         }
 
         /**
-         * Returns the token of the n-gram.
-         *
-         * @return The token of the n-gram as a {@link String}. The token may neither be null, nor
-         * empty
-         */
-        @NotNull
-        public final String getToken() {
-            return token;
-        }
-
-        /**
-         * Returns the positions of the n-gram's token in the original text or word.
-         *
-         * @return A set, which contains the positions of the n-gram's token, as an instance of the
-         * type {@link Set}
-         */
-        public final Set<Integer> getPositions() {
-            return Collections.unmodifiableSet(positions);
-        }
-
-        /**
          * Adds a new position of the n-gram's token in the original text or word.
          *
          * @param position The position, which should be added, as an {@link Integer} value. The
@@ -119,13 +97,15 @@ public class NGramTokenizer {
             this.positions.add(position);
         }
 
-        /**
-         * Returns the length of the n-gram's token.
-         *
-         * @return The length of the n-gram's token as an {@link Integer} value
-         */
-        public final int length() {
-            return token.length();
+        @Override
+        public final Set<Integer> getPositions() {
+            return Collections.unmodifiableSet(positions);
+        }
+
+        @NotNull
+        @Override
+        public final String getToken() {
+            return token;
         }
 
         @Override
@@ -245,16 +225,9 @@ public class NGramTokenizer {
         return maxLength;
     }
 
-    /**
-     * Creates n-grams from a specific text.
-     *
-     * @param text The text, the n-grams should be created from, as a {@link String}. The text may
-     *             neither be null, nor empty
-     * @return A set, which contains the n-grams, which have been created, as an instance of the
-     * type {@link Set}. The set may neither be null, nor empty
-     */
     @NotNull
-    public final Set<NGram> tokenize(final String text) {
+    @Override
+    public final Set<NGram> tokenize(@NotNull final String text) {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
         Map<String, NGram> nGrams = new HashMap<>();

@@ -15,7 +15,6 @@ package de.mrapp.textmining.util.tokenizer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static de.mrapp.util.Condition.*;
@@ -27,13 +26,13 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class SubstringTokenizer {
+public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substring> {
 
     /**
      * A substring, which consists of a sequence of characters (token), taken from a longer text or
      * word.
      */
-    public static class Substring implements Serializable, Cloneable {
+    public static class Substring implements Tokenizer.Token {
 
         /**
          * The constant serial version UID.
@@ -87,28 +86,6 @@ public class SubstringTokenizer {
         }
 
         /**
-         * Returns the token of the substring.
-         *
-         * @return The token of the substring as a {@link String}. The token may neither be null,
-         * nor empty
-         */
-        @NotNull
-        public final String getToken() {
-            return token;
-        }
-
-        /**
-         * Returns the positions of the substring's token in the original text or word.
-         *
-         * @return A set, which contains the positions of the substring's token as an instance of
-         * the type {@link Set}
-         */
-        @NotNull
-        public final Set<Integer> getPositions() {
-            return Collections.unmodifiableSet(positions);
-        }
-
-        /**
          * Adds a new position of the substring's token in the original text or word.
          *
          * @param position The position, which should be added, as an {@link Integer} value. The
@@ -119,13 +96,16 @@ public class SubstringTokenizer {
             this.positions.add(position);
         }
 
-        /**
-         * Returns the length of the substring's token.
-         *
-         * @return The length of the substring's token as an {@link Integer} value
-         */
-        public final int length() {
-            return token.length();
+        @NotNull
+        @Override
+        public final Set<Integer> getPositions() {
+            return Collections.unmodifiableSet(positions);
+        }
+
+        @NotNull
+        @Override
+        public final String getToken() {
+            return token;
         }
 
         @Override
@@ -216,16 +196,9 @@ public class SubstringTokenizer {
         return maxLength;
     }
 
-    /**
-     * Creates substrings from a specific text.
-     *
-     * @param text The text, the substrings should be created from, as a {@link String}. The text
-     *             may neither be null, nor empty
-     * @return A set, which contains the substrings, which have been created, as an instance of the
-     * type {@link Set}. The set may neither be null, nor empty
-     */
     @NotNull
-    public final Set<Substring> tokenize(final String text) {
+    @Override
+    public final Set<Substring> tokenize(@NotNull final String text) {
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
         Map<String, Substring> substrings = new HashMap<>();
