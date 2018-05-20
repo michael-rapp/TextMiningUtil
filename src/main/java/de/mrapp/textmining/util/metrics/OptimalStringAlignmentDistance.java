@@ -20,11 +20,11 @@ import static de.mrapp.util.Condition.ensureNotNull;
 /**
  * Allows to calculate the distance between texts according to the optimal string alignment distance
  * (abbreviated as OSA distance, also referred to as "restricted edit distance" or "restricted
- * Damerau-Levenshtein distance"). The OSA distance measures the number of edit operations
- * (insertions, deletions, substitutions of single characters or transposition of two adjacent
- * characters) that are needed to make the texts equal to each other. Unlike the Damerau-Levensthein
- * distance, the OSA distance does not allow substrings to be edited more than once. Furthermore, it
- * does not meet the properties of the triangle inequality.
+ * Damerau-Levenshtein distance"). The OSA distance measures the number of single-character edits
+ * (insertions, deletions, substitutions) and transpositions of two adjacent characters that are
+ * needed to make the texts equal to each other. Unlike the Damerau-Levensthein distance, the OSA
+ * distance does not allow substrings to be edited more than once. Furthermore, it does not meet the
+ * properties of the triangle inequality.
  * <p>
  * In natural language processing words are often short and misspellings usually do not affect more
  * than 2 characters. Therefore, - despite its limitations - the OSA distance can be used as an
