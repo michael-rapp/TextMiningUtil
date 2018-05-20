@@ -37,7 +37,7 @@ public class LevenshteinDistanceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new LevenshteinDistance().evaluate(null, "foo");
     }
 

@@ -35,7 +35,7 @@ public class HammingDistanceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new HammingDistance().evaluate(null, "foo");
     }
 

@@ -37,7 +37,7 @@ public class HammingAccuracyTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new HammingAccuracy().evaluate(null, "foo");
     }
 

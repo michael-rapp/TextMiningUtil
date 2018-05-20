@@ -43,7 +43,7 @@ public class LevenshteinDissimilarityTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new LevenshteinDissimilarity().evaluate(null, "foo");
     }
 

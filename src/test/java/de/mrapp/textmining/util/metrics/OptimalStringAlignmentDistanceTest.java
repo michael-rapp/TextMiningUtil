@@ -42,7 +42,7 @@ public class OptimalStringAlignmentDistanceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new OptimalStringAlignmentDistance().evaluate(null, "foo");
     }
 

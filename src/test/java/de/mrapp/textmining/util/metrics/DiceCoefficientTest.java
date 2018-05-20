@@ -81,7 +81,7 @@ public class DiceCoefficientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new DiceCoefficient().evaluate(null, "foo");
     }
 

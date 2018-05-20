@@ -42,7 +42,7 @@ public class OptimalStringAlignmentSimilarityTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testEvaluateThrowsExceptionIfFistTextIsNull() {
+    public final void testEvaluateThrowsExceptionIfFirstTextIsNull() {
         new OptimalStringAlignmentSimilarity().evaluate(null, "foo");
     }
 
