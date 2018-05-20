@@ -31,7 +31,7 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
     /**
      * A substring, which consists of a sequence of characters, taken from a longer text.
      */
-    public static class Substring implements Tokenizer.Token {
+    public static class Substring extends AbstractToken {
 
         /**
          * The constant serial version UID.
@@ -39,31 +39,16 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
         private static final long serialVersionUID = -5907278359683181663L;
 
         /**
-         * The substring's token.
-         */
-        private final String token;
-
-        /**
-         * The positions of the substring's token in the original text.
-         */
-        private final Set<Integer> positions;
-
-        /**
          * Creates a new substring, which consists of a sequence of characters.
          *
          * @param token     The token of the substring as a {@link String}. The token may neither be
          *                  null, nor empty
-         * @param positions A collection, which contains the positions of the substring's token in
+         * @param positions A collection, which contains the position(s) of the substring's token in
          *                  the original text, as an instance of the type {@link Collection}. The
          *                  collection may not be null
          */
         private Substring(@NotNull final String token, final Collection<Integer> positions) {
-            ensureNotNull(token, "The token may not be null");
-            ensureNotEmpty(token, "The token may not be null");
-            ensureNotNull(positions, "The collection may not be null");
-            this.token = token;
-            this.positions = new HashSet<>();
-            this.positions.addAll(positions);
+            super(token, positions);
         }
 
         /**
@@ -71,7 +56,7 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
          *
          * @param token     The token of the substring as a {@link String}. The token may neither be
          *                  null, nor empty
-         * @param positions An array, which contains the positions of the substring's token in the
+         * @param positions An array, which contains the position(s) of the substring's token in the
          *                  original text as an {@link Integer} array. The array may neither be
          *                  null, nor empty
          */
@@ -84,57 +69,14 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
             }
         }
 
-        /**
-         * Adds a new position of the substring's token in the original text.
-         *
-         * @param position The position, which should be added, as an {@link Integer} value. The
-         *                 position must be at least 0
-         */
-        public final void addPosition(final int position) {
-            ensureAtLeast(position, 0, "The position must be at least 0");
-            this.positions.add(position);
-        }
-
-        @NotNull
-        @Override
-        public final Set<Integer> getPositions() {
-            return Collections.unmodifiableSet(positions);
-        }
-
-        @NotNull
-        @Override
-        public final String getToken() {
-            return token;
-        }
-
         @Override
         public final Substring clone() {
-            return new Substring(token, positions);
+            return new Substring(getToken(), getPositions());
         }
 
         @Override
         public final String toString() {
-            return "Substring [token=" + token + ", positions=" + positions + "]";
-        }
-
-        @Override
-        public final int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + token.hashCode();
-            return result;
-        }
-
-        @Override
-        public final boolean equals(final Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Substring other = (Substring) obj;
-            return token.equals(other.token);
+            return "Substring [token=" + getToken() + ", positions=" + getPositions() + "]";
         }
 
     }
