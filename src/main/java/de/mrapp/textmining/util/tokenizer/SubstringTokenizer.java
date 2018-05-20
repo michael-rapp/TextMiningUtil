@@ -61,12 +61,7 @@ public class SubstringTokenizer implements Tokenizer<SubstringTokenizer.Substrin
          *                  null, nor empty
          */
         public Substring(@NotNull final String token, final int... positions) {
-            this(token, Collections.emptyList());
-            ensureAtLeast(positions.length, 1, "The array must contain at least one position");
-
-            for (int position : positions) {
-                addPosition(position);
-            }
+            super(token, positions);
         }
 
         @Override
