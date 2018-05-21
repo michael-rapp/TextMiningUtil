@@ -45,7 +45,21 @@ public class MalformedTextException extends Exception {
      * @param message The message of the exception as a {@link String}
      */
     public MalformedTextException(@NotNull final String text, final String message) {
-        super(message);
+        this(text, message, null);
+    }
+
+    /**
+     * Creates a new exception, which may be thrown by a {@link TextParser}, if a given text could
+     * not be parsed.
+     *
+     * @param text    The text, which could not be parsed, as a {@link String}. The text may neither
+     *                be null, nor empty
+     * @param message The message of the exception as a {@link String}
+     * @param cause   The cause of the exceptoin as a {@link Throwable}
+     */
+    public MalformedTextException(@NotNull final String text, final String message,
+                                  final Throwable cause) {
+        super(message, cause);
         ensureNotNull(text, "The text may not be null");
         ensureNotEmpty(text, "The text may not be empty");
         this.text = text;
