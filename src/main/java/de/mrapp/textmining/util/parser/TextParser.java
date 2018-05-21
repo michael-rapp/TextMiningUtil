@@ -14,6 +14,9 @@
 package de.mrapp.textmining.util.parser;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 /**
  * Defines the interface, a class, which allows to parse text in order to convert it into data of
@@ -26,14 +29,33 @@ import org.jetbrains.annotations.NotNull;
 public interface TextParser<ResultType> {
 
     /**
+     * Sets a pre-processor, which is applied to a text before it is processed by the parser.
+     *
+     * @param preProcessor The pre-processor, which should be set, as an instance of the type {@link
+     *                     Function} or null, if no pre-processor should be set
+     */
+    void setPreProcessor(@Nullable Function<String, String> preProcessor);
+
+    /**
+     * Sets a post-processor, which is applied to the converted data, after it has been processed by
+     * the parser.
+     *
+     * @param postProcessor The post-processor, which should be set, as an instance of the type
+     *                      {@link Function} or null, if no post-processor should be set
+     */
+    void setPostProcessor(@Nullable Function<ResultType, ResultType> postProcessor);
+
+    /**
      * Parses a specific text in order to convert it into data of another type.
      *
      * @param text The text, which should be parsed, as a {@link String}. The text may neither be
      *             null, or empty
      * @return The data, the given text has been converted to, as an instance of the generic type
      * {@link ResultType}. The data may not be null
+     * @throws MalformedTextException The exception, which is thrown, if the given text is
+     *                                malformed
      */
     @NotNull
-    ResultType parse(@NotNull String text);
+    ResultType parse(@NotNull String text) throws MalformedTextException;
 
 }
