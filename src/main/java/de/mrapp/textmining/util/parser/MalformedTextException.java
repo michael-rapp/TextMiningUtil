@@ -55,7 +55,7 @@ public class MalformedTextException extends Exception {
      * @param text    The text, which could not be parsed, as a {@link String}. The text may neither
      *                be null, nor empty
      * @param message The message of the exception as a {@link String}
-     * @param cause   The cause of the exceptoin as a {@link Throwable}
+     * @param cause   The cause of the exception as a {@link Throwable}
      */
     public MalformedTextException(@NotNull final String text, final String message,
                                   final Throwable cause) {
