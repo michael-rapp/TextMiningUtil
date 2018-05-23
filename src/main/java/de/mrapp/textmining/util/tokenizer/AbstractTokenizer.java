@@ -13,6 +13,7 @@
  */
 package de.mrapp.textmining.util.tokenizer;
 
+import de.mrapp.textmining.util.AbstractToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

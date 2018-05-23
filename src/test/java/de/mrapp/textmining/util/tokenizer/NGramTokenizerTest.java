@@ -90,6 +90,8 @@ public class NGramTokenizerTest {
         assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
         nGram1 = new NGram(2, "token", 0);
         assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
+        nGram1 = new NGram(1, "token", 1);
+        assertNotEquals(nGram1.hashCode(), nGram2.hashCode());
     }
 
     @Test
@@ -103,6 +105,8 @@ public class NGramTokenizerTest {
         nGram1 = new NGram(1, "foo", 0);
         assertFalse(nGram1.equals(nGram2));
         nGram1 = new NGram(2, "token", 0);
+        assertFalse(nGram1.equals(nGram2));
+        nGram1 = new NGram(1, "token", 1);
         assertFalse(nGram1.equals(nGram2));
     }
 

@@ -11,21 +11,21 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mrapp.textmining.util.parser.number;
+package de.mrapp.textmining.util.parser;
 
-import de.mrapp.textmining.util.parser.TextParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
 /**
- * Defines the interface, a parser, which allows to parse text that contains written numbers, must
- * implement.
+ * Defines the interface, a {@link TextParser}, which allows to parse texts that are written in a
+ * specific language, must implement.
  *
+ * @param <ResultType> The type of the data, the text should be converted to
  * @author Michael Rapp
  * @since 1.3.0
  */
-public interface WrittenNumberParser extends TextParser<Integer> {
+public interface LocalizedTextParser<ResultType> extends TextParser<ResultType> {
 
     /**
      * Returns the locale of the language, the parser is able to handle.

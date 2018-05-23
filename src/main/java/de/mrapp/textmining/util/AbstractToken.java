@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mrapp.textmining.util.tokenizer;
+package de.mrapp.textmining.util;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +28,7 @@ import static de.mrapp.util.Condition.*;
  * @author Michael Rapp
  * @since 1.2.0
  */
-public abstract class AbstractToken implements Tokenizer.Token {
+public abstract class AbstractToken implements Token {
 
     /**
      * The constant serial version UID.
@@ -90,6 +90,7 @@ public abstract class AbstractToken implements Tokenizer.Token {
         this.positions.add(position);
     }
 
+    @NotNull
     @Override
     public Set<Integer> getPositions() {
         return Collections.unmodifiableSet(positions);
@@ -102,10 +103,16 @@ public abstract class AbstractToken implements Tokenizer.Token {
     }
 
     @Override
+    public String toString() {
+        return getToken();
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + token.hashCode();
+        result = prime * result + positions.hashCode();
         return result;
     }
 
@@ -118,7 +125,7 @@ public abstract class AbstractToken implements Tokenizer.Token {
         if (getClass() != obj.getClass())
             return false;
         AbstractToken other = (AbstractToken) obj;
-        return token.equals(other.token);
+        return token.equals(other.token) && positions.equals(other.positions);
     }
 
 }

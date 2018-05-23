@@ -76,6 +76,8 @@ public class SubstringTest {
         assertEquals(substring1.hashCode(), substring2.hashCode());
         substring1 = new Substring("foo", 0);
         assertNotEquals(substring1.hashCode(), substring2.hashCode());
+        substring1 = new Substring("token", 1);
+        assertNotEquals(substring1.hashCode(), substring2.hashCode());
     }
 
     @Test
@@ -87,6 +89,9 @@ public class SubstringTest {
         assertTrue(substring1.equals(substring1));
         assertTrue(substring1.equals(substring2));
         substring1 = new Substring("foo", 0);
+        assertFalse(substring1.equals(substring2));
+        substring1 = new Substring("token", 1);
+        assertNotEquals(substring1.hashCode(), substring2.hashCode());
         assertFalse(substring1.equals(substring2));
     }
 

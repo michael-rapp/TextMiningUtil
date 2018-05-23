@@ -13,9 +13,9 @@
  */
 package de.mrapp.textmining.util.tokenizer;
 
+import de.mrapp.textmining.util.Token;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -25,39 +25,7 @@ import java.util.Set;
  * @author Michael Rapp
  * @since 1.2.0
  */
-public interface Tokenizer<TokenType extends Tokenizer.Token> {
-
-    /**
-     * Defines the interface, a token, a text can be split into, must implement.
-     */
-    interface Token extends Serializable, Cloneable {
-
-        /**
-         * Returns the token.
-         *
-         * @return The token as a {@link String}. The token may neither be null, nor empty
-         */
-        @NotNull
-        String getToken();
-
-        /**
-         * Returns the length of the token.
-         *
-         * @return The length of the token as an {@link Integer} value
-         */
-        default int length() {
-            return getToken().length();
-        }
-
-        /**
-         * Returns the position(s) of the token in the original text.
-         *
-         * @return A set, which contains the position(s) of the token, as an instance of the type
-         * {@link Set}
-         */
-        Set<Integer> getPositions();
-
-    }
+public interface Tokenizer<TokenType extends Token> {
 
     /**
      * Splits a specific text into tokens.
