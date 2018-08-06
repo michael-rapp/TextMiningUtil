@@ -26,7 +26,7 @@ import de.mrapp.util.Condition.*
  * @since 1.2.0
  */
 data class NGram(val n: Int, override val token: String, override val positions: MutableSet<Int>) :
-        Tokenizer.Token {
+        Token {
 
     init {
         ensureAtLeast(n, 1, "The degree must be at least 1")

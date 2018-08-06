@@ -22,7 +22,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-abstract class AbstractTokenizer<TokenType : Tokenizer.Token> : Tokenizer<TokenType> {
+abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
 
     /**
      * Adds a new [token] to a [map], if it is not already contained. Otherwise, the token's
@@ -31,9 +31,9 @@ abstract class AbstractTokenizer<TokenType : Tokenizer.Token> : Tokenizer<TokenT
      *
      * @param T The type of the token
      */
-    fun <T : Tokenizer.Token> addToken(map: MutableMap<String, T>,
-                                       token: String, position: Int,
-                                       tokenFactory: (String, Int) -> T) {
+    fun <T : Token> addToken(map: MutableMap<String, T>,
+                             token: String, position: Int,
+                             tokenFactory: (String, Int) -> T) {
         var existingToken = map[token]
 
         if (existingToken == null) {

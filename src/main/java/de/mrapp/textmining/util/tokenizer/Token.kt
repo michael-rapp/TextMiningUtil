@@ -16,19 +16,27 @@ package de.mrapp.textmining.util.tokenizer
 import java.io.Serializable
 
 /**
- * Defines the interface, a class, which allows to split texts into tokens, must implement.
+ * Defines the interface, a token, a text can be split into, must implement.
  *
- * @param TokenType The type of the tokens, the texts are split into
- * @author Michael Rapp
- * @since 1.2.0
+ * @property token The token
+ * @property positions A set that contains the position(s) of the token
  */
-interface Tokenizer<out TokenType : Token> {
+interface Token : Serializable {
+
+    val token: String
+
+    val positions: MutableCollection<Int>
 
     /**
-     * Splits a specific [text] into tokens.
-     *
-     * @return A set that contains the tokens the given text was split into
+     * Adds a new [position].
      */
-    fun tokenize(text: String): Collection<TokenType>
+    fun addPosition(position: Int) {
+        positions.add(position)
+    }
+
+    /**
+     * Returns the length of the token.
+     */
+    fun length(): Int = token.length
 
 }
