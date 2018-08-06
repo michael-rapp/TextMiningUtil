@@ -16,7 +16,7 @@ package de.mrapp.textmining.util.metrics;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Damerua-Levenshtein similarity is the gain metric pendant to the {@link
+ * Damerau-Levenshtein similarity is the gain metric pendant to the {@link
  * DamerauLevenshteinDistance}. It measures the percentage of single-character edits (insertions,
  * deletions, or substitutions) and transpositions of adjacent characters that are necessary to
  * change one text into another, among the number of characters of the longer of both texts.
