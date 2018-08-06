@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${version_dokka}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$version_dokka"
     }
 }
 
