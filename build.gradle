@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 buildscript {
-    ext.version_kotlin = '1.2.31'
+    ext.version_kotlin = '1.2.60'
 
     repositories {
         mavenCentral()
