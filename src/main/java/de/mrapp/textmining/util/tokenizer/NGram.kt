@@ -13,7 +13,9 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
-import de.mrapp.util.Condition.*
+import de.mrapp.util.Condition.ensureAtLeast
+import de.mrapp.util.Condition.ensureEqual
+import de.mrapp.util.Condition.ensureNotEmpty
 
 /**
  * A n-Gram, which consists of a sequence of characters, taken from a longer text or word.
