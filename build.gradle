@@ -34,9 +34,9 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
     implementation "com.github.michael-rapp:java-util:$version_java_util"
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$version_kotlin"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$version_kotlin"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
