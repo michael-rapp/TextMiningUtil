@@ -60,6 +60,7 @@ public class Substring extends AbstractToken {
         super(token, positions);
     }
 
+    @NotNull
     @Override
     public final Substring clone() {
         return new Substring(getToken(), getPositions());

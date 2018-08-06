@@ -114,12 +114,23 @@ public class ModifiableToken implements Token {
         return token.getToken();
     }
 
+    @Override
+    public final void setToken(@NotNull final String token) {
+        this.token.setToken(token);
+    }
+
     @NotNull
     @Override
     public final Set<Integer> getPositions() {
         return token.getPositions();
     }
 
+    @Override
+    public final void addPosition(final int position) {
+        this.token.addPosition(position);
+    }
+
+    @NotNull
     @Override
     public final ModifiableToken clone() {
         ModifiableToken clone = new ModifiableToken(token);

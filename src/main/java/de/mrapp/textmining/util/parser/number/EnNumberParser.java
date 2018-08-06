@@ -13,15 +13,12 @@
  */
 package de.mrapp.textmining.util.parser.number;
 
-import de.mrapp.textmining.util.Token;
 import de.mrapp.textmining.util.parser.*;
+import de.mrapp.textmining.util.parser.Matches.Match;
 import de.mrapp.textmining.util.tokenizer.RegexTokenizer;
-import de.mrapp.textmining.util.tokenizer.Tokenizer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * Allows to parse texts that contain numbers written in English in order to convert them to {@link
@@ -69,64 +66,87 @@ public class EnNumberParser extends AbstractTextParser<Integer> implements
 
     }
 
+    private final class DictionaryProcessor implements
+            TokenProcessor<ModifiableToken, ModifiableToken> {
+
+        @NotNull
+        @Override
+        public TokenSequence<ModifiableToken> process(
+                @NotNull final TokenSequence<ModifiableToken> tokenSequence) {
+            for (ModifiableToken token : tokenSequence) {
+                Matches<Dictionary.Entry<Integer>> matchingEntries = dictonary
+                        .getMatchingEntries(token, dictionaryMatcher);
+                Match<Dictionary.Entry<Integer>> bestMatch = matchingEntries.getBestMatch();
+
+                if (bestMatch != null) {
+                    Dictionary.Entry<Integer> entry = bestMatch.getValue();
+                    ValueToken<Integer> valueToken = new ValueToken<>(token,
+                            entry.getValue());
+                    valueToken.setAssociationType(entry.getAssociationType());
+                    token.setToken(valueToken);
+                }
+            }
+
+            return tokenSequence;
+        }
+
+    }
+
+    private static final class NumberMapper implements TokenMapper<ModifiableToken, Integer> {
+
+        @NotNull
+        @Override
+        public Integer map(@NotNull TokenSequence<ModifiableToken> tokenSequence) throws
+                MalformedTextException {
+            return null;
+        }
+
+    }
+
     private final Dictionary<Integer> dictonary = new EnNumberDictionary();
 
-    private final Tokenizer<? extends Token> tokenizer = new RegexTokenizer("\\s+|[^a-z]+");
+    private final Matcher<ModifiableToken> dictionaryMatcher = Matcher.equals();
+
+    private final TextParser<Integer> textParser;
 
     public EnNumberParser() {
-        setPreProcessor(text -> text.toLowerCase(getLocale()));
+        textParser = new GradualTextParser.Builder().tokenize(new RegexTokenizer("\\s+|[^a-z]+"))
+                .mapTokens(ModifiableToken::new).setProcessor(new DictionaryProcessor())
+                .mapResult(new NumberMapper()).build();
+        textParser.setPreProcessor(text -> text.toLowerCase(getLocale()));
     }
 
     @NotNull
     @Override
     protected final Integer onParse(@NotNull final String text) throws MalformedTextException {
-        Set<? extends Token> tokens = tokenizer.tokenize(text);
-        TokenSequence<ModifiableToken> tokenSequence = TokenSequence.createMappedSequence(tokens,
-                ModifiableToken::new);
+        return textParser.parse(text);
 
-        for (ModifiableToken token : tokenSequence) {
-            Matcher<ModifiableToken> matcher = Matcher.equals();
-
-            for (Dictionary.Entry<Integer> entry : dictonary) {
-                if (matcher.matches(token, entry)) {
-                    if (tokenSequence.size() == 1) {
-                        return entry.getValue();
-                    } else {
-                        ValueToken<Integer> valueToken = new ValueToken<>(token,
-                                entry.getValue());
-                        valueToken.setAssociationType(entry.getAssociationType());
-                        token.setToken(valueToken);
-                    }
-                }
-            }
-        }
-
-        Iterator<ModifiableToken> iterator = tokenSequence.iterator();
-        int i = 0;
-
-        while (iterator.hasNext()) {
-            ModifiableToken token = iterator.next();
-
-            if (token.getCurrent() instanceof ValueToken) {
-                ValueToken<Integer> valueToken = token.getCurrent();
-                ModifiableToken associatedToken = null;
-
-                if (valueToken.getAssociationType() == AssociationType.LEFT) {
-                    associatedToken = tokenSequence.get(i - 1);
-                } else if (valueToken.getAssociationType() == AssociationType.RIGHT) {
-                    associatedToken = tokenSequence.get(i + 1);
-                }
-
-                if (associatedToken != null && associatedToken.getCurrent() instanceof ValueToken) {
-                    ValueToken<Integer> associatedValueToken = associatedToken.getCurrent();
-                    return valueToken.getValue() + associatedValueToken.getValue();
-                }
-            }
-
-            i++;
-        }
-
-        throw new MalformedTextException(text, "Unable to convert text to number");
+//        Iterator<ModifiableToken> iterator = tokenSequence.iterator();
+//        int i = 0;
+//
+//        while (iterator.hasNext()) {
+//            ModifiableToken token = iterator.next();
+//
+//            if (token.getCurrent() instanceof ValueToken) {
+//                ValueToken<Integer> valueToken = token.getCurrent();
+//                ModifiableToken associatedToken = null;
+//
+//                if (valueToken.getAssociationType() == AssociationType.LEFT) {
+//                    associatedToken = tokenSequence.get(i - 1);
+//                } else if (valueToken.getAssociationType() == AssociationType.RIGHT) {
+//                    associatedToken = tokenSequence.get(i + 1);
+//                }
+//
+//                if (associatedToken != null && associatedToken.getCurrent() instanceof ValueToken) {
+//                    ValueToken<Integer> associatedValueToken = associatedToken.getCurrent();
+//                    return valueToken.getValue() + associatedValueToken.getValue();
+//                }
+//            }
+//
+//            i++;
+//        }
+//
+//        throw new MalformedTextException(text, "Unable to convert text to number");
     }
 
     @NotNull

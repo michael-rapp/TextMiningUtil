@@ -120,6 +120,7 @@ public class ValueToken<T> extends AbstractToken {
         this.associationType = associationType;
     }
 
+    @NotNull
     @Override
     public final ValueToken<T> clone() {
         ValueToken<T> clone = new ValueToken<>(getToken(), getPositions(), value);

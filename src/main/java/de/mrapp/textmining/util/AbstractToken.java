@@ -38,7 +38,7 @@ public abstract class AbstractToken implements Token {
     /**
      * The token.
      */
-    private final String token;
+    private String token;
 
     /**
      * The position(s) of the token in the original text.
@@ -55,10 +55,8 @@ public abstract class AbstractToken implements Token {
      */
     public AbstractToken(@NotNull final String token,
                          @NotNull final Collection<Integer> positions) {
-        ensureNotNull(token, "The token may not be null");
-        ensureNotEmpty(token, "The token may not be null");
         ensureNotNull(positions, "The collection may not be null");
-        this.token = token;
+        setToken(token);
         this.positions = new HashSet<>();
         this.positions.addAll(positions);
     }
@@ -79,12 +77,7 @@ public abstract class AbstractToken implements Token {
         }
     }
 
-    /**
-     * Adds a new position of the token in the original text.
-     *
-     * @param position The position, which should be added, as an {@link Integer} value. The
-     *                 position must be at least 0
-     */
+    @Override
     public void addPosition(final int position) {
         ensureAtLeast(position, 0, "The position must be at least 0");
         this.positions.add(position);
@@ -101,6 +94,17 @@ public abstract class AbstractToken implements Token {
     public String getToken() {
         return token;
     }
+
+    @Override
+    public void setToken(@NotNull final String token) {
+        ensureNotNull(token, "The token may not be null");
+        ensureNotEmpty(token, "The token may not be empty");
+        this.token = token;
+    }
+
+    @NotNull
+    @Override
+    public abstract AbstractToken clone();
 
     @Override
     public String toString() {

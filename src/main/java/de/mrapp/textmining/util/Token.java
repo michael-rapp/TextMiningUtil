@@ -35,6 +35,14 @@ public interface Token extends Serializable, Cloneable {
     String getToken();
 
     /**
+     * Sets the token.
+     *
+     * @param token The token, which should be set, as a {@link String}. The token may neither be
+     *              null, nor empty.
+     */
+    void setToken(@NotNull String token);
+
+    /**
      * Returns the length of the token.
      *
      * @return The length of the token as an {@link Integer} value
@@ -51,5 +59,22 @@ public interface Token extends Serializable, Cloneable {
      */
     @NotNull
     Set<Integer> getPositions();
+
+    /**
+     * Adds a new position of the token in the original text.
+     *
+     * @param position The position, which should be added, as an {@link Integer} value. The
+     *                 position must be at least 0
+     */
+    void addPosition(int position);
+
+    /**
+     * Creates a copy of the token.
+     *
+     * @return The copy, which has been created, as an instance of the type {@link Token}. The copy
+     * may not be null
+     */
+    @NotNull
+    Token clone();
 
 }

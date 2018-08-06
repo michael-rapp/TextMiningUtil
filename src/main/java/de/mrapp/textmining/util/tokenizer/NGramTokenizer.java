@@ -93,6 +93,7 @@ public class NGramTokenizer extends AbstractTokenizer<NGramTokenizer.NGram> {
             return n;
         }
 
+        @NotNull
         @Override
         public final NGram clone() {
             return new NGram(getN(), getToken(), getPositions());

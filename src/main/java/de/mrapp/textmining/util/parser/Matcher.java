@@ -15,7 +15,9 @@ package de.mrapp.textmining.util.parser;
 
 import de.mrapp.textmining.util.Token;
 import de.mrapp.textmining.util.metrics.TextMetric;
+import de.mrapp.textmining.util.parser.Matches.Match;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static de.mrapp.util.Condition.*;
 
@@ -39,7 +41,22 @@ public interface Matcher<TokenType extends Token> {
      *              CharSequence}. The text may not be null
      * @return True, if the matcher applies to the given token, false otherwise
      */
-    boolean matches(@NotNull TokenType token, @NotNull CharSequence text);
+    default boolean matches(@NotNull TokenType token, @NotNull CharSequence text) {
+        return getMatch(token, text) != null;
+    }
+
+    /**
+     * Returns the match for a specific token and text.
+     *
+     * @param <T>   The type of the text
+     * @param token The token for which the match should be returned, as an instance of the generic
+     *              type {@link TokenType}. The token may not be null
+     * @param text  The text for which the match should be returned, as an instance of the type
+     *              {@link CharSequence}. The text may not be null
+     * @return The match for the given token and text as an instance of the class {@link Match} or
+     * null, if the token and text do not match
+     */
+    @Nullable <T extends CharSequence> Match<T> getMatch(@NotNull TokenType token, @NotNull T text);
 
     /**
      * Creates and returns a matcher, which allows to check whether tokens are equal to certain
@@ -51,7 +68,16 @@ public interface Matcher<TokenType extends Token> {
      */
     @NotNull
     static <T extends Token> Matcher<T> equals() {
-        return (token, text) -> token.getToken().equals(text.toString());
+        return new Matcher<T>() {
+
+            @Nullable
+            @Override
+            public <T2 extends CharSequence> Match<T2> getMatch(@NotNull final T token,
+                                                                @NotNull final T2 text) {
+                return token.getToken().equals(text.toString()) ? new Match<>(1, true, text) : null;
+            }
+
+        };
     }
 
     /**
@@ -64,7 +90,17 @@ public interface Matcher<TokenType extends Token> {
      */
     @NotNull
     static <T extends Token> Matcher<T> startsWith() {
-        return (token, text) -> token.getToken().startsWith(text.toString());
+        return new Matcher<T>() {
+
+            @Nullable
+            @Override
+            public <T2 extends CharSequence> Match<T2> getMatch(@NotNull final T token,
+                                                                @NotNull final T2 text) {
+                return token.getToken().startsWith(text.toString()) ? new Match<>(1, true, text) :
+                        null;
+            }
+
+        };
     }
 
     /**
@@ -77,7 +113,17 @@ public interface Matcher<TokenType extends Token> {
      */
     @NotNull
     static <T extends Token> Matcher<T> endsWith() {
-        return (token, text) -> token.getToken().endsWith(text.toString());
+        return new Matcher<T>() {
+
+            @Nullable
+            @Override
+            public <T2 extends CharSequence> Match<T2> getMatch(@NotNull final T token,
+                                                                @NotNull final T2 text) {
+                return token.getToken().endsWith(text.toString()) ? new Match<>(1, true, text) :
+                        null;
+            }
+
+        };
     }
 
     /**
@@ -89,7 +135,17 @@ public interface Matcher<TokenType extends Token> {
      */
     @NotNull
     static <T extends Token> Matcher<T> contains() {
-        return (token, text) -> token.getToken().contains(text.toString());
+        return new Matcher<T>() {
+
+            @Nullable
+            @Override
+            public <T2 extends CharSequence> Match<T2> getMatch(@NotNull final T token,
+                                                                @NotNull final T2 text) {
+                return token.getToken().contains(text.toString()) ? new Match<>(1, true, text) :
+                        null;
+            }
+
+        };
     }
 
     /**
@@ -110,10 +166,18 @@ public interface Matcher<TokenType extends Token> {
                 "The threshold must be at least " + metric.minValue());
         ensureAtMaximum(threshold, metric.maxValue(),
                 "The threshold must be at maximum " + metric.maxValue());
-        return (token, text) -> {
-            double heuristicValue = metric.evaluate(token.getToken(), text.toString());
-            return metric.isGainMetric() ? heuristicValue >= threshold :
-                    heuristicValue <= threshold;
+        return new Matcher<T>() {
+
+            @Nullable
+            @Override
+            public <T2 extends CharSequence> Match<T2> getMatch(@NotNull final T token,
+                                                                @NotNull final T2 text) {
+                double heuristicValue = metric.evaluate(token.getToken(), text.toString());
+                boolean matches = metric.isGainMetric() ? heuristicValue >= threshold :
+                        heuristicValue <= threshold;
+                return matches ? new Match<>(heuristicValue, metric.isGainMetric(), text) : null;
+            }
+
         };
     }
 

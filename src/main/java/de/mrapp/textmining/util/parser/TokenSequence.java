@@ -15,6 +15,7 @@ package de.mrapp.textmining.util.parser;
 
 import de.mrapp.textmining.util.Token;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -22,8 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static de.mrapp.util.Condition.ensureNotEmpty;
-import static de.mrapp.util.Condition.ensureNotNull;
+import static de.mrapp.util.Condition.*;
 
 /**
  * A sequence of several tokens.
@@ -34,6 +34,132 @@ import static de.mrapp.util.Condition.ensureNotNull;
  */
 public class TokenSequence<TokenType extends Token> extends AbstractList<TokenType> implements
         Serializable {
+
+    public static class Iterator<TokenType extends Token> implements ListIterator<TokenType> {
+
+        /**
+         * The token sequence, which is traversed by the iterator.
+         */
+        private final TokenSequence<TokenType> tokenSequence;
+
+        /**
+         * The current index of the iterator.
+         */
+        private int index;
+
+        private TokenType current = null;
+
+        Iterator(@NotNull final TokenSequence<TokenType> tokenSequence) {
+            this(tokenSequence, 0);
+        }
+
+        Iterator(@NotNull final TokenSequence<TokenType> tokenSequence, final int index) {
+            ensureNotNull(tokenSequence, "The token sequence may not be null");
+            this.tokenSequence = tokenSequence;
+            this.index = index;
+        }
+
+        public void merge(final int index) {
+            merge(index, null);
+        }
+
+        public void merge(final int index, @Nullable final String separator) {
+            ensureNotNull(current, "next() or previous() not called",
+                    IllegalArgumentException.class);
+            ensureNotEqual(this.index, index, "Can only merge with different token");
+            TokenType tokenToMerge = tokenSequence.remove(index);
+            TokenType tokenToRetain = tokenSequence.get(this.index);
+            String newToken =
+                    (this.index > index ? tokenToMerge.getToken() : tokenToRetain.getToken()) +
+                            (separator != null ? separator : "") +
+                            (this.index > index ? tokenToRetain.getToken() :
+                                    tokenToMerge.getToken());
+            tokenToRetain.setToken(newToken);
+            this.index = this.index > index ? this.index - 1 : this.index;
+        }
+
+        @SuppressWarnings("unchecked")
+        public void split(final Function<String, Integer> dividerFunction) {
+            ensureNotNull(current, "next() or previous() not called",
+                    IllegalArgumentException.class);
+            ensureNotNull(dividerFunction, "The divider function may not be null");
+            TokenType tokenToDivide = tokenSequence.get(index);
+            int pivot = dividerFunction.apply(tokenToDivide.getToken());
+            String prefix = tokenToDivide.getToken().substring(0, pivot);
+            String suffix = tokenToDivide.getToken().substring(pivot);
+            tokenToDivide.setToken(prefix);
+            TokenType newToken = (TokenType) tokenToDivide.clone();
+            newToken.setToken(suffix);
+            tokenSequence.add(index + 1, newToken);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < tokenSequence.size() - 1;
+        }
+
+        @Override
+        public TokenType next() {
+            if (hasNext()) {
+                current = tokenSequence.get(index);
+                index++;
+                return current;
+            }
+
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return index > 0;
+        }
+
+        @Override
+        public TokenType previous() {
+            if (hasPrevious()) {
+                index--;
+                current = tokenSequence.get(index);
+                return current;
+            }
+
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public int nextIndex() {
+            return Math.min(tokenSequence.size(), index + 1);
+        }
+
+        @Override
+        public int previousIndex() {
+            return index > 0 ? index - 1 : -1;
+        }
+
+        @Override
+        public void remove() {
+            ensureNotNull(current, "next() or previous() not called",
+                    IllegalArgumentException.class);
+            tokenSequence.remove(index);
+            current = null;
+        }
+
+        @Override
+        public void set(final TokenType token) {
+            ensureNotNull(token, "The token may not be null");
+            ensureNotNull(current, "next() or previous() not called",
+                    IllegalArgumentException.class);
+            tokenSequence.set(index, token);
+        }
+
+        @Override
+        public void add(final TokenType token) {
+            ensureNotNull(token, "The token may not be null");
+            ensureNotNull(current, "next() or previous() not called",
+                    IllegalArgumentException.class);
+            tokenSequence.add(index, token);
+        }
+
+    }
 
     /**
      * The constant serial version UID.
@@ -92,6 +218,37 @@ public class TokenSequence<TokenType extends Token> extends AbstractList<TokenTy
         ensureNotNull(mapper, "The mapper may not be null");
         return new TokenSequence<>(StreamSupport.stream(tokens.spliterator(), false).map(mapper)
                 .collect(Collectors.toList()));
+    }
+
+    /**
+     * Creates and returns an iterator, which allows to search for tokens in the sequence. The
+     * iterator starts at the first token.
+     *
+     * @return The iterator, which has been created, as an instance of the class {@link Iterator}.
+     * The iterator may not be null
+     */
+    @NotNull
+    public final Iterator<TokenType> sequenceIterator() {
+        return sequenceIterator(0);
+    }
+
+    /**
+     * Creates and returns an iterator, which allows to search for tokens in the sequence.
+     *
+     * @param index The index of the token, the iterator should start at, as an {@link Integer}
+     *              value
+     * @return The iterator, which has been created, as an instance of the class {@link Iterator}.
+     * The iterator may not be null
+     */
+    @NotNull
+    public final Iterator<TokenType> sequenceIterator(final int index) {
+        ensureAtLeast(index, 0, "The index must be at least 0");
+
+        if (!isEmpty()) {
+            ensureAtMaximum(index, size() - 1, "The index must be at maximum " + (size() - 1));
+        }
+
+        return new Iterator<>(this, index);
     }
 
     @Override

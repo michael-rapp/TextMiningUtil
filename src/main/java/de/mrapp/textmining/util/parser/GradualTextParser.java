@@ -101,7 +101,7 @@ public class GradualTextParser<TokenizedTokenType extends Token, InputTokenType 
                      * {@link GradualTextParser}. The instance may not be null
                      */
                     @NotNull
-                    private GradualTextParser<TokenizedTokenType, InputTokenType, OutputTokenType, ResultType> build() {
+                    public GradualTextParser<TokenizedTokenType, InputTokenType, OutputTokenType, ResultType> build() {
                         return new GradualTextParser<>(tokenizer, mappingFunction, processorChain,
                                 mapper);
                     }

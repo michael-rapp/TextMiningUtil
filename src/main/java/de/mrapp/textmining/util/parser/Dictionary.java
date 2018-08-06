@@ -13,13 +13,13 @@
  */
 package de.mrapp.textmining.util.parser;
 
+import de.mrapp.textmining.util.Token;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static de.mrapp.util.Condition.ensureNotEmpty;
 import static de.mrapp.util.Condition.ensureNotNull;
@@ -186,7 +186,7 @@ public class Dictionary<T> implements Serializable, Iterable<Dictionary.Entry<T>
     /**
      * The entries, which are contained by the dictionary.
      */
-    private final Collection<Entry<T>> entries = new LinkedList<>();
+    private final Map<String, Entry<T>> entries = new HashMap<>();
 
     /**
      * Adds a new entry to the dictionary.
@@ -196,13 +196,50 @@ public class Dictionary<T> implements Serializable, Iterable<Dictionary.Entry<T>
      */
     public final void addEntry(@NotNull final Entry<T> entry) {
         ensureNotNull(entry, "The entry may not be null");
-        this.entries.add(entry);
+        this.entries.put(entry.getText(), entry);
+    }
+
+    /**
+     * Returns the entry, which corresponds to a specific text.
+     *
+     * @param text The text, the entry, which should be returned, corresponds to, as a {@link
+     *             String}. The text may neither be null, nor empty
+     * @return The entry, which corresponds to the given text, as an instance of the class {@link
+     * Entry} or null, if no such entry is available
+     */
+    public final Entry<T> getEntry(final String text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        return entries.get(text);
+    }
+
+    /**
+     * Returns all entries of the dictionary, that match a specific token according to a given
+     * metric.
+     *
+     * @param <TokenType> The type of the token, which should be matched
+     * @param token       The token, which should be matched, as an instance of the generic type
+     *                    {@link TokenType}. The token may not be null
+     * @param matcher     The matcher, which should be used to check whether an entry matches the
+     *                    given token, as an instance of the type {@link Matcher}. The matcher may
+     *                    not be null
+     * @return A collection, which contains all entries that match the given token, as an instance
+     * of the type {@link Collection} or an empty collection, if no entry matches the token
+     */
+    @NotNull
+    public final <TokenType extends Token> Matches<Entry<T>> getMatchingEntries(
+            @NotNull final TokenType token, @NotNull final Matcher<TokenType> matcher) {
+        ensureNotNull(token, "The token may not be null");
+        ensureNotNull(matcher, "The matcher may not be null");
+        return new Matches<>(
+                entries.values().stream().map(entry -> matcher.getMatch(token, entry)).filter(
+                        Objects::nonNull).collect(Collectors.toList()));
     }
 
     @NotNull
     @Override
     public final Iterator<Entry<T>> iterator() {
-        return entries.iterator();
+        return entries.values().iterator();
     }
 
 }
