@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>NGram - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../index.html">de.mrapp.textmining.util.tokenizer</a>&nbsp;/&nbsp;<a href="./index.html">NGram</a><br/>
+<br/>
+<h1>NGram</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">NGram</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-token/index.html"><span class="identifier">Token</span></a></code>
+<p>A n-Gram, which consists of a sequence of characters, taken from a longer text or word.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.IntArray)/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.IntArray)/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.IntArray)/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.Collection((kotlin.Int)))/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.Collection((kotlin.Int)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.Collection((kotlin.Int)))/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<p>Creates a new substring, which consists of a sequence of characters, taken from a longer
+text.</p>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.MutableSet((kotlin.Int)))/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.MutableSet((kotlin.Int)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.String, kotlin.collections.MutableSet((kotlin.Int)))/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<p>A n-Gram, which consists of a sequence of characters, taken from a longer text or word.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="n.html">n</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">n</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The degree of the n-gram</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="positions.html">positions</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">positions</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>A set that contains the position(s) of the substring's token in the original
+text</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="token.html">token</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">token</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>The token of the substring</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-token/add-position.html">addPosition</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">addPosition</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.Token$addPosition(kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a new <a href="../-token/add-position.html#de.mrapp.textmining.util.tokenizer.Token$addPosition(kotlin.Int)/position">position</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-token/length.html">length</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">length</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Returns the length of the token.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
