@@ -2,10 +2,12 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X75YSLEJV3DWE)
 
-"TextMiningUtil" is a Java library, which provides various utility classes for use in text mining such as text distance and similarity metrics. The library currently provides the following features:
+"TextMiningUtil" is a Kotlin library that provides various utility classes for use in text mining such as text distance and similarity metrics. The library currently provides the following features:
 
 - Various metrics for measuring the similarity or dissimilarity of texts.
 - Tokenizers for splitting texts into shorter subtexts.
+
+Note that this library was implemented in Java 8 prior to version 2.0.0.
 
 ## License Agreement
 
@@ -19,7 +21,7 @@ Alternatively, the library can be added to your project as a Gradle dependency b
 
 ```groovy
 dependencies {
-    compile 'com.github.michael-rapp:text-mining-util:1.2.0'
+    compile 'com.github.michael-rapp:text-mining-util:2.0.0'
 }
 ```
 
@@ -29,7 +31,7 @@ When using Maven, the following dependency can be added to the `pom.xml`:
 <dependency>
     <groupId>com.github.michael-rapp</groupId>
     <artifactId>text-mining-util</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
