@@ -6,7 +6,7 @@ A major release, which introduces the following changes:
 
 - Migrated the project to use the Kotlin programming language instead of Java.
 - Converted the inner interface `Tokenizer.Token` into a separate interface `Token`.
-- Converted the inner class `NGramTokenizer.NGram` to a separate class `NGram`.
+- Converted the inner class `NGramTokenizer.NGram` into a separate class `NGram`.
 - Changed the return type of the method `Tokenizer#tokenize` from `Set` to `Collection`. 
 
 ## Version 1.2.0 (May. 21th 2018)
