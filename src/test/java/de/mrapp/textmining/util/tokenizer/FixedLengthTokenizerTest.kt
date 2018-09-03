@@ -41,8 +41,10 @@ class FixedLengthTokenizerTest {
         val substrings = FixedLengthTokenizer(length).tokenize("wirk")
         assertEquals(2, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+
+            when (substring.getToken()) {
                 "wi" -> assertTrue(positions.contains(0))
                 "rk" -> assertTrue(positions.contains(2))
                 else -> fail()

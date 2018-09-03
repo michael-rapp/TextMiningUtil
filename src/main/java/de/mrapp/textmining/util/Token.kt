@@ -23,20 +23,29 @@ import java.io.Serializable
  */
 interface Token : Serializable {
 
-    var token: String
+    /**
+     * Returns the token.
+     */
+    fun getToken(): String
 
-    val positions: MutableCollection<Int>
+    /**
+     * Sets the token.
+     */
+    fun setToken(token: String)
 
     /**
      * Adds a new [position].
      */
-    fun addPosition(position: Int) {
-        positions.add(position)
-    }
+    fun addPosition(position: Int)
+
+    /**
+     * Returns all positions of the token.
+     */
+    fun getPositions(): Set<Int>
 
     /**
      * Returns the length of the token.
      */
-    fun length(): Int = token.length
+    fun length(): Int = getToken().length
 
 }

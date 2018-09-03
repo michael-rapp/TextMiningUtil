@@ -29,9 +29,9 @@ class SubstringTest {
         val token = "token"
         val position = 1
         val substring = Substring(token, position)
-        assertEquals(token, substring.token)
-        assertEquals(1, substring.positions.size)
-        assertTrue(substring.positions.contains(position))
+        assertEquals(token, substring.getToken())
+        assertEquals(1, substring.getPositions().size)
+        assertTrue(substring.getPositions().contains(position))
         assertEquals(token.length, substring.length())
     }
 

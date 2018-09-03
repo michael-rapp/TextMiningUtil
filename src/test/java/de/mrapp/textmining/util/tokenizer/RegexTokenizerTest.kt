@@ -49,9 +49,9 @@ class RegexTokenizerTest {
         val substrings = RegexTokenizer(",").tokenize("foo")
         assertEquals(1, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
-                "foo" -> assertTrue(positions.contains(0))
+        for (substring in substrings) {
+            when (substring.getToken()) {
+                "foo" -> assertTrue(substring.getPositions().contains(0))
                 else -> fail()
             }
         }
@@ -62,8 +62,9 @@ class RegexTokenizerTest {
         val substrings = RegexTokenizer(",").tokenize("foo,bar")
         assertEquals(2, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+            when (substring.getToken()) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 else -> fail()
@@ -76,8 +77,10 @@ class RegexTokenizerTest {
         val substrings = RegexTokenizer(",").tokenize("foo,bar,foobar")
         assertEquals(3, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+
+            when (substring.getToken()) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))
@@ -98,8 +101,9 @@ class RegexTokenizerTest {
         val substrings = regexTokenizer.tokenize("foo  bar\nfoobar")
         assertEquals(3, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+            when (substring.getToken()) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(5))
                 "foobar" -> assertTrue(positions.contains(9))
@@ -116,8 +120,9 @@ class RegexTokenizerTest {
         assertEquals(regexTokenizer.pattern.toString(), ",|;")
         assertEquals(3, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+            when (substring.getToken()) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))
@@ -142,8 +147,10 @@ class RegexTokenizerTest {
         assertEquals(regexTokenizer.pattern.toString(), ",|;")
         assertEquals(3, substrings.size)
 
-        for ((token, positions) in substrings) {
-            when (token) {
+        for (substring in substrings) {
+            val positions = substring.getPositions()
+
+            when (substring.getToken()) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))

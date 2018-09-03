@@ -67,8 +67,9 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer().tokenize("wirk")
         assertEquals(6, nGrams.size)
 
-        for ((_, token, positions) in nGrams) {
-            when (token) {
+        for (nGram in nGrams) {
+            val positions = nGram.getPositions()
+            when (nGram.getToken()) {
                 "w" -> assertTrue(positions.contains(0))
                 "wi" -> assertTrue(positions.contains(0))
                 "wir" -> assertTrue(positions.contains(0))
@@ -85,8 +86,10 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer().tokenize("wi")
         assertEquals(2, nGrams.size)
 
-        for ((_, token, positions) in nGrams) {
-            when (token) {
+        for (nGram in nGrams) {
+            val positions = nGram.getPositions()
+
+            when (nGram.getToken()) {
                 "w" -> assertTrue(positions.contains(0))
                 "i" -> assertTrue(positions.contains(1))
                 else -> fail()
@@ -99,8 +102,10 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer().tokenize("wir")
         assertEquals(4, nGrams.size)
 
-        for ((_, token, positions) in nGrams) {
-            when (token) {
+        for (nGram in nGrams) {
+            val positions = nGram.getPositions()
+
+            when (nGram.getToken()) {
                 "w" -> assertTrue(positions.contains(0))
                 "wi" -> assertTrue(positions.contains(0))
                 "ir" -> assertTrue(positions.contains(1))
@@ -120,10 +125,11 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer(2, 3).tokenize("wirk")
         assertEquals(4, nGrams.size)
 
-        for ((n, token, positions) in nGrams) {
-            assertEquals(n, 3)
+        for (nGram in nGrams) {
+            assertEquals(nGram.n, 3)
+            val positions = nGram.getPositions()
 
-            when (token) {
+            when (nGram.getToken()) {
                 "wi" -> assertTrue(positions.contains(0))
                 "wir" -> assertTrue(positions.contains(0))
                 "irk" -> assertTrue(positions.contains(1))
@@ -138,10 +144,11 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer(1, 2).tokenize("wirk")
         assertEquals(5, nGrams.size)
 
-        for ((n, token, positions) in nGrams) {
-            assertEquals(n, 2)
+        for (nGram in nGrams) {
+            assertEquals(nGram.n, 2)
+            val positions = nGram.getPositions()
 
-            when (token) {
+            when (nGram.getToken()) {
                 "w" -> assertTrue(positions.contains(0))
                 "wi" -> assertTrue(positions.contains(0))
                 "ir" -> assertTrue(positions.contains(1))
@@ -157,10 +164,11 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer(2, 2).tokenize("wirk")
         assertEquals(3, nGrams.size)
 
-        for ((n, token, positions) in nGrams) {
-            assertEquals(n, 2)
+        for (nGram in nGrams) {
+            assertEquals(nGram.n, 2)
+            val positions = nGram.getPositions()
 
-            when (token) {
+            when (nGram.getToken()) {
                 "wi" -> assertTrue(positions.contains(0))
                 "ir" -> assertTrue(positions.contains(1))
                 "rk" -> assertTrue(positions.contains(2))
@@ -174,10 +182,11 @@ class NGramTokenizerTest {
         val nGrams = NGramTokenizer(1, 1).tokenize("text")
         assertEquals(3, nGrams.size)
 
-        for ((n, token, positions) in nGrams) {
-            assertEquals(n, 1)
+        for (nGram in nGrams) {
+            assertEquals(nGram.n, 1)
+            val positions = nGram.getPositions()
 
-            when (token) {
+            when (nGram.getToken()) {
                 "t" -> {
                     assertTrue(positions.contains(0))
                     assertTrue(positions.contains(3))
