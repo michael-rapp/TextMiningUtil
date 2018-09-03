@@ -25,11 +25,9 @@ class MatchTest {
     fun testConstructor() {
         val value = "foo"
         val heuristicValue = 0.5
-        val isGainMetric = true
-        val match = Match(value, heuristicValue, isGainMetric)
+        val match = Match(value, heuristicValue)
         assertEquals(value, match.value)
         assertEquals(heuristicValue, match.heuristicValue)
-        assertEquals(isGainMetric, match.isGainMetric)
     }
 
 }

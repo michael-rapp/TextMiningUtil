@@ -21,10 +21,7 @@ import java.io.Serializable
  * @param    T              The type of the matching value
  * @property value          The matching value
  * @property heuristicValue The heuristic value that specifies the accuracy of the match
- * @property isGainMetric   True, if greater heuristic values represent a greater accuracy, false
- *                          otherwise
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Match<T>(val value: T, val heuristicValue: Double, val isGainMetric: Boolean) :
-        Serializable
+data class Match<T>(val value: T, val heuristicValue: Double) : Serializable
