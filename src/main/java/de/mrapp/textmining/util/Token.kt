@@ -29,11 +29,6 @@ interface Token : Serializable {
     fun getToken(): String
 
     /**
-     * Sets the token.
-     */
-    fun setToken(token: String)
-
-    /**
      * Adds a new [position].
      */
     fun addPosition(position: Int)

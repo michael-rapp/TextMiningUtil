@@ -63,10 +63,6 @@ data class NGram(val n: Int, private var token: String,
 
     override fun getToken() = token
 
-    override fun setToken(token: String) {
-        this.token = token;
-    }
-
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
         this.positions.add(position)

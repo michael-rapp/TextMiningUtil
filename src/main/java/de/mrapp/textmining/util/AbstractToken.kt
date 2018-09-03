@@ -26,10 +26,6 @@ abstract class AbstractToken(private var token: String,
 
     override fun getToken() = token
 
-    override fun setToken(token: String) {
-        this.token = token
-    }
-
     override fun addPosition(position: Int) {
         positions.add(position)
     }
