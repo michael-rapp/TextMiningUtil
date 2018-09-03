@@ -29,6 +29,6 @@ interface Tokenizer<out TokenType : Token> {
      *
      * @return A set that contains the tokens the given text was split into
      */
-    fun tokenize(text: String): Collection<TokenType>
+    fun tokenize(text: CharSequence): Collection<TokenType>
 
 }

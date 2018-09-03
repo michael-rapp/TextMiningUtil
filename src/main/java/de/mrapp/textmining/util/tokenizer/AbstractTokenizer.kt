@@ -52,10 +52,10 @@ abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
     protected abstract fun onTokenize(text: String,
                                       map: MutableMap<String, TokenType>)
 
-    override fun tokenize(text: String): Collection<TokenType> {
+    override fun tokenize(text: CharSequence): Collection<TokenType> {
         ensureNotEmpty(text, "The text may not be empty")
         val tokens = HashMap<String, TokenType>()
-        onTokenize(text, tokens)
+        onTokenize(text.toString(), tokens)
         return tokens.values
     }
 
