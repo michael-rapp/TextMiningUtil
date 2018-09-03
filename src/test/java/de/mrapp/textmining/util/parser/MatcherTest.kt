@@ -75,7 +75,7 @@ class MatcherTest {
 
     @Test
     fun testStartsWithIgnoreCase() {
-        val matcher = Matcher.startsWith<Substring, String>()
+        val matcher = Matcher.startsWith<Substring, String>(true)
         assertTrue(matcher.isGainMetric())
         val text = "foo"
         val token = Substring("${text.toUpperCase()}bar")
@@ -144,13 +144,13 @@ class MatcherTest {
         val text = "foo"
         val token = Substring("bar${text.toUpperCase()}bar")
         assertTrue(matcher.matches(token, text))
-        assertFalse(matcher.matches(token, "bar"))
+        assertFalse(matcher.matches(token, "bla"))
         val match = matcher.getMatch(token, text)
         assertNotNull(match)
         assertEquals(match!!.first, token)
         assertEquals(match.second, text)
         assertEquals(match.heuristicValue, 1.0)
-        assertNull(matcher.getMatch(token, "bar"))
+        assertNull(matcher.getMatch(token, "bla"))
     }
 
     @Test
@@ -158,15 +158,15 @@ class MatcherTest {
         val matcher = Matcher.pattern<Substring>()
         assertTrue(matcher.isGainMetric())
         val token = Substring("abc")
-        val pattern = Pattern.compile("[a-z]")
+        val pattern = Pattern.compile("^[a-z]*$")
         assertTrue(matcher.matches(token, pattern))
-        assertFalse(matcher.matches(token, Pattern.compile("[0-9]")))
+        assertFalse(matcher.matches(token, Pattern.compile("^[0-9]*$")))
         val match = matcher.getMatch(token, pattern)
         assertNotNull(match)
         assertEquals(match!!.first, token)
         assertEquals(match.second, pattern)
         assertEquals(match.heuristicValue, 1.0)
-        assertNull(matcher.getMatch(token, Pattern.compile("[0-9]")))
+        assertNull(matcher.getMatch(token, Pattern.compile("^[0-9]*$")))
     }
 
     @Test

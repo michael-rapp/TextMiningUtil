@@ -13,11 +13,9 @@
  */
 package de.mrapp.textmining.util.parser
 
-import de.mrapp.textmining.util.Token
 import de.mrapp.textmining.util.metrics.TextMetric
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureAtMaximum
-import java.awt.SystemColor.text
 import java.util.regex.Pattern
 
 
@@ -35,17 +33,17 @@ interface Matcher<F, S> {
     companion object {
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * are equal to certain texts, or not.
+         * Creates and returns a matcher that allows to check whether texts are equal, or not.
          *
          * @param ignoreCase True, if the matcher should be case-insensitive, false otherwise
          */
         @JvmOverloads
-        fun <F : Token, S : CharSequence> equals(ignoreCase: Boolean = false): Matcher<F, S> {
+        fun <F : CharSequence, S : CharSequence> equals(ignoreCase: Boolean = false):
+                Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S) =
-                        if (first.getToken().equals(second.toString(), ignoreCase))
+                        if (first.toString().equals(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
                 override fun isGainMetric() = true
@@ -54,17 +52,18 @@ interface Matcher<F, S> {
         }
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * start with certain texts, or not.
+         * Creates and returns a matcher that allows to check whether texts start with certain
+         * prefixes, or not.
          *
          * @param ignoreCase True, if the matcher should be case-insensitive, false otherwise
          */
         @JvmOverloads
-        fun <F : Token, S : CharSequence> startsWith(ignoreCase: Boolean = false): Matcher<F, S> {
+        fun <F : CharSequence, S : CharSequence> startsWith(ignoreCase: Boolean = false):
+                Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S) =
-                        if (first.getToken().startsWith(second.toString(), ignoreCase))
+                        if (first.toString().startsWith(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
                 override fun isGainMetric() = true
@@ -73,17 +72,18 @@ interface Matcher<F, S> {
         }
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * end with certain texts, or not.
+         * Creates and returns a matcher that allows to check whether texts end with certain
+         * suffixes, or not.
          *
          * @param ignoreCase True, if the matcher should be case-insensitive, false otherwise
          */
         @JvmOverloads
-        fun <F : Token, S : CharSequence> endsWith(ignoreCase: Boolean = false): Matcher<F, S> {
+        fun <F : CharSequence, S : CharSequence> endsWith(ignoreCase: Boolean = false):
+                Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S) =
-                        if (first.getToken().endsWith(second.toString(), ignoreCase))
+                        if (first.toString().endsWith(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
                 override fun isGainMetric() = true
@@ -92,17 +92,18 @@ interface Matcher<F, S> {
         }
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * contain certain texts, or not.
+         * Creates and returns a matcher that allows to check whether texts contain certain
+         * subtexts, or not.
          *
          * @param ignoreCase True, if the matcher should be case-insensitive, false otherwise
          */
         @JvmOverloads
-        fun <F : Token, S : CharSequence> contains(ignoreCase: Boolean = false): Matcher<F, S> {
+        fun <F : CharSequence, S : CharSequence> contains(ignoreCase: Boolean = false):
+                Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S) =
-                        if (first.getToken().contains(second.toString(), ignoreCase))
+                        if (first.toString().contains(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
                 override fun isGainMetric() = true
@@ -111,14 +112,14 @@ interface Matcher<F, S> {
         }
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * match a certain pattern, or not.
+         * Creates and returns a matcher that allows to check whether texts match a certain pattern,
+         * or not.
          */
-        fun <F : Token> pattern(): Matcher<F, Pattern> {
+        fun <F : CharSequence> pattern(): Matcher<F, Pattern> {
             return object : Matcher<F, Pattern> {
 
                 override fun getMatch(first: F, second: Pattern) =
-                        if (second.matcher(first.getToken()).matches()) Match(first, second, 1.0)
+                        if (second.matcher(first.toString()).matches()) Match(first, second, 1.0)
                         else null
 
                 override fun isGainMetric() = true
@@ -127,10 +128,10 @@ interface Matcher<F, S> {
         }
 
         /**
-         * Creates and returns a matcher that allows to check whether tokens of a specific type [F]
-         * match certain texts according to a given [metric] and [threshold], or not.
+         * Creates and returns a matcher that allows to check whether texts match according to a
+         * given [metric] and [threshold], or not.
          */
-        fun <F : Token, S : CharSequence> metric(metric: TextMetric, threshold: Double):
+        fun <F : CharSequence, S : CharSequence> metric(metric: TextMetric, threshold: Double):
                 Matcher<F, S> {
             ensureAtLeast(threshold, metric.minValue(),
                     "The threshold must be at least ${metric.minValue()}")
@@ -139,7 +140,7 @@ interface Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S): Match<F, S>? {
-                    val heuristicValue = metric.evaluate(first.getToken(), text.toString())
+                    val heuristicValue = metric.evaluate(first.toString(), second.toString())
                     val matches = if (metric.isGainMetric()) heuristicValue >= threshold else
                         heuristicValue <= threshold
                     return if (matches) Match(first, second, heuristicValue) else null
