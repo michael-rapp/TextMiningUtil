@@ -31,7 +31,7 @@ class DiceCoefficient(val minLength: Int = 1, val maxLength: Int = Int.MAX_VALUE
 
     private val nGramTokenizer: NGramTokenizer = NGramTokenizer(minLength, maxLength)
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val nGrams1 = nGramTokenizer.tokenize(text1)
         val nGrams2 = nGramTokenizer.tokenize(text2)
         val intersection = nGrams1.intersect(nGrams2)

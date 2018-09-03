@@ -28,7 +28,7 @@ class LevenshteinSimilarity : TextMetric {
 
     private val levenshteinDissimilarity = LevenshteinDissimilarity()
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val levenshteinDissimilarity = levenshteinDissimilarity.evaluate(text1, text2)
         return 1 - levenshteinDissimilarity
     }

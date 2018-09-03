@@ -140,7 +140,7 @@ interface Matcher<F, S> {
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S): Match<F, S>? {
-                    val heuristicValue = metric.evaluate(first.toString(), second.toString())
+                    val heuristicValue = metric.evaluate(first, second)
                     val matches = if (metric.isGainMetric()) heuristicValue >= threshold else
                         heuristicValue <= threshold
                     return if (matches) Match(first, second, heuristicValue) else null

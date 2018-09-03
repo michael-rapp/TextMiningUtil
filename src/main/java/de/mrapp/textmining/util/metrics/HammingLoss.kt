@@ -26,7 +26,7 @@ class HammingLoss : TextMetric {
 
     private val hammingDistance = HammingDistance()
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val hammingDistance = hammingDistance.evaluate(text1, text2)
         val length = text1.length
         return if (length != 0) hammingDistance / length.toDouble() else 0.0

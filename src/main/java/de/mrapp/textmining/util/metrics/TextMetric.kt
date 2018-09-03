@@ -30,8 +30,9 @@ interface TextMetric {
         fun caseInsensitive(metric: TextMetric): TextMetric {
             return object : TextMetric {
 
-                override fun evaluate(text1: String, text2: String) =
-                        metric.evaluate(text1.toLowerCase(), text2.toLowerCase())
+                override fun evaluate(text1: CharSequence, text2: CharSequence) =
+                        metric.evaluate(text1.toString().toLowerCase(),
+                                text2.toString().toLowerCase())
 
                 override fun minValue() = metric.minValue()
 
@@ -50,7 +51,7 @@ interface TextMetric {
      * @return The heuristic value, which has been calculated. The heuristic value is at least
      * [minValue] and at maximum [maxValue]
      */
-    fun evaluate(text1: String, text2: String): Double
+    fun evaluate(text1: CharSequence, text2: CharSequence): Double
 
     /**
      * Returns the minimum heuristic value, which is possibly calculated by the metric.

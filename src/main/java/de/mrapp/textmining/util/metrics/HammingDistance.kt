@@ -25,7 +25,7 @@ import de.mrapp.util.Condition.ensureEqual
  */
 class HammingDistance : TextMetric {
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val length1 = text1.length
         val length2 = text2.length
         ensureEqual(length1, length2, "The texts must have the same length")

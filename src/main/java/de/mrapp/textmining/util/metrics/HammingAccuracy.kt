@@ -26,7 +26,7 @@ class HammingAccuracy : TextMetric {
 
     private val hammingLoss = HammingLoss()
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val hammingLoss = hammingLoss.evaluate(text1, text2)
         return 1 - hammingLoss
     }

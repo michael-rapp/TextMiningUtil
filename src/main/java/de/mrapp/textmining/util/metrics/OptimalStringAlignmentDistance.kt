@@ -31,7 +31,7 @@ package de.mrapp.textmining.util.metrics
  */
 class OptimalStringAlignmentDistance : TextMetric {
 
-    override fun evaluate(text1: String, text2: String): Double {
+    override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val m = text1.length
         val n = text2.length
 
