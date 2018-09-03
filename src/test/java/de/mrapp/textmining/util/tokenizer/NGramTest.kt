@@ -31,7 +31,7 @@ class NGramTest {
         Assert.assertEquals(token, nGram.getToken())
         Assert.assertEquals(1, nGram.getPositions().size)
         Assert.assertTrue(nGram.getPositions().contains(position))
-        Assert.assertEquals(token.length, nGram.length())
+        Assert.assertEquals(token.length, nGram.length)
     }
 
     @Test(expected = IllegalArgumentException::class)

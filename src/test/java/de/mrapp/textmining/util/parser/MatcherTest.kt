@@ -138,7 +138,7 @@ class MatcherTest {
     }
 
     @Test
-    fun testContainsCaseInsensitive() {
+    fun testContainsIgnoreCase() {
         val matcher = Matcher.contains<Substring, String>(true)
         assertTrue(matcher.isGainMetric())
         val text = "foo"

@@ -32,7 +32,7 @@ class SubstringTest {
         assertEquals(token, substring.getToken())
         assertEquals(1, substring.getPositions().size)
         assertTrue(substring.getPositions().contains(position))
-        assertEquals(token.length, substring.length())
+        assertEquals(token.length, substring.length)
     }
 
     @Test(expected = IllegalArgumentException::class)

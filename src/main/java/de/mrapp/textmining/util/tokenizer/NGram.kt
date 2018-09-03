@@ -70,4 +70,11 @@ data class NGram(val n: Int, private val token: String,
 
     override fun getPositions() = positions
 
+    override val length = token.length
+
+    override fun get(index: Int) = token[index]
+
+    override fun subSequence(startIndex: Int, endIndex: Int) =
+            token.subSequence(startIndex, endIndex)
+
 }

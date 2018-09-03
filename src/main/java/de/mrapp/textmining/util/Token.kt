@@ -18,7 +18,7 @@ import java.io.Serializable
 /**
  * Defines the interface, a token, a text can be split into, must implement.
  */
-interface Token : Serializable {
+interface Token : CharSequence, Serializable {
 
     /**
      * Returns the token.
@@ -34,10 +34,5 @@ interface Token : Serializable {
      * Returns all positions of the token.
      */
     fun getPositions(): Set<Int>
-
-    /**
-     * Returns the length of the token.
-     */
-    fun length(): Int = getToken().length
 
 }

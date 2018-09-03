@@ -32,7 +32,7 @@ class ValueTokenTest {
         assertEquals(token, valueToken.getToken())
         assertEquals(1, valueToken.getPositions().size)
         assertTrue(valueToken.getPositions().contains(position))
-        assertEquals(token.length, valueToken.length())
+        assertEquals(token.length, valueToken.length)
         assertEquals(associationType, valueToken.associationType)
         assertEquals(value, valueToken.value)
     }

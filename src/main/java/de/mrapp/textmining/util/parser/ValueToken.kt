@@ -73,4 +73,11 @@ data class ValueToken<T> @JvmOverloads constructor(
 
     override fun getPositions(): Set<Int> = positions
 
+    override val length = token.length
+
+    override fun get(index: Int) = token[index]
+
+    override fun subSequence(startIndex: Int, endIndex: Int) =
+            token.subSequence(startIndex, endIndex)
+
 }
