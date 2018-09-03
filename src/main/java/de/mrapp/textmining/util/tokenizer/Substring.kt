@@ -21,9 +21,9 @@ import de.mrapp.util.Condition.ensureNotEmpty
 /**
  * A substring, which consists of a sequence of characters, taken from a longer text.
  *
- * @property token The token of the substring
+ * @property token     The token of the substring
  * @property positions A set that contains the position(s) of the substring's token in the original
- * text
+ *                     text
  * @author Michael Rapp
  * @since 1.2.0
  */

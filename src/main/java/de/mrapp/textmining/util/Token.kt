@@ -17,9 +17,6 @@ import java.io.Serializable
 
 /**
  * Defines the interface, a token, a text can be split into, must implement.
- *
- * @property token The token
- * @property positions A set that contains the position(s) of the token
  */
 interface Token : Serializable {
 
