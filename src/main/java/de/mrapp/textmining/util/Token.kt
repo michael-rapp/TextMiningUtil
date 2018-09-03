@@ -23,7 +23,7 @@ import java.io.Serializable
  */
 interface Token : Serializable {
 
-    val token: String
+    var token: String
 
     val positions: MutableCollection<Int>
 
