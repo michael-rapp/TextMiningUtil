@@ -18,6 +18,7 @@ import java.io.Serializable
 /**
  * Represents that a specific value matches some criteria.
  *
+ * @param    T              The type of the matching value
  * @property value          The matching value
  * @property heuristicValue The heuristic value that specifies the accuracy of the match
  * @property isGainMetric   True, if greater heuristic values represent a greater accuracy, false
