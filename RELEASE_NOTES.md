@@ -1,5 +1,12 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 2.1.0 (Sep. 4th 2018)
+
+A feature release, which introduces the following changes:
+
+- Added a helper method to create case-insensitive metrics to the interface `TextMetric`.
+- `Tokenizer`s and `TextMetric`s can now be applied to `CharSequence`s.
+
 ## Version 2.0.0 (Aug. 7th 2018)
 
 A major release, which introduces the following changes:
