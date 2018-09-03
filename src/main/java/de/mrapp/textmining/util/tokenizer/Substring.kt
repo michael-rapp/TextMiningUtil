@@ -26,7 +26,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class Substring(override val token: String, override val positions: MutableSet<Int>) : Token {
+data class Substring(override var token: String, override val positions: MutableSet<Int>) : Token {
 
     init {
         ensureNotEmpty(token, "The token may not be empty")
