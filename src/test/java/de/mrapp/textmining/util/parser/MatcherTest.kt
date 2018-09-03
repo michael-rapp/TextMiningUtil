@@ -14,6 +14,7 @@
 package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.metrics.LevenshteinDistance
+import de.mrapp.textmining.util.metrics.LevenshteinSimilarity
 import de.mrapp.textmining.util.tokenizer.Substring
 import java.util.regex.Pattern
 import kotlin.test.*
@@ -184,6 +185,18 @@ class MatcherTest {
         assertEquals(match.second, text)
         assertEquals(match.heuristicValue, 1.0)
         assertNull(matcher.getMatch(token, "foobar"))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testMetricThrowsExceptionIfThresholdIsLessThanMinValue() {
+        val metric = LevenshteinDistance()
+        Matcher.metric<CharSequence, CharSequence>(metric, -1.0)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testMetricThrowsExceptionIfThresholdIsGreaterThanMaxValue() {
+        val metric = LevenshteinSimilarity()
+        Matcher.metric<CharSequence, CharSequence>(metric, 1.1)
     }
 
 }
