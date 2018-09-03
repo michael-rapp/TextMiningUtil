@@ -22,6 +22,28 @@ package de.mrapp.textmining.util.metrics
  */
 interface TextMetric {
 
+    companion object {
+
+        /**
+         * Creates and returns a case-insensitive metric from an existing [metric].
+         */
+        fun caseInsensitive(metric: TextMetric): TextMetric {
+            return object : TextMetric {
+
+                override fun evaluate(text1: String, text2: String) =
+                        metric.evaluate(text1.toLowerCase(), text2.toLowerCase())
+
+                override fun minValue() = metric.minValue()
+
+                override fun maxValue() = metric.maxValue()
+
+                override fun isGainMetric() = metric.isGainMetric()
+
+            }
+        }
+
+    }
+
     /**
      * Calculates the heuristic value of two texts, [text1] and [text2], according to the metric.
      *
