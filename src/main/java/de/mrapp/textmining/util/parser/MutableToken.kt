@@ -74,4 +74,6 @@ data class MutableToken(private var token: Token,
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
+    override fun toString() = token.toString()
+
 }

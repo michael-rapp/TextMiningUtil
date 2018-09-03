@@ -71,4 +71,6 @@ data class Substring(private val token: String,
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
+    override fun toString() = token
+
 }

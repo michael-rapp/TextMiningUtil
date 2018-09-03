@@ -80,4 +80,6 @@ data class ValueToken<T> @JvmOverloads constructor(
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
+    override fun toString() = token
+
 }
