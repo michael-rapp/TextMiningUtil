@@ -28,7 +28,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class NGram(val n: Int, private var token: String,
+data class NGram(val n: Int, private val token: String,
                  private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {

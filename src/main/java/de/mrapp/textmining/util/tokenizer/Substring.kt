@@ -26,7 +26,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class Substring(private var token: String,
+data class Substring(private val token: String,
                      private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
