@@ -16,12 +16,14 @@ package de.mrapp.textmining.util.parser
 import java.io.Serializable
 
 /**
- * Represents that a specific value matches some criteria.
+ * Represents that a specific value matches another value according to some criteria.
  *
- * @param    T              The type of the matching value
- * @property value          The matching value
- * @property heuristicValue The heuristic value that specifies the accuracy of the match
+ * @param    F              The type of the first value
+ * @param    S              The type of the second value
+ * @param    first          The first value
+ * @param    second         The second value
+ * @property heuristicValue A heuristic value that measures the similarity of the values
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Match<T>(val value: T, val heuristicValue: Double) : Serializable
+data class Match<F, S>(val first: F, val second: S, val heuristicValue: Double) : Serializable

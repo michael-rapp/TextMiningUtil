@@ -18,18 +18,20 @@ import java.io.Serializable
 /**
  * Contains various matches and provides methods to select the best one among them.
  *
- * @param    T            The type of the matches' values
+ * @param    F            The type of the matches' first values
+ * @param    S            The type of the matches' second values
  * @property matches      An iterable that contains the matches
  * @property isGainMetric True, if matches with greater heuristic values are considered to be
  *                        better, false otherwise
  * @author Michael Rapp
  * @since 2.1.0
  */
-class Matches<T>(private val matches: Iterable<Match<T>>, val isGainMetric: Boolean) :
-        Iterable<Match<T>>, Serializable {
+class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric: Boolean) :
+        Iterable<Match<F, S>>, Serializable {
 
-    private fun getBestMatch(match1: Match<T>, match2: Match<T>,
-                             tieBreaker: ((Match<T>, Match<T>) -> Match<T>)?): Match<T> {
+    private fun getBestMatch(match1: Match<F, S>, match2: Match<F, S>,
+                             tieBreaker: ((Match<F, S>, Match<F, S>) -> Match<F, S>)?):
+            Match<F, S> {
         val heuristicValue1 = match1.heuristicValue
         val heuristicValue2 = match2.heuristicValue
 
@@ -48,7 +50,8 @@ class Matches<T>(private val matches: Iterable<Match<T>>, val isGainMetric: Bool
      * one of them is considered to be better.
      */
     @JvmOverloads
-    fun getBestMatch(tieBreaker: ((Match<T>, Match<T>) -> Match<T>)? = null): Match<T>? {
+    fun getBestMatch(tieBreaker: ((Match<F, S>, Match<F, S>) -> Match<F, S>)? = null):
+            Match<F, S>? {
         val iterator = iterator()
 
         if (iterator.hasNext()) {

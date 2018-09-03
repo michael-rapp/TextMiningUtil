@@ -24,8 +24,8 @@ class MatchesTest {
 
     @Test
     fun testConstructor() {
-        val match1 = Match("foo", 0.25)
-        val match2 = Match("bar", 0.5)
+        val match1 = Match("foo", "foo", 0.25)
+        val match2 = Match("bar", "bar", 0.5)
         val isGainMetric = true
         val matches = Matches(listOf(match1, match2), isGainMetric)
         assertEquals(isGainMetric, matches.isGainMetric)
@@ -39,14 +39,14 @@ class MatchesTest {
 
     @Test
     fun testGetMatchBestIfNoMatchesAvailable() {
-        val matches = Matches<String>(emptyList(), true)
+        val matches = Matches<String, String>(emptyList(), true)
         val bestMatch = matches.getBestMatch()
         assertNull(bestMatch)
     }
 
     @Test
     fun testGetBestMatchIfOneMatchAvailable() {
-        val match = Match("foo", 1.0)
+        val match = Match("foo", "foo", 1.0)
         val matches = Matches(listOf(match), true)
         val bestMatch = matches.getBestMatch()
         assertEquals(match, bestMatch)
@@ -54,9 +54,9 @@ class MatchesTest {
 
     @Test
     fun testGetBestMatchIfGainMetric() {
-        val match1 = Match("foo", 0.25)
-        val match2 = Match("bar", 0.75)
-        val match3 = Match("foobar", 0.5)
+        val match1 = Match("foo", "foo", 0.25)
+        val match2 = Match("bar", "bar", 0.75)
+        val match3 = Match("foobar", "foobar", 0.5)
         val matches = Matches(listOf(match1, match2, match3), true)
         val bestMatch = matches.getBestMatch()
         assertEquals(match2, bestMatch)
@@ -64,9 +64,9 @@ class MatchesTest {
 
     @Test
     fun testGetBestMatchIfLossMetric() {
-        val match1 = Match("foo", 0.5)
-        val match2 = Match("bar", 0.25)
-        val match3 = Match("foobar", 0.75)
+        val match1 = Match("foo", "foo", 0.5)
+        val match2 = Match("bar", "bar", 0.25)
+        val match3 = Match("foobar", "foobar", 0.75)
         val matches = Matches(listOf(match1, match2, match3), false)
         val bestMatch = matches.getBestMatch()
         assertEquals(match2, bestMatch)
@@ -74,8 +74,8 @@ class MatchesTest {
 
     @Test
     fun testGetBestMatchUsingTieBreaker() {
-        val match1 = Match("foo", 0.5)
-        val match2 = Match("bar", 0.5)
+        val match1 = Match("foo", "foo", 0.5)
+        val match2 = Match("bar", "bar", 0.5)
         val matches = Matches(listOf(match1, match2), true)
         val bestMatch = matches.getBestMatch { _, match -> match }
         assertEquals(match2, bestMatch)

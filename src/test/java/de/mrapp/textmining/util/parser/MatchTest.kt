@@ -23,10 +23,12 @@ class MatchTest {
 
     @Test
     fun testConstructor() {
-        val value = "foo"
+        val first = "foo"
+        val second = 2
         val heuristicValue = 0.5
-        val match = Match(value, heuristicValue)
-        assertEquals(value, match.value)
+        val match = Match(first, second, heuristicValue)
+        assertEquals(first, match.first)
+        assertEquals(second, match.second)
         assertEquals(heuristicValue, match.heuristicValue)
     }
 
