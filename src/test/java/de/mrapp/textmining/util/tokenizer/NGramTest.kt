@@ -22,7 +22,7 @@ import kotlin.test.Test
 class NGramTest {
 
     @Test
-    fun testNGramConstructor() {
+    fun testConstructor() {
         val n = 2
         val token = "token"
         val position = 1
@@ -35,7 +35,7 @@ class NGramTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun testNGramConstructorThrowsExceptionIfTokenIsEmpty() {
+    fun testConstructorThrowsExceptionIfTokenIsEmpty() {
         NGram(1, "", 0)
     }
 
