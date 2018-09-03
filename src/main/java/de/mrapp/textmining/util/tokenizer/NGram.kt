@@ -13,6 +13,7 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
+import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEmpty

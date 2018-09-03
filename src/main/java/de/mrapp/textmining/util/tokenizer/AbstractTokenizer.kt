@@ -13,6 +13,7 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
+import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureNotEmpty
 
 /**
@@ -32,8 +33,8 @@ abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
      * @param T The type of the token
      */
     fun <T : Token> addToken(map: MutableMap<String, T>,
-                             token: String, position: Int,
-                             tokenFactory: (String, Int) -> T) {
+                                                      token: String, position: Int,
+                                                      tokenFactory: (String, Int) -> T) {
         var existingToken = map[token]
 
         if (existingToken == null) {

@@ -13,7 +13,7 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
-import java.io.Serializable
+import de.mrapp.textmining.util.Token
 
 /**
  * Defines the interface, a class, which allows to split texts into tokens, must implement.
