@@ -41,6 +41,6 @@ interface TextParser<ResultType> {
      * malformed
      */
     @Throws(MalformedTextException::class)
-    fun parse(text: String): ResultType
+    fun parse(text: CharSequence): ResultType
 
 }
