@@ -26,7 +26,7 @@ interface TextParser<ResultType> {
     /**
      * Sets a [preProcessor] that is applied to a text before it is processed by the parser.
      */
-    fun setPreProcessor(preProcessor: ((String) -> String)?)
+    fun setPreProcessor(preProcessor: ((CharSequence) -> CharSequence)?)
 
     /**
      * Sets a [postProcessor] that is applied to the converted data, after it has been processed by
