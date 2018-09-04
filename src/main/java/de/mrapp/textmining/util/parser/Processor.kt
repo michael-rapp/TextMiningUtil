@@ -15,7 +15,6 @@ package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.Token
 import de.mrapp.textmining.util.tokenizer.Tokenizer
-import sun.nio.cs.CharsetMapping
 
 /**
  * Defines the interface, a processor that is applied to certain data and returns data of another
