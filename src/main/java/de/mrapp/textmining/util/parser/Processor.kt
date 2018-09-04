@@ -13,6 +13,10 @@
  */
 package de.mrapp.textmining.util.parser
 
+import de.mrapp.textmining.util.Token
+import de.mrapp.textmining.util.tokenizer.Tokenizer
+import sun.nio.cs.CharsetMapping
+
 /**
  * Defines the interface, a processor that is applied to certain data and returns data of another
  * type, must implement.
@@ -23,6 +27,49 @@ package de.mrapp.textmining.util.parser
  * @since 2.1.0
  */
 interface Processor<I, O> {
+
+    companion object {
+
+        /**
+         * Creates and returns a processor that maps data of type [I] to data of type [O] according
+         * to a [mappingFunction].
+         */
+        fun <I, O> map(mappingFunction: (I) -> O): Processor<I, O> {
+            return object : Processor<I, O> {
+
+                override fun process(input: I) = mappingFunction.invoke(input)
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that maps a [TokenSequence] of type [I] to a sequence of
+         * type [O] according to a [mappingFunction].
+         */
+        fun <I : Token, O : Token> mapSequence(mappingFunction: (I) -> O):
+                Processor<TokenSequence<I>, TokenSequence<O>> {
+            return object : Processor<TokenSequence<I>, TokenSequence<O>> {
+
+                override fun process(input: TokenSequence<I>) =
+                        TokenSequence.createMapped(input, mappingFunction)
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that splits a text into several tokens using a specific
+         * [tokenizer].
+         */
+        fun <TokenType : Token> tokenize(tokenizer: Tokenizer<TokenType>):
+                Processor<CharSequence, Collection<TokenType>> {
+            return object : Processor<CharSequence, Collection<TokenType>> {
+
+                override fun process(input: CharSequence) = tokenizer.tokenize(input)
+
+            }
+        }
+
+    }
 
     /**
      * Processes a certain [input] and returns the result.
