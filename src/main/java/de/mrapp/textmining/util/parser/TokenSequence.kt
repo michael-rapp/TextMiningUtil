@@ -51,10 +51,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         }
 
         /**
-         * Creates a new sequence of several [tokens] of type [I] that are mapped to tokens of a
-         * different type [O]. The tokens are ordered by their positions (see [Token.getPositions]).
-         * If a token corresponds to multiple positions, it will occur multiple times in the
-         * sequence.
+         * Creates a new sequence from an existing [sequence] of type [I] and maps its tokens to a
+         * different type [O].
          */
         fun <I : Token, O : Token> createMapped(sequence: TokenSequence<I>,
                                                 mapper: (I) -> O): TokenSequence<O> {
