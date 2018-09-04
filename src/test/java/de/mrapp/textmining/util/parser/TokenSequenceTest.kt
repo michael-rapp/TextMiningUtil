@@ -29,7 +29,7 @@ class TokenSequenceTest {
     @Test
     fun testConstructor() {
         val token1 = Substring("foo", positions = listOf(0, 2))
-        val token2 = Substring("foo", positions = listOf(1))
+        val token2 = Substring("bar", positions = listOf(1))
         val tokens = mutableListOf(token1, token2)
         val sequence = TokenSequence(tokens)
         val iterator = sequence.iterator()
@@ -43,7 +43,7 @@ class TokenSequenceTest {
     @Test
     fun testCreateSorted() {
         val token1 = Substring("foo", positions = listOf(0, 2))
-        val token2 = Substring("foo", positions = listOf(1))
+        val token2 = Substring("bar", positions = listOf(1))
         val tokens = mutableListOf(token1, token2)
         val sequence = TokenSequence.createSorted(tokens)
         val iterator = sequence.iterator()
@@ -59,7 +59,7 @@ class TokenSequenceTest {
     @Test
     fun testCreateSortedWithMapper() {
         val token1 = Substring("foo", positions = listOf(0, 2))
-        val token2 = Substring("foo", positions = listOf(1))
+        val token2 = Substring("bar", positions = listOf(1))
         val tokens = mutableListOf(token1, token2)
         val sequence = TokenSequence.createSorted(tokens) { token -> MutableToken(token) }
         val iterator = sequence.iterator()
@@ -73,6 +73,25 @@ class TokenSequenceTest {
         val mutableToken3 = iterator.next()
         assertEquals(token1.getToken(), mutableToken3.getToken())
         assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testGetToken() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens) { token -> MutableToken(token) }
+        sequence.delimiter = ","
+        assertEquals("foo,bar,foo", sequence.getToken())
+    }
+
+    @Test
+    fun testLength() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens) { token -> MutableToken(token) }
+        assertEquals(9, sequence.length)
     }
 
 }

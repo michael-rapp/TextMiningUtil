@@ -14,20 +14,27 @@
 package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.Token
-import java.io.Serializable
+import de.mrapp.util.Condition.ensureAtLeast
 import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * A sequence of several tokens.
+ * A sequence of several tokens. As the sequence implements the interface [Token], it can be used as
+ * part of a superordinate sequence. In such case, the tokens it consists of are separated using a
+ * specific delimiter.
  *
- * @param TokenType The type of the tokens, the sequence consists of
+ * @param    TokenType The type of the tokens, the sequence consists of
+ * @property tokens    The tokens, the sequence consists of
+ * @property positions A set that contains the position(s) of the sequence when part of a
+ *                     superordinate sequence
+ * @property delimiter The delimiter that is used to separate the sequence's tokens from each other
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class TokenSequence<TokenType : Token>(
-        private val tokens: MutableList<TokenType> = ArrayList()) :
-        AbstractList<TokenType>(), Serializable {
+data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
+        private val tokens: MutableList<TokenType> = ArrayList(),
+        private val positions: MutableSet<Int> = mutableSetOf(),
+        var delimiter: CharSequence = "") : Iterable<TokenType>, Token {
 
     companion object {
 
@@ -55,8 +62,27 @@ data class TokenSequence<TokenType : Token>(
 
     }
 
-    override val size = tokens.size
+    override val length = tokens.fold(0) { length, token -> length + token.length }
 
-    override fun get(index: Int) = tokens[index]
+    override fun getToken() =
+            tokens.fold("") { text, token ->
+                "$text${if (text.isNotEmpty()) delimiter else ""}${token.getToken()}"
+            }
+
+    override fun get(index: Int): Char = getToken()[index]
+
+    override fun addPosition(position: Int) {
+        ensureAtLeast(position, 0, "The position must be at least 0")
+        this.positions.add(position)
+    }
+
+    override fun subSequence(startIndex: Int, endIndex: Int) =
+            getToken().subSequence(startIndex, endIndex)
+
+    override fun getPositions() = positions
+
+    override fun iterator() = tokens.iterator()
+
+    override fun toString() = getToken()
 
 }
