@@ -17,6 +17,7 @@ import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 /**
  * A sequence of several tokens. As the sequence implements the interface [Token], it can be used as
@@ -55,9 +56,11 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          * If a token corresponds to multiple positions, it will occur multiple times in the
          * sequence.
          */
-        fun <I : Token, O : Token> createSorted(tokens: Iterable<I>,
+        fun <I : Token, O : Token> createMapped(sequence: TokenSequence<I>,
                                                 mapper: (I) -> O): TokenSequence<O> {
-            return createSorted(tokens.map { mapper.invoke(it) })
+            return TokenSequence(
+                    sequence.iterator().asSequence().map { mapper.invoke(it) }.toMutableList(),
+                    HashSet(sequence.getPositions()), sequence.delimiter)
         }
 
     }
