@@ -61,6 +61,10 @@ data class MutableToken(private var token: Token,
 
     override fun getToken() = this.token.getToken()
 
+    override fun setToken(token: String) {
+        this.token.setToken(token)
+    }
+
     override fun addPosition(position: Int) {
         this.token.addPosition(position)
     }

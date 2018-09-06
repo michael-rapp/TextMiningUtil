@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.parser
 import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureAtMaximum
+import de.mrapp.util.Condition.ensureNotEqual
 import de.mrapp.util.Condition.ensureNotNull
 import java.util.*
 import kotlin.NoSuchElementException
@@ -83,6 +84,31 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             ensureAtLeast(nextIndex, 0, "The next index must be at least 0")
             ensureAtMaximum(nextIndex, tokenSequence.size(),
                     "The next index must be at maximum ${tokenSequence.size()}")
+        }
+
+        /**
+         * Merges the current token with the token at a specific [index] using a specific
+         * [separator]. The token at the given [index] will be removed.
+         */
+        @JvmOverloads
+        fun merge(index: Int, separator: String = "") {
+            ensureNotNull(lastIndex, "next() or previous() not called",
+                    IllegalArgumentException::class.java)
+            ensureNotEqual(lastIndex, index, "Can only merge with different token")
+            val tokenToMerge = tokenSequence.tokens[index]
+            val tokenToRetain = tokenSequence.tokens[lastIndex!!]
+            val prefix = if (lastIndex!! > index)
+                tokenToMerge.getToken() else tokenToRetain.getToken()
+            val suffix = if (lastIndex!! > index)
+                tokenToRetain.getToken() else tokenToMerge.getToken()
+            val newToken = "$prefix$separator$suffix"
+            tokenToRetain.setToken(newToken)
+            tokenSequence.tokens.removeAt(index)
+
+            if (lastIndex!! > index) {
+                lastIndex = lastIndex!! - 1
+                nextIndex--
+            }
         }
 
         override fun hasNext() = nextIndex < tokenSequence.size()
@@ -155,6 +181,10 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             tokens.fold("") { text, token ->
                 "$text${if (text.isNotEmpty()) delimiter else ""}${token.getToken()}"
             }
+
+    override fun setToken(token: String) {
+        throw UnsupportedOperationException()
+    }
 
     override fun get(index: Int): Char = getToken()[index]
 

@@ -28,7 +28,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class NGram(val n: Int, private val token: String,
+data class NGram(val n: Int, private var token: String,
                  private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -62,6 +62,10 @@ data class NGram(val n: Int, private val token: String,
             this(n, token, HashSet(positions))
 
     override fun getToken() = token
+
+    override fun setToken(token: String) {
+        this.token = token
+    }
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")

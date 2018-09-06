@@ -32,7 +32,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @since 2.1.0
  */
 data class ValueToken<T> @JvmOverloads constructor(
-        private val token: String, var value: T?, var associationType: AssociationType?,
+        private var token: String, var value: T?, var associationType: AssociationType?,
         private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -65,6 +65,10 @@ data class ValueToken<T> @JvmOverloads constructor(
             this(token, value, associationType, HashSet(positions))
 
     override fun getToken(): String = token
+
+    override fun setToken(token: String) {
+        this.token = token
+    }
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
