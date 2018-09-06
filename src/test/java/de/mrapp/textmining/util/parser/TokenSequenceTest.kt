@@ -14,10 +14,7 @@
 package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.tokenizer.Substring
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 /**
  * Tests the functionality of the class [TokenSequence].
@@ -97,6 +94,195 @@ class TokenSequenceTest {
         val tokens = mutableListOf(token1, token2)
         val sequence = TokenSequence.createSorted(tokens)
         assertEquals(9, sequence.length)
+    }
+
+    @Test
+    fun testSequenceIterator() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        assertTrue(iterator.hasNext())
+        assertEquals(0, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(2, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
+    }
+
+    @Test
+    fun testSequenceIteratorReverse() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        assertTrue(iterator.hasPrevious())
+        assertEquals(2, iterator.previousIndex())
+        assertEquals("foo", iterator.previous().getToken())
+        assertTrue(iterator.hasPrevious())
+        assertEquals(1, iterator.previousIndex())
+        assertEquals("bar", iterator.previous().getToken())
+        assertTrue(iterator.hasPrevious())
+        assertEquals(0, iterator.previousIndex())
+        assertEquals("foo", iterator.previous().getToken())
+        assertFalse(iterator.hasPrevious())
+        assertEquals(-1, iterator.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.previous() }
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testSequenceIteratorThrowsExceptionIfIndexIsLessThanZero() {
+        val sequence = TokenSequence<Substring>()
+        sequence.sequenceIterator(-1)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testSequenceIteratorThrowsExceptionIfIndexIsGreaterThanSize() {
+        val sequence = TokenSequence<Substring>()
+        sequence.sequenceIterator(1)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testSequenceIteratorSetThrowsException() {
+        val sequence = TokenSequence<Substring>()
+        val iterator = sequence.sequenceIterator()
+        iterator.set(Substring("foo"))
+    }
+
+    @Test
+    fun testSequenceIteratorSet() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+
+        assertTrue(iterator.hasNext())
+        assertEquals(0, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+        iterator.set(Substring("modified"))
+        assertTrue(iterator.hasNext())
+        assertEquals(2, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
+
+        val iterator2 = sequence.sequenceIterator()
+        assertTrue(iterator2.hasNext())
+        assertEquals(0, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(1, iterator2.nextIndex())
+        assertEquals("modified", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(2, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertFalse(iterator2.hasNext())
+        assertEquals(-1, iterator2.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator2.next() }
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testSequenceIteratorAddThrowsException() {
+        val sequence = TokenSequence<Substring>()
+        val iterator = sequence.sequenceIterator()
+        iterator.add(Substring("foo"))
+    }
+
+    @Test
+    fun testSequenceIteratorAdd() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+
+        assertTrue(iterator.hasNext())
+        assertEquals(0, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+        iterator.add(Substring("added"))
+        assertTrue(iterator.hasNext())
+        assertEquals(2, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(3, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
+
+        val iterator2 = sequence.sequenceIterator()
+        assertTrue(iterator2.hasNext())
+        assertEquals(0, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(1, iterator2.nextIndex())
+        assertEquals("added", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(2, iterator2.nextIndex())
+        assertEquals("bar", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(3, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertFalse(iterator2.hasNext())
+        assertEquals(-1, iterator2.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator2.next() }
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testSequenceIteratorRemoveThrowsException() {
+        val sequence = TokenSequence<Substring>()
+        val iterator = sequence.sequenceIterator()
+        iterator.remove()
+    }
+
+    @Test
+    fun testSequenceIteratorRemove() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+
+        assertTrue(iterator.hasNext())
+        assertEquals(0, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+        iterator.remove()
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
+
+        val iterator2 = sequence.sequenceIterator()
+        assertTrue(iterator2.hasNext())
+        assertEquals(0, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertTrue(iterator2.hasNext())
+        assertEquals(1, iterator2.nextIndex())
+        assertEquals("foo", iterator2.next().getToken())
+        assertFalse(iterator2.hasNext())
+        assertEquals(-1, iterator2.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator2.next() }
     }
 
 }

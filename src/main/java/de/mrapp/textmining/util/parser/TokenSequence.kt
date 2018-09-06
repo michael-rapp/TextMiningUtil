@@ -15,7 +15,10 @@ package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
+import de.mrapp.util.Condition.ensureAtMaximum
+import de.mrapp.util.Condition.ensureNotNull
 import java.util.*
+import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
@@ -62,6 +65,89 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         }
 
     }
+
+    /**
+     * A [MutableListIterator] that allows to traverse and modify a [TokenSequence].
+     *
+     * @property tokenSequence The [TokenSequence] that is traversed by the iterator
+     * @property nextIndex     The index of the token in the traversed [TokenSequence], the iterator
+     *                         reaches next
+     */
+    class Iterator<TokenType : Token>(private val tokenSequence: TokenSequence<TokenType>,
+                                      private var nextIndex: Int = 0) :
+            MutableListIterator<TokenType> {
+
+        private var lastIndex: Int? = null
+
+        init {
+            ensureAtLeast(nextIndex, 0, "The next index must be at least 0")
+            ensureAtMaximum(nextIndex, tokenSequence.size(),
+                    "The next index must be at maximum ${tokenSequence.size()}")
+        }
+
+        override fun hasNext() = nextIndex < tokenSequence.size()
+
+        override fun hasPrevious() = nextIndex > 0
+
+        override fun next(): TokenType {
+            if (hasNext()) {
+                val currentToken = tokenSequence.tokens[nextIndex]
+                lastIndex = nextIndex
+                nextIndex++
+                return currentToken
+            }
+
+            throw NoSuchElementException()
+        }
+
+        override fun nextIndex() = if (nextIndex < tokenSequence.size()) nextIndex else -1
+
+        override fun previous(): TokenType {
+            if (hasPrevious()) {
+                lastIndex = nextIndex
+                nextIndex--
+                return tokenSequence.tokens[nextIndex]
+            }
+
+            throw NoSuchElementException()
+        }
+
+        override fun previousIndex() = if (nextIndex > 0) nextIndex - 1 else -1
+
+        override fun add(element: TokenType) {
+            ensureNotNull(lastIndex, "next() or previous() not called",
+                    IllegalStateException::class.java)
+            tokenSequence.tokens.add(lastIndex!!, element)
+        }
+
+        override fun remove() {
+            ensureNotNull(lastIndex, "next() or previous() not called",
+                    IllegalStateException::class.java)
+            tokenSequence.tokens.removeAt(lastIndex!!)
+            nextIndex--
+            lastIndex = null
+        }
+
+        override fun set(element: TokenType) {
+            ensureNotNull(lastIndex, "next() or previous() not called",
+                    IllegalStateException::class.java)
+            tokenSequence.tokens[lastIndex!!] = element
+        }
+
+    }
+
+    /**
+     * Returns a [MutableListIterator] that allows to traverse and modify the sequence.
+     *
+     * @param index The index the iterator should start at
+     */
+    @JvmOverloads
+    fun sequenceIterator(index: Int = 0) = TokenSequence.Iterator(this, index)
+
+    /**
+     * The number of tokens that are contained by the sequence.
+     */
+    fun size() = tokens.size
 
     override val length = tokens.fold(0) { length, token -> length + token.length }
 
