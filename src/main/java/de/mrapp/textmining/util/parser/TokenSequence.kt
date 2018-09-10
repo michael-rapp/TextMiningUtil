@@ -200,7 +200,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                 "$text${if (text.isNotEmpty()) delimiter else ""}${token.getToken()}"
             }
 
-    override fun setToken(token: String) {
+    override fun setToken(token: CharSequence) {
         throw UnsupportedOperationException()
     }
 

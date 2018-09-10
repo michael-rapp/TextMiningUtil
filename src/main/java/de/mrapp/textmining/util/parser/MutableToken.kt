@@ -61,7 +61,7 @@ data class MutableToken(private var token: Token,
 
     override fun getToken() = this.token.getToken()
 
-    override fun setToken(token: String) {
+    override fun setToken(token: CharSequence) {
         this.token.setToken(token)
     }
 

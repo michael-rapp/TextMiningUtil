@@ -28,7 +28,7 @@ interface Token : CharSequence, Serializable {
     /**
      * Sets the [token].
      */
-    fun setToken(token: String)
+    fun setToken(token: CharSequence)
 
     /**
      * Adds a new [position].

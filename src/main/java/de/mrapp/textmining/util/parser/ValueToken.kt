@@ -66,7 +66,7 @@ data class ValueToken<T> @JvmOverloads constructor(
 
     override fun getToken() = token
 
-    override fun setToken(token: String) {
+    override fun setToken(token: CharSequence) {
         this.token = token
     }
 
