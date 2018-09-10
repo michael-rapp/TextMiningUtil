@@ -32,7 +32,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @since 2.1.0
  */
 data class ValueToken<T> @JvmOverloads constructor(
-        private var token: String, var value: T?, var associationType: AssociationType?,
+        private var token: CharSequence, var value: T?, var associationType: AssociationType?,
         private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -48,7 +48,7 @@ data class ValueToken<T> @JvmOverloads constructor(
      * @param associationType The association type of the token
      * @param positions       The position(s) of the token
      */
-    constructor(token: String, value: T?, associationType: AssociationType?,
+    constructor(token: CharSequence, value: T?, associationType: AssociationType?,
                 vararg positions: Int) :
             this(token, value, associationType, positions.toHashSet())
 
@@ -60,11 +60,11 @@ data class ValueToken<T> @JvmOverloads constructor(
      * @param associationType The association type of the token
      * @param positions       A collection that contains the position(s) of the token
      */
-    constructor(token: String, value: T?, associationType: AssociationType?,
+    constructor(token: CharSequence, value: T?, associationType: AssociationType?,
                 positions: Collection<Int>) :
             this(token, value, associationType, HashSet(positions))
 
-    override fun getToken(): String = token
+    override fun getToken() = token
 
     override fun setToken(token: String) {
         this.token = token
@@ -84,7 +84,7 @@ data class ValueToken<T> @JvmOverloads constructor(
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
-    override fun toString() = token
+    override fun toString() = token.toString()
 
     override fun copy() = copy(token = token, value = value, associationType = associationType,
             positions = HashSet(positions))

@@ -27,7 +27,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class Substring(private var token: String,
+data class Substring(private var token: CharSequence,
                      private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -43,7 +43,7 @@ data class Substring(private var token: String,
      * @param positions An array, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(token: String, vararg positions: Int) : this(token, positions.toHashSet())
+    constructor(token: CharSequence, vararg positions: Int) : this(token, positions.toHashSet())
 
     /**
      * Creates a new substring, which consists of a sequence of characters, taken from a longer
@@ -53,7 +53,7 @@ data class Substring(private var token: String,
      * @param positions A collection, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(token: String, positions: Collection<Int>) : this(token, HashSet(positions))
+    constructor(token: CharSequence, positions: Collection<Int>) : this(token, HashSet(positions))
 
     override fun getToken() = token
 
@@ -75,7 +75,7 @@ data class Substring(private var token: String,
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
-    override fun toString() = token
+    override fun toString() = token.toString()
 
     override fun copy() = copy(token = token, positions = HashSet(positions))
 

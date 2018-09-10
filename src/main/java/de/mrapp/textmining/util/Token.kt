@@ -23,7 +23,7 @@ interface Token : CharSequence, Serializable {
     /**
      * Returns the token.
      */
-    fun getToken(): String
+    fun getToken(): CharSequence
 
     /**
      * Sets the [token].

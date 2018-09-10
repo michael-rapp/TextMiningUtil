@@ -28,7 +28,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class NGram(val n: Int, private var token: String,
+data class NGram(val n: Int, private var token: CharSequence,
                  private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -46,7 +46,7 @@ data class NGram(val n: Int, private var token: String,
      * @param positions An array, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(n: Int, token: String, vararg positions: Int) :
+    constructor(n: Int, token: CharSequence, vararg positions: Int) :
             this(n, token, positions.toHashSet())
 
     /**
@@ -58,7 +58,7 @@ data class NGram(val n: Int, private var token: String,
      * @param positions A collection, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(n: Int, token: String, positions: Collection<Int>) :
+    constructor(n: Int, token: CharSequence, positions: Collection<Int>) :
             this(n, token, HashSet(positions))
 
     override fun getToken() = token
@@ -81,7 +81,7 @@ data class NGram(val n: Int, private var token: String,
     override fun subSequence(startIndex: Int, endIndex: Int) =
             token.subSequence(startIndex, endIndex)
 
-    override fun toString() = token
+    override fun toString() = token.toString()
 
     override fun copy() = copy(token = token, positions = HashSet(positions))
 

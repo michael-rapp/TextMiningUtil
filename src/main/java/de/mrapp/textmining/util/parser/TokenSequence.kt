@@ -116,11 +116,11 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          * The divider function must return the position, the suffix should start at.
          */
         @Suppress("UNCHECKED_CAST")
-        fun split(dividerFunction: (String) -> Int) {
+        fun split(dividerFunction: (Token) -> Int) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalArgumentException::class.java)
             val tokenToDivide = tokenSequence.tokens[lastIndex!!]
-            val pivot = dividerFunction.invoke(tokenToDivide.getToken())
+            val pivot = dividerFunction.invoke(tokenToDivide)
             val prefix = tokenToDivide.getToken().substring(0, pivot)
             val suffix = tokenToDivide.getToken().substring(pivot)
             tokenToDivide.setToken(prefix)
