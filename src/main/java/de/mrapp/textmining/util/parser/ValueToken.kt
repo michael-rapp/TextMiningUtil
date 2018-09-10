@@ -32,7 +32,8 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @since 2.1.0
  */
 data class ValueToken<T> @JvmOverloads constructor(
-        private var token: CharSequence, var value: T?, var associationType: AssociationType?,
+        private var token: CharSequence, var value: T?,
+        var associationType: AssociationType? = null,
         private val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
@@ -48,7 +49,8 @@ data class ValueToken<T> @JvmOverloads constructor(
      * @param associationType The association type of the token
      * @param positions       The position(s) of the token
      */
-    constructor(token: CharSequence, value: T?, associationType: AssociationType?,
+    @JvmOverloads
+    constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
                 vararg positions: Int) :
             this(token, value, associationType, positions.toHashSet())
 
@@ -60,7 +62,8 @@ data class ValueToken<T> @JvmOverloads constructor(
      * @param associationType The association type of the token
      * @param positions       A collection that contains the position(s) of the token
      */
-    constructor(token: CharSequence, value: T?, associationType: AssociationType?,
+    @JvmOverloads
+    constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
                 positions: Collection<Int>) :
             this(token, value, associationType, HashSet(positions))
 
