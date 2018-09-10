@@ -80,4 +80,6 @@ data class MutableToken(private var token: Token,
 
     override fun toString() = token.toString()
 
+    override fun copy() = copy(token = token, revisions = revisions)
+
 }

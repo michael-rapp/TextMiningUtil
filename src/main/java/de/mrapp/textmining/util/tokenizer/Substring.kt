@@ -77,4 +77,6 @@ data class Substring(private var token: String,
 
     override fun toString() = token
 
+    override fun copy() = copy(token = token, positions = HashSet(positions))
+
 }

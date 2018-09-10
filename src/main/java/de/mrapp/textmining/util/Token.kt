@@ -40,4 +40,6 @@ interface Token : CharSequence, Serializable {
      */
     fun getPositions(): Set<Int>
 
+    fun copy(): Token
+
 }

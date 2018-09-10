@@ -83,4 +83,6 @@ data class NGram(val n: Int, private var token: String,
 
     override fun toString() = token
 
+    override fun copy() = copy(token = token, positions = HashSet(positions))
+
 }

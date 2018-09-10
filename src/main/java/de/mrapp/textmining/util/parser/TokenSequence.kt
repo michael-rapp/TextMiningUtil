@@ -111,6 +111,24 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             }
         }
 
+        /**
+         * Splits the current token into a prefix and a suffix using a specific [dividerFunction].
+         * The divider function must return the position, the suffix should start at.
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun split(dividerFunction: (String) -> Int) {
+            ensureNotNull(lastIndex, "next() or previous() not called",
+                    IllegalArgumentException::class.java)
+            val tokenToDivide = tokenSequence.tokens[lastIndex!!]
+            val pivot = dividerFunction.invoke(tokenToDivide.getToken())
+            val prefix = tokenToDivide.getToken().substring(0, pivot)
+            val suffix = tokenToDivide.getToken().substring(pivot)
+            tokenToDivide.setToken(prefix)
+            val newToken = tokenToDivide.copy() as TokenType
+            newToken.setToken(suffix)
+            tokenSequence.tokens.add(lastIndex!! + 1, newToken)
+        }
+
         override fun hasNext() = nextIndex < tokenSequence.size()
 
         override fun hasPrevious() = nextIndex > 0
@@ -201,5 +219,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
     override fun iterator() = tokens.iterator()
 
     override fun toString() = getToken()
+
+    override fun copy() = copy(tokens = ArrayList(tokens), positions = HashSet(positions),
+            delimiter = delimiter)
 
 }
