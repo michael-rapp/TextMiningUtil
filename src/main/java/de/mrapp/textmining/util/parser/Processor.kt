@@ -68,6 +68,62 @@ interface Processor<I, O> {
             }
         }
 
+        /**
+         * Creates and returns a processor that uses a specific [dictionary] to translate the
+         * [MutableToken]s of a [TokenSequence]. The tokens are converted into [ValueToken]s that
+         * contain the translation as their values.
+         *
+         * @param T The type of the translations
+         */
+        fun <T> translate(dictionary: Dictionary<CharSequence, T>):
+                Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
+            return object : Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
+
+                override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
+                    input.sequenceIterator().forEach { token ->
+                        val entry = dictionary.lookup(token.getToken())
+                        entry?.let {
+                            val valueToken = ValueToken(token.getToken(), it.value,
+                                    it.associationType, token.getPositions())
+                            token.mutate(valueToken)
+                        }
+                    }
+
+                    return input
+                }
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that uses a specific [dictionary] and a [matcher] to
+         * translate the [MutableToken]s of a [TokenSequence]. The tokens are converted into
+         * [ValueToken]s that contain the translation as their values.
+         *
+         * @param T The type of the translations
+         */
+        fun <T> translate(dictionary: Dictionary<CharSequence, T>,
+                          matcher: Matcher<CharSequence, CharSequence>):
+                Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
+            return object : Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
+
+                override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
+                    input.sequenceIterator().forEach { token ->
+                        val matches = dictionary.lookup(token.getToken(), matcher)
+                        matches.getBestMatch()?.let {
+                            val entry = it.second
+                            val valueToken = ValueToken(token.getToken(), entry.value,
+                                    entry.associationType, token.getPositions())
+                            token.mutate(valueToken)
+                        }
+                    }
+
+                    return input
+                }
+
+            }
+        }
+
     }
 
     /**

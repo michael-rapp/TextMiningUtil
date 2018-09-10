@@ -68,4 +68,56 @@ class ProcessorTest {
         assertTrue(tokenStrings.containsAll(listOf("foo", "bar", "foobar")))
     }
 
+    @Test
+    fun testTranslate() {
+        val dictionary = Dictionary<CharSequence, Int>()
+        dictionary.addEntry(Dictionary.Entry("one", 1))
+        dictionary.addEntry(Dictionary.Entry("two", 2))
+        dictionary.addEntry(Dictionary.Entry("three", 3))
+        val token1 = MutableToken(Substring("one"))
+        val token2 = MutableToken(Substring("two"))
+        val token3 = MutableToken(Substring("three"))
+        val token4 = MutableToken(Substring("four"))
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.translate(dictionary)
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals(2, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals(3, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals("four", iterator.next().getCurrent<Substring>().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testTranslateUsingMatcher() {
+        val dictionary = Dictionary<CharSequence, Int>()
+        dictionary.addEntry(Dictionary.Entry("one", 1))
+        dictionary.addEntry(Dictionary.Entry("two", 2))
+        dictionary.addEntry(Dictionary.Entry("three", 3))
+        val matcher = Matcher.equals<CharSequence, CharSequence>()
+        val token1 = MutableToken(Substring("one"))
+        val token2 = MutableToken(Substring("two"))
+        val token3 = MutableToken(Substring("three"))
+        val token4 = MutableToken(Substring("four"))
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.translate(dictionary, matcher)
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals(1, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals(2, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals(3, iterator.next().getCurrent<ValueToken<Int>>().value)
+        assertTrue(iterator.hasNext())
+        assertEquals("four", iterator.next().getCurrent<Substring>().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
+
 }
