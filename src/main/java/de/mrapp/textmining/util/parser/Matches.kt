@@ -30,7 +30,7 @@ class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric
         Iterable<Match<F, S>>, Serializable {
 
     private fun getBestMatch(match1: Match<F, S>, match2: Match<F, S>,
-                             tieBreaker: ((Match<F, S>, Match<F, S>) -> Match<F, S>)?):
+                             tieBreaker: TieBreaker<Match<F, S>>?):
             Match<F, S> {
         val heuristicValue1 = match1.heuristicValue
         val heuristicValue2 = match2.heuristicValue
@@ -49,7 +49,7 @@ class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric
      * one of them is considered to be better.
      */
     @JvmOverloads
-    fun getBestMatch(tieBreaker: ((Match<F, S>, Match<F, S>) -> Match<F, S>)? = null):
+    fun getBestMatch(tieBreaker: TieBreaker<Match<F, S>>? = null):
             Match<F, S>? {
         val iterator = iterator()
 

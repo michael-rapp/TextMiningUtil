@@ -77,7 +77,9 @@ class MatchesTest {
         val match1 = Match("foo", "foo", 0.5)
         val match2 = Match("bar", "bar", 0.5)
         val matches = Matches(listOf(match1, match2), true)
-        val bestMatch = matches.getBestMatch { _, match -> match }
+        val bestMatch = matches.getBestMatch(object : TieBreaker<Match<String, String>> {
+            override fun invoke(p1: Match<String, String>, p2: Match<String, String>) = p2
+        })
         assertEquals(match2, bestMatch)
     }
 
