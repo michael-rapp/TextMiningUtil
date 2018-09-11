@@ -26,6 +26,23 @@ import java.util.*
 interface LocalizedTextParser<ResultType> : TextParser<ResultType> {
 
     /**
+     * Defines the interface, a factory that allows to create instances of the type
+     * [LocalizedTextParser], must implement.
+     *
+     * @param T The type of the [LocalizedTextParser] that is created by the factory
+     */
+    interface Factory<T : LocalizedTextParser<*>> {
+
+        /**
+         * Creates a [LocalizedTextParser] that handles a specific language.
+         *
+         * @param locale The locale of the language, the [LocalizedTextParser] should handle
+         */
+        fun create(locale: Locale): T
+
+    }
+
+    /**
      * Returns the locale of the language, the parser is able to handle.
      */
     fun getLocale(): Locale
