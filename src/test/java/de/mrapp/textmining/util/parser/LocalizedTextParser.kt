@@ -36,8 +36,11 @@ interface LocalizedTextParser<ResultType> : TextParser<ResultType> {
         /**
          * Creates a [LocalizedTextParser] that handles a specific language.
          *
-         * @param locale The locale of the language, the [LocalizedTextParser] should handle
+         * @param  locale The locale of the language, the [LocalizedTextParser] should handle
+         * @throws UnsupportedLocaleException The exception that is thrown, if the specified
+         *                                    language is not supported
          */
+        @Throws(UnsupportedLocaleException::class)
         fun create(locale: Locale): T
 
     }
