@@ -26,12 +26,12 @@ import java.util.*
 interface LocalizedTextParser<ResultType> : TextParser<ResultType> {
 
     /**
-     * Defines the interface, a factory that allows to create instances of the type
+     * Defines the interface, a builder that allows to create instances of the type
      * [LocalizedTextParser], must implement.
      *
      * @param T The type of the [LocalizedTextParser] that is created by the factory
      */
-    interface Factory<T : LocalizedTextParser<*>> {
+    interface Builder<T : LocalizedTextParser<*>> {
 
         /**
          * Creates a [LocalizedTextParser] that handles a specific language.
@@ -41,7 +41,7 @@ interface LocalizedTextParser<ResultType> : TextParser<ResultType> {
          *                                    language is not supported
          */
         @Throws(UnsupportedLocaleException::class)
-        fun create(locale: Locale): T
+        fun build(locale: Locale): T
 
     }
 

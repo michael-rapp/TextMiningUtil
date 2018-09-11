@@ -28,13 +28,13 @@ import java.util.*
 interface NumberParser : LocalizedTextParser<Int> {
 
     /**
-     * A factory the allows to create instances of the class [NumberParser].
+     * A builder that allows to create instances of the class [NumberParser].
      */
-    class Factory : LocalizedTextParser.Factory<NumberParser> {
+    class Builder : LocalizedTextParser.Builder<NumberParser> {
 
         private val parsers = listOf(EnNumberParser())
 
-        override fun create(locale: Locale): NumberParser {
+        override fun build(locale: Locale): NumberParser {
             parsers.find { it.getLocale() == locale }?.let { return it }
                     ?: throw UnsupportedLocaleException(
                             "The locale $locale is currently not supported by the parser ${NumberParser::class.java.name}")
