@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
  *
  * @author Michael Rapp
  */
-class MalformedTextExceptionTest() {
+class MalformedTextExceptionTest {
 
     @Test
     fun testConstructor() {
