@@ -34,6 +34,11 @@ enum class AssociationType {
     /**
      * If the token is left- and right-associative.
      */
-    BIDIRECTIONAL
+    BIDIRECTIONAL,
+
+    /**
+     * If the token is not associative.
+     */
+    NONE
 
 }
