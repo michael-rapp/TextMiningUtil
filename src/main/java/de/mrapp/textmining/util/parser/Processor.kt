@@ -150,17 +150,21 @@ interface Processor<I, O> {
          * translate the [MutableToken]s of a [TokenSequence]. The tokens are converted into
          * [ValueToken]s that contain the translation as their values.
          *
-         * @param T The type of the translations
+         * @param T          The type of the translations
+         * @param tieBreaker An optional tie breaker that is used, if there are multiple
+         *                   translations for a single token
          */
+        @JvmOverloads
         fun <T> translate(dictionary: Dictionary<CharSequence, T>,
-                          matcher: Matcher<CharSequence, CharSequence>):
+                          matcher: Matcher<CharSequence, CharSequence>,
+                          tieBreaker: TieBreaker<Match<Dictionary.Entry<CharSequence, T>, CharSequence>>? = null):
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return object : Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
 
                 override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
                     input.sequenceIterator().forEach { token ->
                         val matches = dictionary.lookup(token.getToken(), matcher)
-                        matches.getBestMatch()?.let {
+                        matches.getBestMatch(tieBreaker)?.let {
                             val entry = it.first
                             val valueToken = ValueToken(token.getToken(), entry.value,
                                     entry.associationType, token.getPositions())
