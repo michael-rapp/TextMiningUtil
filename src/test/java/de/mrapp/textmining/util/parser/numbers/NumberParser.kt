@@ -13,15 +13,33 @@
  */
 package de.mrapp.textmining.util.parser.numbers
 
+import de.mrapp.textmining.util.parser.LocalizedTextParser
 import de.mrapp.textmining.util.parser.TextParser
+import de.mrapp.textmining.util.parser.UnsupportedLocaleException
+import java.util.*
 
 /**
- * Defines the interface, a parser that allows to convert textual representations of numbers into
- * integer values, must implement.
+ * Defines the interface, a [TextParser] that allows to convert textual representations of numbers
+ * into integer values, must implement.
  *
  * @author Michael Rapp
  * @since 2.1.0
  */
-interface NumberParser : TextParser<Int> {
+interface NumberParser : LocalizedTextParser<Int> {
+
+    /**
+     * A factory the allows to create instances of the class [NumberParser].
+     */
+    class Factory : LocalizedTextParser.Factory<NumberParser> {
+
+        private val parsers = listOf(EnNumberParser())
+
+        override fun create(locale: Locale): NumberParser {
+            parsers.find { it.getLocale() == locale }?.let { return it }
+                    ?: throw UnsupportedLocaleException(
+                            "The locale $locale is currently not supported by the parser ${NumberParser::class.java.name}")
+        }
+
+    }
 
 }
