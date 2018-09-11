@@ -22,5 +22,6 @@ package de.mrapp.textmining.util.parser
  * @author Michael Rapp
  * @since 2.1.0
  */
-class MalformedTextException(val text: String, message: String? = null, cause: Throwable? = null) :
+class MalformedTextException @JvmOverloads constructor(val text: String, message: String? = null,
+                                                       cause: Throwable? = null) :
         Exception(message, cause)
