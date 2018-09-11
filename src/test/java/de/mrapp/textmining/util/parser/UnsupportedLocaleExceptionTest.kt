@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
  *
  * @author Michael Rapp
  */
-class UnsupportedLocaleExceptionTest() {
+class UnsupportedLocaleExceptionTest {
 
     @Test
     fun testConstructor() {
