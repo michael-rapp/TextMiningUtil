@@ -34,13 +34,12 @@ class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric
             Match<F, S> {
         val heuristicValue1 = match1.heuristicValue
         val heuristicValue2 = match2.heuristicValue
-
-        if (heuristicValue1 == heuristicValue2) {
-            return tieBreaker?.invoke(match1, match2) ?: match1
+        return if (heuristicValue1 == heuristicValue2) {
+            tieBreaker?.invoke(match1, match2) ?: match1
         } else if (isGainMetric) {
-            return if (heuristicValue1 > heuristicValue2) match1 else match2
+            if (heuristicValue1 > heuristicValue2) match1 else match2
         } else {
-            return if (heuristicValue1 < heuristicValue2) match1 else match2
+            if (heuristicValue1 < heuristicValue2) match1 else match2
         }
     }
 
