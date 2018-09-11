@@ -119,5 +119,72 @@ class ProcessorTest {
         assertFalse(iterator.hasNext())
     }
 
+    @Test
+    fun testRemove() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.remove<Substring> { token -> token.getToken().startsWith("t") }
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("one", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("four", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testRemoveUsingMatcher() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.remove<CharSequence, Substring>("t", Matcher.startsWith())
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("one", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("four", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testRetain() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.retain<Substring> { token -> token.getToken().startsWith("t") }
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("two", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("three", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testRetainUsingMatcher() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.retain<CharSequence, Substring>("t", Matcher.startsWith())
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("two", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("three", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+    }
 
 }

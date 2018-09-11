@@ -69,6 +69,56 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that removes all tokens from a [TokenSequence] that match
+         * a given [value] according to a specific [matcher].
+         */
+        fun <T, TokenType : Token> remove(value: T, matcher: Matcher<TokenType, T>):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return remove { token -> matcher.matches(token, value) }
+        }
+
+        /**
+         * Creates and returns a processor that removes all tokens from a [TokenSequence] for which
+         * a [matcherFunction] returns true.
+         */
+        fun <TokenType : Token> remove(matcherFunction: (TokenType) -> Boolean):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    val iterator = input.sequenceIterator()
+
+                    while (iterator.hasNext()) {
+                        if (matcherFunction.invoke(iterator.next())) {
+                            iterator.remove()
+                        }
+                    }
+
+                    return input
+                }
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that retains only those tokens in a [TokenSequence] that
+         * match a given [value] according to a specific [matcher].
+         */
+        fun <T, TokenType : Token> retain(value: T, matcher: Matcher<TokenType, T>):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return retain { token -> matcher.matches(token, value) }
+        }
+
+        /**
+         * Creates and returns a processor that retains only those tokens in a [TokenSequence] for
+         * which a [filterFunction] returns true.
+         */
+        fun <TokenType : Token> retain(filterFunction: (TokenType) -> Boolean):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return remove { token -> !filterFunction.invoke(token) }
+        }
+
+        /**
          * Creates and returns a processor that uses a specific [dictionary] to translate the
          * [MutableToken]s of a [TokenSequence]. The tokens are converted into [ValueToken]s that
          * contain the translation as their values.
