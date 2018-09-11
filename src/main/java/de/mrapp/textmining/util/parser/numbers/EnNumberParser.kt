@@ -14,6 +14,7 @@
 package de.mrapp.textmining.util.parser.numbers
 
 import de.mrapp.textmining.util.parser.AbstractTextParser
+import de.mrapp.textmining.util.parser.Dictionary
 import java.util.*
 
 /**
@@ -24,6 +25,10 @@ import java.util.*
  * @since 2.1.0
  */
 class EnNumberParser : AbstractTextParser<Int>(), NumberParser {
+
+    private class Dictionary : de.mrapp.textmining.util.parser.Dictionary<CharSequence, Int>() {
+
+    }
 
     override fun onParse(text: CharSequence): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
