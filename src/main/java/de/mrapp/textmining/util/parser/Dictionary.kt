@@ -55,13 +55,17 @@ class Dictionary<K, V> : Iterable<Dictionary.Entry<K, V>>, Serializable {
      * Returns [Matches] for all entries that match a certain [value] according to a given
      * [matcher].
      */
-    fun <T> lookup(value: T, matcher: Matcher<T, K>): Matches<T, Entry<K, V>> {
-        val matches = entries.values.map { entry ->
-            matcher.getMatch(value, entry.key)?.let { match ->
-                Match(value, entry, match.heuristicValue)
-            }
-        }.filter { it != null }.requireNoNulls()
-        return Matches(matches, matcher.isGainMetric())
+    fun <T> lookup(value: T, matcher: Matcher<T, K>): Matches<Entry<K, V>, T> {
+        return Matches.from(entries.values, value, object : Matcher<Entry<K, V>, T> {
+
+            override fun getMatch(first: Entry<K, V>, second: T) =
+                    matcher.getMatch(second, first.key)?.let {
+                        Match(first, value, it.heuristicValue)
+                    }
+
+            override fun isGainMetric() = matcher.isGainMetric()
+
+        })
     }
 
     override fun iterator() = entries.values.iterator()

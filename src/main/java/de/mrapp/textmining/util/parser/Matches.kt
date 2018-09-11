@@ -29,6 +29,23 @@ import java.io.Serializable
 class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric: Boolean) :
         Iterable<Match<F, S>>, Serializable {
 
+    companion object {
+
+        /**
+         * Returns all [Matches] for all items of an [iterable] that match a given [value] according
+         * to a specific [matcher].
+         */
+        fun <F, S> from(iterable: Iterable<F>, value: S, matcher: Matcher<F, S>): Matches<F, S> {
+            val matches = iterable.map { item ->
+                matcher.getMatch(item, value)?.let { match ->
+                    Match(item, value, match.heuristicValue)
+                }
+            }.filter { it != null }.requireNoNulls()
+            return Matches(matches, matcher.isGainMetric())
+        }
+
+    }
+
     private fun getBestMatch(match1: Match<F, S>, match2: Match<F, S>,
                              tieBreaker: TieBreaker<Match<F, S>>?):
             Match<F, S> {

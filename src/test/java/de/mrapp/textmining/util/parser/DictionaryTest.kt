@@ -54,9 +54,9 @@ class DictionaryTest {
         val matches = dictionary.lookup("two", Matcher.metric(LevenshteinDistance(), 1.0))
         assertNotNull(matches)
         assertTrue(matches.iterator().asSequence()
-                .contains(Match("two", Dictionary.Entry("two", 2), 0.0)))
+                .contains(Match(Dictionary.Entry("two", 2), "two", 0.0)))
         assertTrue(matches.iterator().asSequence()
-                .contains(Match("two", Dictionary.Entry("twoo", 2), 1.0)))
+                .contains(Match(Dictionary.Entry("twoo", 2), "two", 1.0)))
     }
 
     @Test

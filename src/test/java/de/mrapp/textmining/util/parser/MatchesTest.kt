@@ -38,6 +38,18 @@ class MatchesTest {
     }
 
     @Test
+    fun testFrom() {
+        val iterable = listOf("foo", "bar", "foobar")
+        val matches = Matches.from(iterable, "f", Matcher.startsWith())
+        val iterator = matches.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals(Match("foo", "f", 1.0), iterator.next())
+        assertTrue(iterator.hasNext())
+        assertEquals(Match("foobar", "f", 1.0), iterator.next())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
     fun testGetMatchBestIfNoMatchesAvailable() {
         val matches = Matches<String, String>(emptyList(), true)
         val bestMatch = matches.getBestMatch()

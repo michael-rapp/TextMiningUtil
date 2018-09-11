@@ -111,7 +111,7 @@ interface Processor<I, O> {
                     input.sequenceIterator().forEach { token ->
                         val matches = dictionary.lookup(token.getToken(), matcher)
                         matches.getBestMatch()?.let {
-                            val entry = it.second
+                            val entry = it.first
                             val valueToken = ValueToken(token.getToken(), entry.value,
                                     entry.associationType, token.getPositions())
                             token.mutate(valueToken)
