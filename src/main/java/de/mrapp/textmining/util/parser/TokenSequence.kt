@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.parser
 import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureAtMaximum
+import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEqual
 import de.mrapp.util.Condition.ensureNotNull
 import java.util.*
@@ -70,12 +71,15 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
     /**
      * A [MutableListIterator] that allows to traverse and modify a [TokenSequence].
      *
-     * @property tokenSequence The [TokenSequence] that is traversed by the iterator
-     * @property nextIndex     The index of the token in the traversed [TokenSequence], the iterator
-     *                         reaches next
+     * @property tokenSequence     The [TokenSequence] that is traversed by the iterator
+     * @property nextIndex         The index of the token in the traversed [TokenSequence], the
+     *                             iterator reaches next
+     * @property modificationCount The current modification count of the [TokenSequence]. It is used
+     *                             to detect concurrent modifications by other iterator instances
      */
     class Iterator<TokenType : Token>(private val tokenSequence: TokenSequence<TokenType>,
-                                      private var nextIndex: Int = 0) :
+                                      private var nextIndex: Int = 0,
+                                      private var modificationCount: Long) :
             MutableListIterator<TokenType> {
 
         private var lastIndex: Int? = null
@@ -95,6 +99,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalArgumentException::class.java)
             ensureNotEqual(lastIndex, index, "Can only merge with different token")
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
             val tokenToMerge = tokenSequence.tokens[index]
             val tokenToRetain = tokenSequence.tokens[lastIndex!!]
             val prefix = if (lastIndex!! > index)
@@ -109,6 +115,9 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                 lastIndex = lastIndex!! - 1
                 nextIndex--
             }
+
+            modificationCount++
+            tokenSequence.modificationCount++
         }
 
         /**
@@ -119,6 +128,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         fun split(dividerFunction: (Token) -> Int) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalArgumentException::class.java)
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
             val tokenToDivide = tokenSequence.tokens[lastIndex!!]
             val pivot = dividerFunction.invoke(tokenToDivide)
             val prefix = tokenToDivide.getToken().substring(0, pivot)
@@ -127,11 +138,21 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             val newToken = tokenToDivide.copy() as TokenType
             newToken.setToken(suffix)
             tokenSequence.tokens.add(lastIndex!! + 1, newToken)
+            modificationCount++
+            tokenSequence.modificationCount++
         }
 
-        override fun hasNext() = nextIndex < tokenSequence.size()
+        override fun hasNext(): Boolean {
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
+            return nextIndex < tokenSequence.size()
+        }
 
-        override fun hasPrevious() = nextIndex > 0
+        override fun hasPrevious(): Boolean {
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
+            return nextIndex > 0
+        }
 
         override fun next(): TokenType {
             if (hasNext()) {
@@ -144,7 +165,11 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             throw NoSuchElementException()
         }
 
-        override fun nextIndex() = if (nextIndex < tokenSequence.size()) nextIndex else -1
+        override fun nextIndex(): Int {
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
+            return if (nextIndex < tokenSequence.size()) nextIndex else -1
+        }
 
         override fun previous(): TokenType {
             if (hasPrevious()) {
@@ -156,29 +181,47 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             throw NoSuchElementException()
         }
 
-        override fun previousIndex() = if (nextIndex > 0) nextIndex - 1 else -1
+        override fun previousIndex(): Int {
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
+            return if (nextIndex > 0) nextIndex - 1 else -1
+        }
 
         override fun add(element: TokenType) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalStateException::class.java)
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
             tokenSequence.tokens.add(lastIndex!!, element)
+            modificationCount++
+            tokenSequence.modificationCount++
         }
 
         override fun remove() {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalStateException::class.java)
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
             tokenSequence.tokens.removeAt(lastIndex!!)
             nextIndex--
             lastIndex = null
+            modificationCount++
+            tokenSequence.modificationCount++
         }
 
         override fun set(element: TokenType) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalStateException::class.java)
+            ensureEqual(modificationCount, tokenSequence.modificationCount, null,
+                    ConcurrentModificationException::class.java)
             tokenSequence.tokens[lastIndex!!] = element
+            modificationCount++
+            tokenSequence.modificationCount++
         }
 
     }
+
+    private var modificationCount = 0L
 
     /**
      * Returns a [MutableListIterator] that allows to traverse and modify the sequence.
@@ -186,7 +229,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
      * @param index The index the iterator should start at
      */
     @JvmOverloads
-    fun sequenceIterator(index: Int = 0) = TokenSequence.Iterator(this, index)
+    fun sequenceIterator(index: Int = 0) = TokenSequence.Iterator(this, index, modificationCount)
 
     /**
      * The number of tokens that are contained by the sequence.
