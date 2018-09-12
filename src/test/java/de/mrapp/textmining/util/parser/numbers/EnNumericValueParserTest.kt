@@ -13,9 +13,11 @@
  */
 package de.mrapp.textmining.util.parser.numbers
 
+import de.mrapp.textmining.util.parser.MalformedTextException
 import java.util.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 
 /**
@@ -23,12 +25,14 @@ import kotlin.test.assertEquals
  *
  * @author Michael Rapp
  */
-class EnNumberParserTest {
+class EnNumericValueParserTest {
 
     private val parser = NumberParser.Builder().build(Locale.ENGLISH)
 
     @Test
     fun testParse() {
+        assertFailsWith(MalformedTextException::class) { parser.parse("") }
+        assertFailsWith(MalformedTextException::class) { parser.parse("invalid") }
         assertEquals(parser.parse("zero"), 0)
         assertEquals(parser.parse("null"), 0)
         assertEquals(parser.parse("nil"), 0)
@@ -43,6 +47,7 @@ class EnNumberParserTest {
         assertEquals(parser.parse("nine"), 9)
 
         assertEquals(parser.parse("ten"), 10)
+        assertFailsWith(MalformedTextException::class) { parser.parse("teen") }
         assertEquals(parser.parse("eleven"), 11)
         assertEquals(parser.parse("twelve"), 12)
         assertEquals(parser.parse("thirteen"), 13)

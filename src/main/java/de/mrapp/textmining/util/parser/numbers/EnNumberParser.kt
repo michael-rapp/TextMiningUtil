@@ -32,60 +32,82 @@ class EnNumberParser(
         private val matcher: Matcher<CharSequence, CharSequence> = Matcher.equals(true)) :
         AbstractTextParser<Int>(), NumberParser {
 
-    companion object {
+    private class MergerProcessor :
+            Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
 
-        private const val REVISION_TRANSLATE = 0
+        override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
+            // TODO
+            return input
+        }
 
     }
 
     private class ResultProcessor : Processor<TokenSequence<MutableToken>, Int> {
 
         override fun process(input: TokenSequence<MutableToken>): Int {
-            // TODO
-            return 0
+            val iterator = input.sequenceIterator()
+
+            if (iterator.hasNext()) {
+                val token = iterator.next()
+
+                if (!iterator.hasNext()) {
+                    val valueToken = token.getCurrent<ValueToken<NumericValue<Int>>>()
+                    val numericValue = valueToken.value
+
+                    if (numericValue is Number || numericValue is NumberOrSummand) {
+                        return numericValue.value
+                    }
+                }
+            }
+
+            throw MalformedTextException()
         }
 
     }
 
-    private val dictionary = Dictionary<CharSequence, Int>()
+    private val dictionary = Dictionary<CharSequence, NumericValue<Int>>()
 
     private val parser = GradualTextParser.Builder()
             .setTokenizer(RegexTokenizer("\\s+|[^a-z]+"))
             .appendProcessor(Processor.mapSequence<Substring, MutableToken> { token ->
                 MutableToken(token)
             })
-            .appendProcessor(Processor.translate(dictionary, matcher, REVISION_TRANSLATE))
+            .appendProcessor(Processor.translate(dictionary, matcher))
+            .appendProcessor(Processor.ensureAllMatch<MutableToken>(predicate = { token ->
+                ((token.getCurrent() as? ValueToken<*>)?.value as? NumericValue<*>)?.value is Int
+            }))
+            .appendProcessor(MergerProcessor())
             .appendProcessor(ResultProcessor())
             .build()
 
     init {
-        dictionary.addEntry(Dictionary.Entry("zero", 0))
-        dictionary.addEntry(Dictionary.Entry("null", 0))
-        dictionary.addEntry(Dictionary.Entry("nil", 0))
-        dictionary.addEntry(Dictionary.Entry("one", 1))
-        dictionary.addEntry(Dictionary.Entry("two", 2))
-        dictionary.addEntry(Dictionary.Entry("three", 3))
-        dictionary.addEntry(Dictionary.Entry("four", 4))
-        dictionary.addEntry(Dictionary.Entry("five", 5))
-        dictionary.addEntry(Dictionary.Entry("six", 6))
-        dictionary.addEntry(Dictionary.Entry("seven", 7))
-        dictionary.addEntry(Dictionary.Entry("eight", 8))
-        dictionary.addEntry(Dictionary.Entry("nine", 9))
-        dictionary.addEntry(Dictionary.Entry("ten", 10))
-        dictionary.addEntry(Dictionary.Entry("teen", 10, AssociationType.LEFT))
-        dictionary.addEntry(Dictionary.Entry("eleven", 11))
-        dictionary.addEntry(Dictionary.Entry("twelve", 12))
-        dictionary.addEntry(Dictionary.Entry("thirteen", 13))
-        dictionary.addEntry(Dictionary.Entry("fifteen", 15))
-        dictionary.addEntry(Dictionary.Entry("eighteen", 18))
-        dictionary.addEntry(Dictionary.Entry("twenty", 20, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("thirty", 30, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("fourty", 40, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("fifty", 50, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("sixty", 60, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("seventy", 70, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("eighty", 80, AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("ninety", 90, AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("zero", Number(0)))
+        dictionary.addEntry(Dictionary.Entry("null", Number(0)))
+        dictionary.addEntry(Dictionary.Entry("nil", Number(0)))
+        dictionary.addEntry(Dictionary.Entry("one", Number(1)))
+        dictionary.addEntry(Dictionary.Entry("two", Number(2)))
+        dictionary.addEntry(Dictionary.Entry("three", Number(3)))
+        dictionary.addEntry(Dictionary.Entry("four", Number(4)))
+        dictionary.addEntry(Dictionary.Entry("five", Number(5)))
+        dictionary.addEntry(Dictionary.Entry("six", Number(6)))
+        dictionary.addEntry(Dictionary.Entry("seven", Number(7)))
+        dictionary.addEntry(Dictionary.Entry("eight", Number(8)))
+        dictionary.addEntry(Dictionary.Entry("nine", Number(9)))
+        dictionary.addEntry(Dictionary.Entry("ten", Number(10)))
+        dictionary.addEntry(Dictionary.Entry("teen", Summand(10), AssociationType.LEFT))
+        dictionary.addEntry(Dictionary.Entry("eleven", Number(11)))
+        dictionary.addEntry(Dictionary.Entry("twelve", Number(12)))
+        dictionary.addEntry(Dictionary.Entry("thirteen", Number(13)))
+        dictionary.addEntry(Dictionary.Entry("fifteen", Number(15)))
+        dictionary.addEntry(Dictionary.Entry("eighteen", Number(18)))
+        dictionary.addEntry(Dictionary.Entry("twenty", NumberOrSummand(20), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("thirty", NumberOrSummand(30), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("fourty", NumberOrSummand(40), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("fifty", NumberOrSummand(50), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("sixty", NumberOrSummand(60), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("seventy", NumberOrSummand(70), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("eighty", NumberOrSummand(80), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("ninety", NumberOrSummand(90), AssociationType.RIGHT))
     }
 
     override fun onParse(text: CharSequence) = parser.parse(text)
