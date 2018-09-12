@@ -14,6 +14,7 @@
 package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.tokenizer.Substring
+import java.util.*
 import kotlin.test.*
 
 /**
@@ -415,6 +416,19 @@ class TokenSequenceTest {
         assertTrue(iterator2.hasNext())
         assertEquals(3, iterator2.nextIndex())
         assertEquals("foo", iterator2.next().getToken())
+    }
+
+    @Test
+    fun testConcurrentModificationException() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator1 = sequence.sequenceIterator()
+        val iterator2 = sequence.sequenceIterator()
+        iterator2.next()
+        iterator2.set(Substring("modified"))
+        assertFailsWith(ConcurrentModificationException::class) { iterator1.next() }
     }
 
 }
