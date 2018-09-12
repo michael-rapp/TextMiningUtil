@@ -25,11 +25,9 @@ class MalformedTextExceptionTest {
 
     @Test
     fun testConstructor() {
-        val text = "text"
         val message = "message"
         val cause = Exception()
-        val exception = MalformedTextException(text, message, cause)
-        assertEquals(text, exception.text)
+        val exception = MalformedTextException(message, cause)
         assertEquals(message, exception.message)
         assertEquals(cause, exception.cause)
     }

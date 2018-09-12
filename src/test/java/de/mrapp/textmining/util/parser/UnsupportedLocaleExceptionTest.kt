@@ -25,11 +25,9 @@ class UnsupportedLocaleExceptionTest {
 
     @Test
     fun testConstructor() {
-        val text = "text"
         val message = "message"
         val cause = Exception()
-        val exception = UnsupportedLocaleException(text, message, cause)
-        assertEquals(text, exception.text)
+        val exception = UnsupportedLocaleException(message, cause)
         assertEquals(message, exception.message)
         assertEquals(cause, exception.cause)
     }
