@@ -191,11 +191,11 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.ensureAllMatch<Substring>({ token ->
+        val processor = Processor.ensureAllMatch<Substring>(predicate = { token ->
             token.getToken().isNotEmpty()
         })
         assertEquals(sequence, processor.process(sequence))
-        val processor2 = Processor.ensureAllMatch<Substring>({ token ->
+        val processor2 = Processor.ensureAllMatch<Substring>(predicate = { token ->
             token.getToken().startsWith("t")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
@@ -208,11 +208,11 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.ensureAnyMatch<Substring>({ token ->
+        val processor = Processor.ensureAnyMatch<Substring>(predicate = { token ->
             token.getToken().startsWith("t")
         })
         assertEquals(sequence, processor.process(sequence))
-        val processor2 = Processor.ensureAnyMatch<Substring>({ token ->
+        val processor2 = Processor.ensureAnyMatch<Substring>(predicate = { token ->
             token.getToken().startsWith("x")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
@@ -225,11 +225,11 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.ensureNoneMatch<Substring>({ token ->
+        val processor = Processor.ensureNoneMatch<Substring>(predicate = { token ->
             token.getToken().startsWith("x")
         })
         assertEquals(sequence, processor.process(sequence))
-        val processor2 = Processor.ensureNoneMatch<Substring>({ token ->
+        val processor2 = Processor.ensureNoneMatch<Substring>(predicate = { token ->
             token.getToken().startsWith("t")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
