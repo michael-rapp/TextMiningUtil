@@ -15,10 +15,7 @@ package de.mrapp.textmining.util.parser
 
 import de.mrapp.textmining.util.tokenizer.RegexTokenizer
 import de.mrapp.textmining.util.tokenizer.Substring
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 /**
  * Tests the functionality of the class [Processor].
@@ -185,6 +182,57 @@ class ProcessorTest {
         assertTrue(iterator.hasNext())
         assertEquals("three", iterator.next().getToken())
         assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testEnsureAllMatch() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.ensureAllMatch<Substring>({ token ->
+            token.getToken().isNotEmpty()
+        })
+        assertEquals(sequence, processor.process(sequence))
+        val processor2 = Processor.ensureAllMatch<Substring>({ token ->
+            token.getToken().startsWith("t")
+        })
+        assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
+    }
+
+    @Test
+    fun testEnsureAnyMatch() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.ensureAnyMatch<Substring>({ token ->
+            token.getToken().startsWith("t")
+        })
+        assertEquals(sequence, processor.process(sequence))
+        val processor2 = Processor.ensureAnyMatch<Substring>({ token ->
+            token.getToken().startsWith("x")
+        })
+        assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
+    }
+
+    @Test
+    fun testEnsureNoneMatch() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.ensureNoneMatch<Substring>({ token ->
+            token.getToken().startsWith("x")
+        })
+        assertEquals(sequence, processor.process(sequence))
+        val processor2 = Processor.ensureNoneMatch<Substring>({ token ->
+            token.getToken().startsWith("t")
+        })
+        assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
     }
 
 }

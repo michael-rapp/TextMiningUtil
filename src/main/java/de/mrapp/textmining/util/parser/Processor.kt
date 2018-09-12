@@ -119,6 +119,78 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that throws a [MalformedTextException] if not all tokens
+         * in a [TokenSequence] fulfill a certain [predicate]
+         *
+         * @param exceptionFactory Creates and returns the [MalformedTextException] to be thrown
+         */
+        @JvmOverloads
+        fun <TokenType : Token> ensureAllMatch(
+                predicate: (TokenType) -> Boolean,
+                exceptionFactory: () -> MalformedTextException = { MalformedTextException() }):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    if (input.iterator().asSequence().all { predicate.invoke(it) }) {
+                        return input
+                    }
+
+                    throw exceptionFactory.invoke()
+                }
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that throws a [MalformedTextException] if at least one
+         * token in a [TokenSequence] fulfills a certain [predicate]
+         *
+         * @param exceptionFactory Creates and returns the [MalformedTextException] to be thrown
+         */
+        @JvmOverloads
+        fun <TokenType : Token> ensureNoneMatch(
+                predicate: (TokenType) -> Boolean,
+                exceptionFactory: () -> MalformedTextException = { MalformedTextException() }):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    if (input.iterator().asSequence().any { predicate.invoke(it) }) {
+                        throw exceptionFactory.invoke()
+                    }
+
+                    return input
+                }
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that throws a [MalformedTextException] if not at least
+         * one token in a [TokenSequence] fulfills a certain [predicate]
+         *
+         * @param exceptionFactory Creates and returns the [MalformedTextException] to be thrown
+         */
+        @JvmOverloads
+        fun <TokenType : Token> ensureAnyMatch(
+                predicate: (TokenType) -> Boolean,
+                exceptionFactory: () -> MalformedTextException = { MalformedTextException() }):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    if (input.iterator().asSequence().any { predicate.invoke(it) }) {
+                        return input
+                    }
+
+                    throw exceptionFactory.invoke()
+                }
+
+            }
+        }
+
+        /**
          * Creates and returns a processor that uses a specific [dictionary] to translate the
          * [MutableToken]s of a [TokenSequence]. The tokens are converted into [ValueToken]s that
          * contain the translation as their values.
