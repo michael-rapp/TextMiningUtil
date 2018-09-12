@@ -73,9 +73,10 @@ class SubstringTokenizerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testTokenizeThrowsExceptionIfTextIsEmpty() {
-        SubstringTokenizer().tokenize("")
+        val tokens = SubstringTokenizer().tokenize("")
+        assertTrue(tokens.isEmpty())
     }
 
     @Test

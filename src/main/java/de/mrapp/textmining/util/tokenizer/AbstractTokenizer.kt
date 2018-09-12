@@ -14,7 +14,6 @@
 package de.mrapp.textmining.util.tokenizer
 
 import de.mrapp.textmining.util.Token
-import de.mrapp.util.Condition.ensureNotEmpty
 
 /**
  * An abstract base class for all tokenizers.
@@ -53,10 +52,13 @@ abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
                                       map: MutableMap<String, TokenType>)
 
     override fun tokenize(text: CharSequence): Collection<TokenType> {
-        ensureNotEmpty(text, "The text may not be empty")
-        val tokens = HashMap<String, TokenType>()
-        onTokenize(text.toString(), tokens)
-        return tokens.values
+        if (text.isNotEmpty()) {
+            val tokens = HashMap<String, TokenType>()
+            onTokenize(text.toString(), tokens)
+            return tokens.values
+        }
+
+        return emptyList()
     }
 
 }

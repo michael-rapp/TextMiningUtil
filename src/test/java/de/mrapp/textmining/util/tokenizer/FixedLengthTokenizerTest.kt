@@ -52,9 +52,10 @@ class FixedLengthTokenizerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testTokenizeThrowsExceptionIfTextIsEmpty() {
-        FixedLengthTokenizer(2).tokenize("")
+        val tokens = FixedLengthTokenizer(2).tokenize("")
+        assertTrue(tokens.isEmpty())
     }
 
     @Test(expected = IllegalArgumentException::class)

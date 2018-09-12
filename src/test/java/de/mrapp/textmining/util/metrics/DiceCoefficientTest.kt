@@ -81,14 +81,14 @@ class DiceCoefficientTest {
         assertEquals(0.0, diceCoefficient.evaluate("abcd", "xxxx"), 0.0)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testEvaluateThrowsExceptionIfFistTextIsEmpty() {
-        DiceCoefficient().evaluate("", "foo")
+        assertEquals(0.0, DiceCoefficient().evaluate("", "foo"), 0.0)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testEvaluateThrowsExceptionIfSecondTextIsEmpty() {
-        DiceCoefficient().evaluate("foo", "")
+        assertEquals(0.0, DiceCoefficient().evaluate("foo", ""), 0.0)
     }
 
     @Test

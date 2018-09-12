@@ -89,9 +89,10 @@ class RegexTokenizerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testTokenizeThrowsExceptionIfTextIsEmpty() {
-        RegexTokenizer(",").tokenize("")
+        val tokens = RegexTokenizer(",").tokenize("")
+        assertTrue(tokens.isEmpty())
     }
 
     @Test

@@ -115,9 +115,10 @@ class NGramTokenizerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testTokenizeThrowsExceptionIfTextIsEmpty() {
-        NGramTokenizer().tokenize("")
+        val tokens = NGramTokenizer().tokenize("")
+        assertTrue(tokens.isEmpty())
     }
 
     @Test
