@@ -235,4 +235,25 @@ class ProcessorTest {
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
     }
 
+    @Test
+    fun testForEach() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val processor = Processor.forEach<Substring> { it.setToken("${it.getToken()} modified") }
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("one modified", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("two modified", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("three modified", iterator.next().getToken())
+        assertTrue(iterator.hasNext())
+        assertEquals("four modified", iterator.next().getToken())
+        assertFalse(iterator.hasNext())
+    }
+
 }

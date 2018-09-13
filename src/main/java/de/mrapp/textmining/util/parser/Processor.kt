@@ -191,6 +191,22 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that performs a specific [action] for each token in a
+         * [TokenSequence].
+         */
+        fun <TokenType : Token> forEach(action: (TokenType) -> Unit):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    input.iterator().forEach(action)
+                    return input
+                }
+
+            }
+        }
+
+        /**
          * Creates and returns a processor that uses a specific [dictionary] to translate the
          * [MutableToken]s of a [TokenSequence]. The tokens are converted into [ValueToken]s that
          * contain the translation as their values.
@@ -201,22 +217,14 @@ interface Processor<I, O> {
         @JvmOverloads
         fun <T> translate(dictionary: Dictionary<CharSequence, T>, revision: Int? = null):
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
-            return object : Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
-
-                override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
-                    input.sequenceIterator().forEach { token ->
-                        val entry = dictionary.lookup(token.getToken())
-                        entry?.let { it ->
-                            val valueToken = ValueToken(token.getToken(), it.value,
-                                    it.associationType, token.getPositions())
-                            revision?.let { token.mutate(token, revision) }
-                                    ?: token.mutate(valueToken)
-                        }
-                    }
-
-                    return input
+            return forEach { token ->
+                val entry = dictionary.lookup(token.getToken())
+                entry?.let { it ->
+                    val valueToken = ValueToken(token.getToken(), it.value,
+                            it.associationType, token.getPositions())
+                    revision?.let { token.mutate(token, revision) }
+                            ?: token.mutate(valueToken)
                 }
-
             }
         }
 
@@ -236,23 +244,15 @@ interface Processor<I, O> {
                           revision: Int? = null,
                           tieBreaker: TieBreaker<Match<Dictionary.Entry<CharSequence, T>, CharSequence>>? = null):
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
-            return object : Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
-
-                override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
-                    input.sequenceIterator().forEach { token ->
-                        val matches = dictionary.lookup(token.getToken(), matcher)
-                        matches.getBestMatch(tieBreaker)?.let { it ->
-                            val entry = it.first
-                            val valueToken = ValueToken(token.getToken(), entry.value,
-                                    entry.associationType, token.getPositions())
-                            revision?.let { token.mutate(valueToken, revision) }
-                                    ?: token.mutate(valueToken)
-                        }
-                    }
-
-                    return input
+            return forEach { token ->
+                val matches = dictionary.lookup(token.getToken(), matcher)
+                matches.getBestMatch(tieBreaker)?.let { it ->
+                    val entry = it.first
+                    val valueToken = ValueToken(token.getToken(), entry.value,
+                            entry.associationType, token.getPositions())
+                    revision?.let { token.mutate(valueToken, revision) }
+                            ?: token.mutate(valueToken)
                 }
-
             }
         }
 
