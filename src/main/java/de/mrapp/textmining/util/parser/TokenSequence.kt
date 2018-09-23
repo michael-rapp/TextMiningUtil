@@ -19,6 +19,7 @@ import de.mrapp.util.Condition.ensureAtMaximum
 import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEqual
 import de.mrapp.util.Condition.ensureNotNull
+import de.mrapp.util.Condition.ensureTrue
 import java.util.*
 import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList
@@ -140,6 +141,60 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             tokenSequence.tokens.add(lastIndex!! + 1, newToken)
             modificationCount++
             tokenSequence.modificationCount++
+        }
+
+        /**
+         * Searches for the next token that matches a specific [matcherFunction]. If such a token is
+         * found, true will be returned and calling [next] will result in the found token to be
+         * returned. If no matching token can be found, false will be returned and the iterator will
+         * point to the token that is located after the token, the search looked at last.
+         *
+         * @param maxSteps The maximum steps to look ahead or -1, if the search should be continued
+         *                 until the end of the sequence is reached
+         */
+        @JvmOverloads
+        fun findNext(matcherFunction: (Token) -> Boolean, maxSteps: Int = -1): Boolean {
+            ensureTrue(maxSteps == -1 || maxSteps > 0,
+                    "The maximum number of steps must be -1 or at least 1")
+            var steps = 0
+
+            while ((maxSteps == -1 || steps < maxSteps) && hasNext()) {
+                steps += 1
+
+                if (matcherFunction.invoke(next())) {
+                    previous()
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        /**
+         * Searches for the last token that matches a specific [matcherFunction]. If such a token is
+         * found, true will be returned and calling [previous] will result in the found token to be
+         * returned. If no matching token can be found, false will be returned and the iterator will
+         * point to the token that is located before the token, the search looked at last.
+         *
+         * @param maxSteps The maximum steps to look back or -1, if the search should be continued
+         *                 until the start of the sequence is reached
+         */
+        @JvmOverloads
+        fun findPrevious(matcherFunction: (Token) -> Boolean, maxSteps: Int = -1): Boolean {
+            ensureTrue(maxSteps == -1 || maxSteps > 0,
+                    "The maximum number of steps must be -1 or at least 1")
+            var steps = 0
+
+            while ((maxSteps== -1 || steps < maxSteps) && hasPrevious()) {
+                steps += 1
+
+                if (matcherFunction.invoke(previous())) {
+                    next()
+                    return true
+                }
+            }
+
+            return false
         }
 
         override fun hasNext(): Boolean {
