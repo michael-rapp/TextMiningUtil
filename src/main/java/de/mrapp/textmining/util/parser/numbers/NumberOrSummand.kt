@@ -20,4 +20,8 @@ package de.mrapp.textmining.util.parser.numbers
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class NumberOrSummand(override val value: Int) : NumericValue<Int>
+data class NumberOrSummand(override var value: Int) : Modifier<Int> {
+
+    override fun apply(value: NumericValue<Int>) = Number(value.value + this.value)
+
+}

@@ -309,7 +309,10 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.nextIndex())
         assertEquals("3", iterator.next().getToken())
-        iterator.merge(1, ",")
+        iterator.merge(1) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.setToken("${tokenToMerge.getToken()},${tokenToRetain.getToken()}")
+            tokenToRetain
+        }
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.nextIndex())
         assertEquals("4", iterator.next().getToken())
@@ -352,7 +355,10 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(1, iterator.nextIndex())
         assertEquals("1", iterator.next().getToken())
-        iterator.merge(3, ",")
+        iterator.merge(3) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.setToken("${tokenToRetain.getToken()},${tokenToMerge.getToken()}")
+            tokenToRetain
+        }
         assertTrue(iterator.hasNext())
         assertEquals(2, iterator.nextIndex())
         assertEquals("2", iterator.next().getToken())
@@ -429,6 +435,133 @@ class TokenSequenceTest {
         iterator2.next()
         iterator2.set(Substring("modified"))
         assertFailsWith(ConcurrentModificationException::class) { iterator1.next() }
+    }
+
+    @Test
+    fun testFindNext1() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        val result = iterator.findNext({ token -> token.getToken() == "foo" })
+        assertTrue(result)
+        assertEquals(0, iterator.nextIndex())
+        assertEquals("foo", iterator.next().getToken())
+    }
+
+    @Test
+    fun testFindNext2() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        val result = iterator.findNext({ token -> token.getToken() == "bar" })
+        assertTrue(result)
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+    }
+
+    @Test
+    fun testFindNextIfMatchingTokenNotFound() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        val result = iterator.findNext({ token -> token.getToken() == "xxx" })
+        assertFalse(result)
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testFindNextIfMaxStepsSpecified() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        val result = iterator.findNext({ token -> token.getToken() == "bar" }, 2)
+        assertTrue(result)
+        assertEquals(1, iterator.nextIndex())
+        assertEquals("bar", iterator.next().getToken())
+    }
+
+    @Test
+    fun testFindNextIfMaxStepsSpecifiedAndMatchingTokenNotFound() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator()
+        val result = iterator.findNext({ token -> token.getToken() == "bar" }, 1)
+        assertFalse(result)
+        assertEquals(1, iterator.nextIndex())
+    }
+
+
+    @Test
+    fun testFindPrevious1() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        val result = iterator.findPrevious({ token -> token.getToken() == "foo" })
+        assertTrue(result)
+        assertEquals(2, iterator.previousIndex())
+        assertEquals("foo", iterator.previous().getToken())
+    }
+
+    @Test
+    fun testFindPrevious2() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        val result = iterator.findPrevious({ token -> token.getToken() == "bar" })
+        assertTrue(result)
+        assertEquals(1, iterator.previousIndex())
+        assertEquals("bar", iterator.previous().getToken())
+    }
+
+    @Test
+    fun testFindPreviousIfMatchingTokenNotFound() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        val result = iterator.findPrevious({ token -> token.getToken() == "xxx" })
+        assertFalse(result)
+        assertFalse(iterator.hasPrevious())
+    }
+
+    @Test
+    fun testFindPreviousIfMaxStepsSpecified() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        val result = iterator.findPrevious({ token -> token.getToken() == "bar" }, 2)
+        assertTrue(result)
+        assertEquals(1, iterator.previousIndex())
+        assertEquals("bar", iterator.previous().getToken())
+    }
+
+    @Test
+    fun testFindPreviousIfMaxStepsSpecifiedAndMatchingTokenNotFound() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size())
+        val result = iterator.findPrevious({ token -> token.getToken() == "bar" }, 1)
+        assertFalse(result)
+        assertEquals(1, iterator.previousIndex())
     }
 
 }

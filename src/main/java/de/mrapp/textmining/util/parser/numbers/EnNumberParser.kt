@@ -36,7 +36,45 @@ class EnNumberParser(
             Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
 
         override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
-            // TODO
+            val iterator: TokenSequence.Iterator<MutableToken> = input.sequenceIterator()
+
+            while (iterator.findNext({ token -> token.getCurrent<ValueToken<NumericValue<Int>>>().value is Modifier })) {
+                val token = iterator.next().getCurrent<ValueToken<NumericValue<Int>>>()
+
+                if (token.associationType == AssociationType.LEFT) {
+                    val previousIndex = iterator.previousIndex()
+
+                    if (previousIndex > 0) {
+                        iterator.merge(iterator.previousIndex() - 1) { tokenToRetain, tokenToMerge ->
+                            val first = tokenToRetain.getCurrent<ValueToken<Modifier<Int>>>()
+                            val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
+                            val modifiedNumber = first.value!!.apply(second.value!!)
+                            tokenToRetain.mutate(
+                                    ValueToken("${tokenToMerge.getToken()}${tokenToRetain.getToken()}",
+                                            modifiedNumber))
+                            tokenToRetain
+                        }
+                    }
+                } else if (token.associationType == AssociationType.RIGHT) {
+                    val nextIndex = iterator.nextIndex()
+
+                    if (nextIndex != -1 && nextIndex < input.size()) {
+                        iterator.merge(nextIndex) { tokenToRetain, tokenToMerge ->
+                            val first = tokenToRetain.getCurrent<ValueToken<Modifier<Int>>>()
+                            val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
+                            val modifiedNumber = first.value!!.apply(second.value!!)
+                            tokenToRetain.mutate(ValueToken(
+                                    "${tokenToRetain.getToken()}${tokenToMerge.getToken()}",
+                                    modifiedNumber))
+                            tokenToRetain
+                        }
+                    }
+                } else {
+                    throw IllegalStateException(
+                            "Invalid association type ${token.associationType} for numeric value ${token.value!!.javaClass.simpleName}")
+                }
+            }
+
             return input
         }
 

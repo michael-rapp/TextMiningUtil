@@ -21,4 +21,4 @@ package de.mrapp.textmining.util.parser.numbers
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Number(override val value: Int) : NumericValue<Int>
+data class Number(override var value: Int) : NumericValue<Int>
