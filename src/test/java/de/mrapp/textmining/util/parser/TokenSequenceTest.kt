@@ -401,7 +401,7 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(1, iterator.nextIndex())
         assertEquals("bar", iterator.next().getToken())
-        iterator.split { _ -> 1 }
+        iterator.split { _ -> Pair(Substring("b"), Substring("ar")) }
         assertTrue(iterator.hasNext())
         assertEquals(2, iterator.nextIndex())
         assertEquals("ar", iterator.next().getToken())

@@ -89,7 +89,4 @@ data class ValueToken<T> @JvmOverloads constructor(
 
     override fun toString() = token.toString()
 
-    override fun copy() = copy(token = token, value = value, associationType = associationType,
-            positions = HashSet(positions))
-
 }
