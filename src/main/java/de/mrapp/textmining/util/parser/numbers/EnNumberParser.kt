@@ -140,7 +140,7 @@ class EnNumberParser(
         dictionary.addEntry(Dictionary.Entry("eighteen", Number(18)))
         dictionary.addEntry(Dictionary.Entry("twenty", NumberOrSummand(20), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("thirty", NumberOrSummand(30), AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("fourty", NumberOrSummand(40), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("forty", NumberOrSummand(40), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("fifty", NumberOrSummand(50), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("sixty", NumberOrSummand(60), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("seventy", NumberOrSummand(70), AssociationType.RIGHT))
