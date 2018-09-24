@@ -23,6 +23,6 @@ package de.mrapp.textmining.util.parser.numbers
  */
 interface NumericValue<T : kotlin.Number> {
 
-    val value: T
+    var value: T
 
 }

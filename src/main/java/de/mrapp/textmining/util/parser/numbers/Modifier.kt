@@ -14,14 +14,17 @@
 package de.mrapp.textmining.util.parser.numbers
 
 /**
- * Represents a multiplier, a [Number] can be multiplied by.
+ * Represents a [NumericValue] that can be used to modify another [NumericValue].
  *
- * @param value The multiplier
+ * @param T The type of the numeric value
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Multiplier(override var value: Int) : Modifier<Int> {
+interface Modifier<T : kotlin.Number> : NumericValue<T> {
 
-    override fun apply(value: NumericValue<Int>) = Number(this.value * value.value)
+    /**
+     * Applies the modifier to a specific [value] and returns the result.
+     */
+    fun apply(value: NumericValue<T>): NumericValue<T>
 
 }

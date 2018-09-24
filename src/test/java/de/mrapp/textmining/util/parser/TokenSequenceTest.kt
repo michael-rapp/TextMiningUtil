@@ -309,7 +309,10 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.nextIndex())
         assertEquals("3", iterator.next().getToken())
-        iterator.merge(1, ",")
+        iterator.merge(1) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.setToken("${tokenToMerge.getToken()},${tokenToRetain.getToken()}")
+            tokenToRetain
+        }
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.nextIndex())
         assertEquals("4", iterator.next().getToken())
@@ -352,7 +355,10 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(1, iterator.nextIndex())
         assertEquals("1", iterator.next().getToken())
-        iterator.merge(3, ",")
+        iterator.merge(3) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.setToken("${tokenToRetain.getToken()},${tokenToMerge.getToken()}")
+            tokenToRetain
+        }
         assertTrue(iterator.hasNext())
         assertEquals(2, iterator.nextIndex())
         assertEquals("2", iterator.next().getToken())

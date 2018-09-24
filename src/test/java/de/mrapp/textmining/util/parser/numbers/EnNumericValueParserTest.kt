@@ -14,7 +14,7 @@
 package de.mrapp.textmining.util.parser.numbers
 
 import de.mrapp.textmining.util.parser.MalformedTextException
-import java.util.Locale
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -33,52 +33,52 @@ class EnNumericValueParserTest {
     fun testParse() {
         assertFailsWith(MalformedTextException::class) { parser.parse("") }
         assertFailsWith(MalformedTextException::class) { parser.parse("invalid") }
-        assertEquals(parser.parse("zero"), 0)
-        assertEquals(parser.parse("null"), 0)
-        assertEquals(parser.parse("nil"), 0)
-        assertEquals(parser.parse("one"), 1)
-        assertEquals(parser.parse("two"), 2)
-        assertEquals(parser.parse("three"), 3)
-        assertEquals(parser.parse("four"), 4)
-        assertEquals(parser.parse("five"), 5)
-        assertEquals(parser.parse("six"), 6)
-        assertEquals(parser.parse("seven"), 7)
-        assertEquals(parser.parse("eight"), 8)
-        assertEquals(parser.parse("nine"), 9)
+        assertEquals(0, parser.parse("zero"))
+        assertEquals(0, parser.parse("null"))
+        assertEquals(0, parser.parse("nil"))
+        assertEquals(1, parser.parse("one"))
+        assertEquals(2, parser.parse("two"))
+        assertEquals(3, parser.parse("three"))
+        assertEquals(4, parser.parse("four"))
+        assertEquals(5, parser.parse("five"))
+        assertEquals(6, parser.parse("six"))
+        assertEquals(7, parser.parse("seven"))
+        assertEquals(8, parser.parse("eight"))
+        assertEquals(9, parser.parse("nine"))
 
-        assertEquals(parser.parse("ten"), 10)
+        assertEquals(10, parser.parse("ten"))
         assertFailsWith(MalformedTextException::class) { parser.parse("teen") }
-        assertEquals(parser.parse("eleven"), 11)
-        assertEquals(parser.parse("twelve"), 12)
-        assertEquals(parser.parse("thirteen"), 13)
-        assertEquals(parser.parse("four-teen"), 14)
-        assertEquals(parser.parse("fifteen"), 15)
-        assertEquals(parser.parse("six-teen"), 16)
-        assertEquals(parser.parse("seven-teen"), 17)
-        assertEquals(parser.parse("eighteen"), 18)
-        assertEquals(parser.parse("nine-teen"), 19)
+        assertEquals(11, parser.parse("eleven"))
+        assertEquals(12, parser.parse("twelve"))
+        assertEquals(13, parser.parse("thirteen"))
+        assertEquals(14, parser.parse("four-teen"))
+        assertEquals(15, parser.parse("fifteen"))
+        assertEquals(16, parser.parse("six-teen"))
+        assertEquals(17, parser.parse("seven-teen"))
+        assertEquals(18, parser.parse("eighteen"))
+        assertEquals(19, parser.parse("nine-teen"))
 
-        assertEquals(parser.parse("twenty"), 20)
-        assertEquals(parser.parse("twenty-one"), 21)
-        assertEquals(parser.parse("twenty-two"), 22)
-        assertEquals(parser.parse("twenty-three"), 23)
-        assertEquals(parser.parse("twenty-four"), 24)
-        assertEquals(parser.parse("twenty-five"), 25)
-        assertEquals(parser.parse("twenty-six"), 26)
-        assertEquals(parser.parse("twenty-seven"), 27)
-        assertEquals(parser.parse("twenty-eight"), 28)
-        assertEquals(parser.parse("twenty-nine"), 29)
+        assertEquals(20, parser.parse("twenty"))
+        assertEquals(21, parser.parse("twenty-one"))
+        assertEquals(22, parser.parse("twenty-two"))
+        assertEquals(23, parser.parse("twenty-three"))
+        assertEquals(24, parser.parse("twenty-four"))
+        assertEquals(25, parser.parse("twenty-five"))
+        assertEquals(26, parser.parse("twenty-six"))
+        assertEquals(27, parser.parse("twenty-seven"))
+        assertEquals(28, parser.parse("twenty-eight"))
+        assertEquals(29, parser.parse("twenty-nine"))
 
-        assertEquals(parser.parse("thirty"), 30)
-        assertEquals(parser.parse("thirty-one"), 31)
-        assertEquals(parser.parse("thirty-two"), 32)
-        assertEquals(parser.parse("thirty-three"), 33)
-        assertEquals(parser.parse("thirty-four"), 34)
-        assertEquals(parser.parse("thirty-five"), 35)
-        assertEquals(parser.parse("thirty-six"), 36)
-        assertEquals(parser.parse("thirty-seven"), 37)
-        assertEquals(parser.parse("thirty-eight"), 38)
-        assertEquals(parser.parse("thirty-nine"), 39)
+        assertEquals(30, parser.parse("thirty"))
+        assertEquals(31, parser.parse("thirty-one"))
+        assertEquals(32, parser.parse("thirty-two"))
+        assertEquals(33, parser.parse("thirty-three"))
+        assertEquals(34, parser.parse("thirty-four"))
+        assertEquals(35, parser.parse("thirty-five"))
+        assertEquals(36, parser.parse("thirty-six"))
+        assertEquals(37, parser.parse("thirty-seven"))
+        assertEquals(38, parser.parse("thirty-eight"))
+        assertEquals(39, parser.parse("thirty-nine"))
     }
 
     @Test

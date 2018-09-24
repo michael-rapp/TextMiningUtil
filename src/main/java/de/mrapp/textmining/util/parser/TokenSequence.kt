@@ -93,10 +93,9 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
 
         /**
          * Merges the current token with the token at a specific [index] using a specific
-         * [separator]. The token at the given [index] will be removed.
+         * [mergerFunction]. The token at the given [index] will be removed.
          */
-        @JvmOverloads
-        fun merge(index: Int, separator: String = "") {
+        fun merge(index: Int, mergerFunction: (TokenType, TokenType) -> TokenType) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalArgumentException::class.java)
             ensureNotEqual(lastIndex, index, "Can only merge with different token")
@@ -104,12 +103,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                     ConcurrentModificationException::class.java)
             val tokenToMerge = tokenSequence.tokens[index]
             val tokenToRetain = tokenSequence.tokens[lastIndex!!]
-            val prefix = if (lastIndex!! > index)
-                tokenToMerge.getToken() else tokenToRetain.getToken()
-            val suffix = if (lastIndex!! > index)
-                tokenToRetain.getToken() else tokenToMerge.getToken()
-            val newToken = "$prefix$separator$suffix"
-            tokenToRetain.setToken(newToken)
+            val newToken = mergerFunction.invoke(tokenToRetain, tokenToMerge)
+            tokenSequence.tokens[lastIndex!!] = newToken
             tokenSequence.tokens.removeAt(index)
 
             if (lastIndex!! > index) {
@@ -126,7 +121,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          * The divider function must return the position, the suffix should start at.
          */
         @Suppress("UNCHECKED_CAST")
-        fun split(dividerFunction: (Token) -> Int) {
+        fun split(dividerFunction: (TokenType) -> Int) {
             ensureNotNull(lastIndex, "next() or previous() not called",
                     IllegalArgumentException::class.java)
             ensureEqual(modificationCount, tokenSequence.modificationCount, null,
@@ -153,7 +148,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          *                 until the end of the sequence is reached
          */
         @JvmOverloads
-        fun findNext(matcherFunction: (Token) -> Boolean, maxSteps: Int = -1): Boolean {
+        fun findNext(matcherFunction: (TokenType) -> Boolean, maxSteps: Int = -1): Boolean {
             ensureTrue(maxSteps == -1 || maxSteps > 0,
                     "The maximum number of steps must be -1 or at least 1")
             var steps = 0
@@ -180,12 +175,12 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          *                 until the start of the sequence is reached
          */
         @JvmOverloads
-        fun findPrevious(matcherFunction: (Token) -> Boolean, maxSteps: Int = -1): Boolean {
+        fun findPrevious(matcherFunction: (TokenType) -> Boolean, maxSteps: Int = -1): Boolean {
             ensureTrue(maxSteps == -1 || maxSteps > 0,
                     "The maximum number of steps must be -1 or at least 1")
             var steps = 0
 
-            while ((maxSteps== -1 || steps < maxSteps) && hasPrevious()) {
+            while ((maxSteps == -1 || steps < maxSteps) && hasPrevious()) {
                 steps += 1
 
                 if (matcherFunction.invoke(previous())) {
