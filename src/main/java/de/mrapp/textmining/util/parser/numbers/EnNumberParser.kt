@@ -146,6 +146,7 @@ class EnNumberParser(
         dictionary.addEntry(Dictionary.Entry("seventy", NumberOrSummand(70), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("eighty", NumberOrSummand(80), AssociationType.RIGHT))
         dictionary.addEntry(Dictionary.Entry("ninety", NumberOrSummand(90), AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("hundred", NumberOrMultiplier(100), AssociationType.LEFT))
     }
 
     override fun onParse(text: CharSequence) = parser.parse(text)
