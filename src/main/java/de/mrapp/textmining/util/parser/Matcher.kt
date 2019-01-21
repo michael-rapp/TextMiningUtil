@@ -46,7 +46,7 @@ interface Matcher<F, S> {
                         if (first.toString().equals(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
-                override fun isGainMetric() = true
+                override val isGainMetric = true
 
             }
         }
@@ -66,7 +66,7 @@ interface Matcher<F, S> {
                         if (first.toString().startsWith(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
-                override fun isGainMetric() = true
+                override val isGainMetric = true
 
             }
         }
@@ -86,7 +86,7 @@ interface Matcher<F, S> {
                         if (first.toString().endsWith(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
-                override fun isGainMetric() = true
+                override val isGainMetric = true
 
             }
         }
@@ -106,7 +106,7 @@ interface Matcher<F, S> {
                         if (first.toString().contains(second.toString(), ignoreCase))
                             Match(first, second, 1.0) else null
 
-                override fun isGainMetric() = true
+                override val isGainMetric = true
 
             }
         }
@@ -122,7 +122,7 @@ interface Matcher<F, S> {
                         if (second.matcher(first.toString()).matches()) Match(first, second, 1.0)
                         else null
 
-                override fun isGainMetric() = true
+                override val isGainMetric = true
 
             }
         }
@@ -146,7 +146,7 @@ interface Matcher<F, S> {
                     return if (matches) Match(first, second, heuristicValue) else null
                 }
 
-                override fun isGainMetric() = metric.isGainMetric
+                override val isGainMetric = metric.isGainMetric
 
             }
         }
@@ -167,9 +167,16 @@ interface Matcher<F, S> {
     fun getMatch(first: F, second: S): Match<F, S>?
 
     /**
-     * Returns, whether matches according to the matcher represent a greater similarity, if their
-     * heuristic values are greater, false otherwise
+     * True, if matches according to the matcher represent a greater similarity, if their heuristic
+     * values are greater, false otherwise
      */
-    fun isGainMetric(): Boolean
+    val isGainMetric: Boolean
+
+    /**
+     * True, if matches according to the matcher represent a greater similarity, if their heuristic
+     * values are smaller, false otherwise
+     */
+    val isLossMetric: Boolean
+        get() = !isGainMetric
 
 }

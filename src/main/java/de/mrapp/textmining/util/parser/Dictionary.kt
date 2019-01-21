@@ -63,7 +63,7 @@ class Dictionary<K, V> : Iterable<Dictionary.Entry<K, V>>, Serializable {
                         Match(first, value, it.heuristicValue)
                     }
 
-            override fun isGainMetric() = matcher.isGainMetric()
+            override val isGainMetric = matcher.isGainMetric
 
         })
     }

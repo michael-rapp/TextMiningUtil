@@ -41,7 +41,7 @@ class Matches<F, S>(private val matches: Iterable<Match<F, S>>, val isGainMetric
                     Match(item, value, match.heuristicValue)
                 }
             }.filter { it != null }.requireNoNulls()
-            return Matches(matches, matcher.isGainMetric())
+            return Matches(matches, matcher.isGainMetric)
         }
 
     }

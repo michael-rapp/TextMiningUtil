@@ -29,7 +29,8 @@ class MatcherTest {
     @Test
     fun testEquals() {
         val matcher = Matcher.equals<Substring, String>()
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring(text)
         assertTrue(matcher.matches(token, text))
@@ -45,7 +46,8 @@ class MatcherTest {
     @Test
     fun testEqualsIgnoreCase() {
         val matcher = Matcher.equals<Substring, String>(true)
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring(text.toUpperCase())
         assertTrue(matcher.matches(token, text))
@@ -61,7 +63,8 @@ class MatcherTest {
     @Test
     fun testStartsWith() {
         val matcher = Matcher.startsWith<Substring, String>()
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("${text}bar")
         assertTrue(matcher.matches(token, text))
@@ -77,7 +80,8 @@ class MatcherTest {
     @Test
     fun testStartsWithIgnoreCase() {
         val matcher = Matcher.startsWith<Substring, String>(true)
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("${text.toUpperCase()}bar")
         assertTrue(matcher.matches(token, text))
@@ -93,7 +97,8 @@ class MatcherTest {
     @Test
     fun testEndsWith() {
         val matcher = Matcher.endsWith<Substring, String>()
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("bar$text")
         assertTrue(matcher.matches(token, text))
@@ -109,7 +114,8 @@ class MatcherTest {
     @Test
     fun testEndsWithIgnoreCase() {
         val matcher = Matcher.endsWith<Substring, String>(true)
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("bar${text.toUpperCase()}")
         assertTrue(matcher.matches(token, text))
@@ -125,7 +131,8 @@ class MatcherTest {
     @Test
     fun testContains() {
         val matcher = Matcher.contains<Substring, String>()
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("bar${text}bar")
         assertTrue(matcher.matches(token, text))
@@ -141,7 +148,8 @@ class MatcherTest {
     @Test
     fun testContainsIgnoreCase() {
         val matcher = Matcher.contains<Substring, String>(true)
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val text = "foo"
         val token = Substring("bar${text.toUpperCase()}bar")
         assertTrue(matcher.matches(token, text))
@@ -157,7 +165,8 @@ class MatcherTest {
     @Test
     fun testPattern() {
         val matcher = Matcher.pattern<Substring>()
-        assertTrue(matcher.isGainMetric())
+        assertTrue(matcher.isGainMetric)
+        assertFalse(matcher.isLossMetric)
         val token = Substring("abc")
         val pattern = Pattern.compile("^[a-z]*$")
         assertTrue(matcher.matches(token, pattern))
@@ -174,7 +183,8 @@ class MatcherTest {
     fun testMetric() {
         val metric = LevenshteinDistance()
         val matcher = Matcher.metric<Substring, CharSequence>(metric, 1.0)
-        assertEquals(metric.isGainMetric, matcher.isGainMetric())
+        assertEquals(metric.isGainMetric, matcher.isGainMetric)
+        assertEquals(metric.isLossMetric, matcher.isLossMetric)
         val text = "foo"
         val token = Substring("${text}b")
         assertTrue(matcher.matches(token, text))
