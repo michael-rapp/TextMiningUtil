@@ -13,8 +13,7 @@
  */
 package de.mrapp.textmining.util.metrics
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import kotlin.test.Test
 
 /**
@@ -42,17 +41,22 @@ class DamerauLevenshteinSimilarityTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, DamerauLevenshteinSimilarity().minValue(), 0.0)
+        assertEquals(0.0, DamerauLevenshteinSimilarity().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(1.0, DamerauLevenshteinSimilarity().maxValue(), 0.0)
+        assertEquals(1.0, DamerauLevenshteinSimilarity().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertTrue(DamerauLevenshteinSimilarity().isGainMetric())
+        assertTrue(DamerauLevenshteinSimilarity().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertFalse(DamerauLevenshteinSimilarity().isLossMetric)
     }
 
 }

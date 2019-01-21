@@ -31,6 +31,12 @@ package de.mrapp.textmining.util.metrics
  */
 class OptimalStringAlignmentDistance : TextMetric {
 
+    override val minValue = 0.0
+
+    override val maxValue = Double.MAX_VALUE
+
+    override val isGainMetric = false
+
     override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val m = text1.length
         val n = text2.length
@@ -69,11 +75,5 @@ class OptimalStringAlignmentDistance : TextMetric {
             }
         }
     }
-
-    override fun minValue() = 0.0
-
-    override fun maxValue() = Double.MAX_VALUE
-
-    override fun isGainMetric() = false
 
 }

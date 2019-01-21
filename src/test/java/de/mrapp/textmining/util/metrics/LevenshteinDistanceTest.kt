@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.metrics
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 /**
  * Tests the functionality of the class [LevenshteinDistance].
@@ -37,17 +38,22 @@ class LevenshteinDistanceTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, LevenshteinDistance().minValue(), 0.0)
+        assertEquals(0.0, LevenshteinDistance().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(java.lang.Double.MAX_VALUE, LevenshteinDistance().maxValue(), 0.0)
+        assertEquals(java.lang.Double.MAX_VALUE, LevenshteinDistance().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertFalse(LevenshteinDistance().isGainMetric())
+        assertFalse(LevenshteinDistance().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertTrue(LevenshteinDistance().isLossMetric)
     }
 
 }

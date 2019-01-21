@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.metrics
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import kotlin.test.Test
+import kotlin.test.assertFalse
 
 /**
  * Tests the functionality of the class [HammingAccuracy].
@@ -42,17 +43,22 @@ class HammingAccuracyTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, HammingAccuracy().minValue(), 0.0)
+        assertEquals(0.0, HammingAccuracy().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(1.0, HammingAccuracy().maxValue(), 0.0)
+        assertEquals(1.0, HammingAccuracy().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertTrue(HammingAccuracy().isGainMetric())
+        assertTrue(HammingAccuracy().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertFalse(HammingAccuracy().isLossMetric)
     }
 
 }

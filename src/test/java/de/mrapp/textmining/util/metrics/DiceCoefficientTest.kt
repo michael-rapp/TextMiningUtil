@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.metrics
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import kotlin.test.Test
+import kotlin.test.assertFalse
 
 /**
  * Tests the functionality of the class [DiceCoefficient].
@@ -93,17 +94,22 @@ class DiceCoefficientTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, DiceCoefficient().minValue(), 0.0)
+        assertEquals(0.0, DiceCoefficient().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(1.0, DiceCoefficient().maxValue(), 0.0)
+        assertEquals(1.0, DiceCoefficient().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertTrue(DiceCoefficient().isGainMetric())
+        assertTrue(DiceCoefficient().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertFalse(DiceCoefficient().isLossMetric)
     }
 
 }

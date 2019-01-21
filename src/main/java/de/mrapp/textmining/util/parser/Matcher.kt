@@ -133,20 +133,20 @@ interface Matcher<F, S> {
          */
         fun <F : CharSequence, S : CharSequence> metric(metric: TextMetric, threshold: Double):
                 Matcher<F, S> {
-            ensureAtLeast(threshold, metric.minValue(),
-                    "The threshold must be at least ${metric.minValue()}")
-            ensureAtMaximum(threshold, metric.maxValue(),
-                    "The threshold must be at maximum ${metric.maxValue()}")
+            ensureAtLeast(threshold, metric.minValue,
+                    "The threshold must be at least ${metric.minValue}")
+            ensureAtMaximum(threshold, metric.maxValue,
+                    "The threshold must be at maximum ${metric.maxValue}")
             return object : Matcher<F, S> {
 
                 override fun getMatch(first: F, second: S): Match<F, S>? {
                     val heuristicValue = metric.evaluate(first, second)
-                    val matches = if (metric.isGainMetric()) heuristicValue >= threshold else
+                    val matches = if (metric.isGainMetric) heuristicValue >= threshold else
                         heuristicValue <= threshold
                     return if (matches) Match(first, second, heuristicValue) else null
                 }
 
-                override fun isGainMetric() = metric.isGainMetric()
+                override fun isGainMetric() = metric.isGainMetric
 
             }
         }

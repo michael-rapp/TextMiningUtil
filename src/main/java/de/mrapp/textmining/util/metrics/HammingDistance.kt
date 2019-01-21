@@ -25,6 +25,12 @@ import de.mrapp.util.Condition.ensureEqual
  */
 class HammingDistance : TextMetric {
 
+    override val minValue = 0.0
+
+    override val maxValue = Double.MAX_VALUE
+
+    override val isGainMetric = false
+
     override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val length1 = text1.length
         val length2 = text2.length
@@ -39,11 +45,5 @@ class HammingDistance : TextMetric {
 
         return distance
     }
-
-    override fun minValue() = 0.0
-
-    override fun maxValue() = Double.MAX_VALUE
-
-    override fun isGainMetric() = false
 
 }

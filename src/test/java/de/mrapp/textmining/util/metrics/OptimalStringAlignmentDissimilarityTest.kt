@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.metrics
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 /**
  * Tests the functionality of the class [OptimalStringAlignmentDissimilarity].
@@ -42,17 +43,22 @@ class OptimalStringAlignmentDissimilarityTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, OptimalStringAlignmentDissimilarity().minValue(), 0.0)
+        assertEquals(0.0, OptimalStringAlignmentDissimilarity().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(1.0, OptimalStringAlignmentDissimilarity().maxValue(), 0.0)
+        assertEquals(1.0, OptimalStringAlignmentDissimilarity().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertFalse(OptimalStringAlignmentDissimilarity().isGainMetric())
+        assertFalse(OptimalStringAlignmentDissimilarity().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertTrue(OptimalStringAlignmentDissimilarity().isLossMetric)
     }
 
 }

@@ -16,6 +16,7 @@ package de.mrapp.textmining.util.metrics
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import kotlin.test.Test
+import kotlin.test.assertFalse
 
 /**
  * Tests the functionality of the class [LevenshteinSimilarity].
@@ -43,17 +44,22 @@ class LevenshteinSimilarityTest {
 
     @Test
     fun testMinValue() {
-        assertEquals(0.0, LevenshteinSimilarity().minValue(), 0.0)
+        assertEquals(0.0, LevenshteinSimilarity().minValue, 0.0)
     }
 
     @Test
     fun testMaxValue() {
-        assertEquals(1.0, LevenshteinSimilarity().maxValue(), 0.0)
+        assertEquals(1.0, LevenshteinSimilarity().maxValue, 0.0)
     }
 
     @Test
     fun testIsGainMetric() {
-        assertTrue(LevenshteinSimilarity().isGainMetric())
+        assertTrue(LevenshteinSimilarity().isGainMetric)
+    }
+
+    @Test
+    fun testIsLossMetric() {
+        assertFalse(LevenshteinSimilarity().isLossMetric)
     }
 
 }

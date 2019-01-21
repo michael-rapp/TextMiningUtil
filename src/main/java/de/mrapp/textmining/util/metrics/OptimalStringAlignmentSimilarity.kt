@@ -29,15 +29,15 @@ class OptimalStringAlignmentSimilarity : TextMetric {
 
     private val optimalStringAlignmentDissimilarity = OptimalStringAlignmentDissimilarity()
 
+    override val minValue = 0.0
+
+    override val maxValue = 1.0
+
+    override val isGainMetric = true
+
     override fun evaluate(text1: CharSequence, text2: CharSequence): Double {
         val osaDissimilarity = optimalStringAlignmentDissimilarity.evaluate(text1, text2)
         return 1 - osaDissimilarity
     }
-
-    override fun minValue() = 0.0
-
-    override fun maxValue() = 1.0
-
-    override fun isGainMetric() = true
 
 }

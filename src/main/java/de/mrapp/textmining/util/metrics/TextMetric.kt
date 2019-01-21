@@ -30,20 +30,45 @@ interface TextMetric {
         fun caseInsensitive(metric: TextMetric): TextMetric {
             return object : TextMetric {
 
+                override val minValue = metric.minValue
+
+                override val maxValue = metric.maxValue
+
+                override val isGainMetric = metric.isGainMetric
+
                 override fun evaluate(text1: CharSequence, text2: CharSequence) =
                         metric.evaluate(text1.toString().toLowerCase(),
                                 text2.toString().toLowerCase())
-
-                override fun minValue() = metric.minValue()
-
-                override fun maxValue() = metric.maxValue()
-
-                override fun isGainMetric() = metric.isGainMetric()
 
             }
         }
 
     }
+
+    /**
+     * The minimum heuristic value, which is possibly calculated by the metric.
+     */
+    val minValue: Double
+
+    /**
+     * The maximum heuristic value, which is possibly calculated by the metric.
+     */
+    val maxValue: Double
+
+    /**
+     * True, if the metric is a gain metric, i.e. that two strings that evaluate to a greater
+     * heuristic value are considered to be more similar than two strings that evaluate to a smaller
+     * heuristic value, false otherwise.
+     */
+    val isGainMetric: Boolean
+
+    /**
+     * True, if the metric is a loss metric, i.e. that two strings that evaluate to a smaller
+     * heuristic value are considered to be more similar than two strings that evaluate to a greater
+     * heuristic value, false otherwise.
+     */
+    val isLossMetric: Boolean
+        get() = !isGainMetric
 
     /**
      * Calculates the heuristic value of two texts, [text1] and [text2], according to the metric.
@@ -52,22 +77,5 @@ interface TextMetric {
      * [minValue] and at maximum [maxValue]
      */
     fun evaluate(text1: CharSequence, text2: CharSequence): Double
-
-    /**
-     * Returns the minimum heuristic value, which is possibly calculated by the metric.
-     */
-    fun minValue(): Double
-
-    /**
-     * Returns the maximum heuristic value, which is possibly calculated by the metric.
-     */
-    fun maxValue(): Double
-
-    /**
-     * Returns, whether the metric is a gain metric, i.e. that two strings that evaluate to a
-     * greater heuristic value are considered to be more similar than two strings that evaluate to a
-     * smaller heuristic value.
-     */
-    fun isGainMetric(): Boolean
 
 }
