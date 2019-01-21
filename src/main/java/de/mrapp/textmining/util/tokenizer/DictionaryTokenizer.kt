@@ -59,16 +59,15 @@ class DictionaryTokenizer<K : CharSequence> constructor(
     private fun findInexactMatch(key: String, text: String, startIndex: Int, metric: TextMetric):
             Match? {
         val tokenizer = SubstringTokenizer()
+        val comparator = TextMetric.Comparator(metric)
         var bestMatch: Match? = null
 
         for (token in tokenizer.tokenize(text.substring(startIndex))) {
             val substring = token.token.toString()
             val h = metric.evaluate(key, substring)
 
-            if (((metric.isGainMetric && h >= threshold) || (metric.isLossMetric && h <= threshold))
-                    && (bestMatch == null || ((metric.isGainMetric && h > bestMatch.heuristicValue)
-                            || (metric.isLossMetric && h < bestMatch.heuristicValue)))) {
-
+            if (comparator.compare(h, threshold) <= 0 && (bestMatch == null ||
+                            (comparator.compare(h, bestMatch.heuristicValue) < 0))) {
                 val start = startIndex + token.positions.first()
                 bestMatch = Match(start, start + token.length, substring, h)
             }
