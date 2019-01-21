@@ -31,8 +31,8 @@ abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
      *
      * @param T The type of the token
      */
-    fun <T : Token> addToken(map: MutableMap<String, T>, token: String, position: Int,
-                             tokenFactory: (String, Int) -> T) {
+    protected fun <T : Token> addToken(map: MutableMap<String, T>, token: String, position: Int,
+                                       tokenFactory: (String, Int) -> T) {
         var existingToken = map[token]
 
         if (existingToken == null) {
