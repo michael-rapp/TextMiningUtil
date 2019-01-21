@@ -31,10 +31,9 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class ValueToken<T> @JvmOverloads constructor(
-        private var token: CharSequence, var value: T?,
-        var associationType: AssociationType? = null,
-        private val positions: MutableSet<Int> = mutableSetOf()) : Token {
+data class ValueToken<T> @JvmOverloads constructor(override var token: CharSequence, var value: T?,
+                                                   var associationType: AssociationType? = null,
+                                                   override val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
         ensureNotEmpty(token, "The token may not be empty")
@@ -67,25 +66,10 @@ data class ValueToken<T> @JvmOverloads constructor(
                 positions: Collection<Int>) :
             this(token, value, associationType, HashSet(positions))
 
-    override fun getToken() = token
-
-    override fun setToken(token: CharSequence) {
-        this.token = token
-    }
-
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
         positions.add(position)
     }
-
-    override fun getPositions(): Set<Int> = positions
-
-    override val length = token.length
-
-    override fun get(index: Int) = token[index]
-
-    override fun subSequence(startIndex: Int, endIndex: Int) =
-            token.subSequence(startIndex, endIndex)
 
     override fun toString() = token.toString()
 

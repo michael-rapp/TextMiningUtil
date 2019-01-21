@@ -28,9 +28,9 @@ class NGramTest {
         val position = 1
         val nGram = NGram(n, token, position)
         Assert.assertEquals(n, nGram.n)
-        Assert.assertEquals(token, nGram.getToken())
-        Assert.assertEquals(1, nGram.getPositions().size)
-        Assert.assertTrue(nGram.getPositions().contains(position))
+        Assert.assertEquals(token, nGram.token)
+        Assert.assertEquals(1, nGram.positions.size)
+        Assert.assertTrue(nGram.positions.contains(position))
         Assert.assertEquals(token.length, nGram.length)
     }
 

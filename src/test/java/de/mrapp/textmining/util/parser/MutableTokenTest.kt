@@ -33,8 +33,8 @@ class MutableTokenTest {
         token.addPosition(position)
         val mutableToken = MutableToken(token)
         assertEquals(token, mutableToken.getCurrent())
-        assertEquals(1, token.getPositions().size)
-        assertTrue(token.getPositions().contains(position))
+        assertEquals(1, token.positions.size)
+        assertTrue(token.positions.contains(position))
     }
 
     @Test
@@ -43,8 +43,8 @@ class MutableTokenTest {
         val mutableToken = MutableToken(token)
         val position = 2
         mutableToken.addPosition(position)
-        assertEquals(1, token.getPositions().size)
-        assertTrue(token.getPositions().contains(position))
+        assertEquals(1, token.positions.size)
+        assertTrue(token.positions.contains(position))
     }
 
     @Test

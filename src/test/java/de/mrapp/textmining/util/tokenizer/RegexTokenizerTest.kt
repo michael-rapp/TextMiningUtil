@@ -50,8 +50,8 @@ class RegexTokenizerTest {
         assertEquals(1, substrings.size)
 
         for (substring in substrings) {
-            when (substring.getToken()) {
-                "foo" -> assertTrue(substring.getPositions().contains(0))
+            when (substring.token) {
+                "foo" -> assertTrue(substring.positions.contains(0))
                 else -> fail()
             }
         }
@@ -63,8 +63,8 @@ class RegexTokenizerTest {
         assertEquals(2, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 else -> fail()
@@ -78,9 +78,9 @@ class RegexTokenizerTest {
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
+            val positions = substring.positions
 
-            when (substring.getToken()) {
+            when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))
@@ -103,8 +103,8 @@ class RegexTokenizerTest {
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(5))
                 "foobar" -> assertTrue(positions.contains(9))
@@ -116,14 +116,13 @@ class RegexTokenizerTest {
     @Test
     fun testSplitByDelimitersWithArrayArgument() {
         val regexTokenizer = RegexTokenizer.splitByDelimiters(",", ";")
-        val substrings = regexTokenizer
-                .tokenize("foo,bar;foobar")
+        val substrings = regexTokenizer.tokenize("foo,bar;foobar")
         assertEquals(regexTokenizer.pattern.toString(), ",|;")
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))
@@ -143,15 +142,14 @@ class RegexTokenizerTest {
         iterable.add(",")
         iterable.add(";")
         val regexTokenizer = RegexTokenizer.splitByDelimiters(iterable)
-        val substrings = regexTokenizer
-                .tokenize("foo,bar;foobar")
+        val substrings = regexTokenizer.tokenize("foo,bar;foobar")
         assertEquals(regexTokenizer.pattern.toString(), ",|;")
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
+            val positions = substring.positions
 
-            when (substring.getToken()) {
+            when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
                 "foobar" -> assertTrue(positions.contains(8))

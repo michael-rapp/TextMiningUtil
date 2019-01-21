@@ -29,9 +29,9 @@ class ValueTokenTest {
         val associationType = AssociationType.LEFT
         val position = 1
         val valueToken = ValueToken(token, value, associationType, position)
-        assertEquals(token, valueToken.getToken())
-        assertEquals(1, valueToken.getPositions().size)
-        assertTrue(valueToken.getPositions().contains(position))
+        assertEquals(token, valueToken.token)
+        assertEquals(1, valueToken.positions.size)
+        assertTrue(valueToken.positions.contains(position))
         assertEquals(token.length, valueToken.length)
         assertEquals(associationType, valueToken.associationType)
         assertEquals(value, valueToken.value)

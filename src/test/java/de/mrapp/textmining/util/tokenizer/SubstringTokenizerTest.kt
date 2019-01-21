@@ -55,8 +55,8 @@ class SubstringTokenizerTest {
         assertEquals(8, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "t" -> {
                     assertTrue(positions.contains(0))
                     assertTrue(positions.contains(3))
@@ -85,8 +85,8 @@ class SubstringTokenizerTest {
         assertEquals(5, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "te" -> assertTrue(positions.contains(0))
                 "ex" -> assertTrue(positions.contains(1))
                 "xt" -> assertTrue(positions.contains(2))
@@ -103,8 +103,8 @@ class SubstringTokenizerTest {
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
-            when (substring.getToken()) {
+            val positions = substring.positions
+            when (substring.token) {
                 "te" -> assertTrue(positions.contains(0))
                 "ex" -> assertTrue(positions.contains(1))
                 "xt" -> assertTrue(positions.contains(2))

@@ -218,12 +218,11 @@ interface Processor<I, O> {
         fun <T> translate(dictionary: Dictionary<CharSequence, T>, revision: Int? = null):
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
-                val entry = dictionary.lookup(token.getToken())
+                val entry = dictionary.lookup(token.token)
                 entry?.let { it ->
-                    val valueToken = ValueToken(token.getToken(), it.value,
-                            it.associationType, token.getPositions())
-                    revision?.let { token.mutate(token, revision) }
-                            ?: token.mutate(valueToken)
+                    val valueToken = ValueToken(token.token, it.value, it.associationType,
+                            token.positions)
+                    revision?.let { token.mutate(token, revision) } ?: token.mutate(valueToken)
                 }
             }
         }
@@ -245,13 +244,12 @@ interface Processor<I, O> {
                           tieBreaker: TieBreaker<Match<Dictionary.Entry<CharSequence, T>, CharSequence>>? = null):
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
-                val matches = dictionary.lookup(token.getToken(), matcher)
+                val matches = dictionary.lookup(token.token, matcher)
                 matches.getBestMatch(tieBreaker)?.let { it ->
                     val entry = it.first
-                    val valueToken = ValueToken(token.getToken(), entry.value,
-                            entry.associationType, token.getPositions())
-                    revision?.let { token.mutate(valueToken, revision) }
-                            ?: token.mutate(valueToken)
+                    val valueToken = ValueToken(token.token, entry.value, entry.associationType,
+                            token.positions)
+                    revision?.let { token.mutate(valueToken, revision) } ?: token.mutate(valueToken)
                 }
             }
         }

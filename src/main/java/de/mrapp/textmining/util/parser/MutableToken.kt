@@ -16,14 +16,14 @@ package de.mrapp.textmining.util.parser
 import de.mrapp.textmining.util.Token
 
 /**
- * A mutable token, whose text can be changed without losing the previous revisions.
+ * A mutable token that can be modified while keeping track of the previous revisions.
  *
- * @property token     The current token
- * @property revisions A map that contains all previous tokens mapped to revision numbers
+ * @property currentToken The current token
+ * @property revisions    A map that contains all previous tokens mapped to revision numbers
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class MutableToken(private var token: Token,
+data class MutableToken(private var currentToken: Token,
                         private val revisions: MutableMap<Int, Token> = HashMap()) : Token {
 
     /**
@@ -35,14 +35,14 @@ data class MutableToken(private var token: Token,
      * Updates the token without specifying a revision number. The current token will be lost.
      */
     fun mutate(token: Token) {
-        this.token = token
+        this.currentToken = token
     }
 
     /**
      * Updates the token. The current token will be stored using the given [revision] number.
      */
     fun mutate(token: Token, revision: Int) {
-        val previousToken = this.token
+        val previousToken = this.currentToken
         mutate(token)
         this.revisions[revision] = previousToken
     }
@@ -51,7 +51,7 @@ data class MutableToken(private var token: Token,
      * Returns the current token.
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : Token> getCurrent() = this.token as T
+    fun <T : Token> getCurrent() = this.currentToken as T
 
     /**
      * Returns the token that corresponds to a specific [revision] number.
@@ -59,24 +59,18 @@ data class MutableToken(private var token: Token,
     @Suppress("UNCHECKED_CAST")
     fun <T : Token> getRevision(revision: Int) = this.revisions[revision] as? T
 
-    override fun getToken() = this.token.getToken()
+    override var token: CharSequence
+        get() = this.currentToken.token
+        set(value) {
+            this.currentToken.token = value
+        }
 
-    override fun setToken(token: CharSequence) {
-        this.token.setToken(token)
-    }
+    override val positions
+        get() = this.currentToken.positions
 
     override fun addPosition(position: Int) {
-        this.token.addPosition(position)
+        this.currentToken.addPosition(position)
     }
-
-    override fun getPositions() = this.token.getPositions()
-
-    override val length = token.length
-
-    override fun get(index: Int) = token[index]
-
-    override fun subSequence(startIndex: Int, endIndex: Int) =
-            token.subSequence(startIndex, endIndex)
 
     override fun toString() = token.toString()
 

@@ -21,23 +21,26 @@ import java.io.Serializable
 interface Token : CharSequence, Serializable {
 
     /**
-     * Returns the token.
+     * The token as a [CharSequence].
      */
-    fun getToken(): CharSequence
+    var token: CharSequence
 
     /**
-     * Sets the [token].
+     * A set that contains the positions the token occurs at.
      */
-    fun setToken(token: CharSequence)
+    val positions: Set<Int>
 
     /**
-     * Adds a new [position].
+     * Adds a new [position] the token occurs at.
      */
     fun addPosition(position: Int)
 
-    /**
-     * Returns all positions of the token.
-     */
-    fun getPositions(): Set<Int>
+    override val length: Int
+        get() = token.length
+
+    override fun get(index: Int) = token[index]
+
+    override fun subSequence(startIndex: Int, endIndex: Int) =
+            token.subSequence(startIndex, endIndex)
 
 }

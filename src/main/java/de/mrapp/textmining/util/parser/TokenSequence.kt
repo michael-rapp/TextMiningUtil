@@ -40,19 +40,19 @@ import kotlin.collections.HashSet
  */
 data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         private val tokens: MutableList<TokenType> = ArrayList(),
-        private val positions: MutableSet<Int> = mutableSetOf(),
+        override val positions: MutableSet<Int> = mutableSetOf(),
         var delimiter: CharSequence = "") : Iterable<TokenType>, Token {
 
     companion object {
 
         /**
          * Creates a new sequence of several [tokens]. The tokens are ordered by their positions
-         * (see [Token.getPositions]). If a token corresponds to multiple positions, it will occur
+         * (see [Token.positions]). If a token corresponds to multiple positions, it will occur
          * multiple times in the sequence.
          */
         fun <T : Token> createSorted(tokens: Iterable<T>): TokenSequence<T> {
             val sortedMap = TreeMap<Int, T>()
-            tokens.forEach { it.getPositions().forEach { position -> sortedMap[position] = it } }
+            tokens.forEach { it.positions.forEach { position -> sortedMap[position] = it } }
             return TokenSequence(sortedMap.values.toMutableList())
         }
 
@@ -64,7 +64,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                                                 mapper: (I) -> O): TokenSequence<O> {
             return TokenSequence(
                     sequence.iterator().asSequence().map { mapper.invoke(it) }.toMutableList(),
-                    HashSet(sequence.getPositions()), sequence.delimiter)
+                    HashSet(sequence.positions), sequence.delimiter)
         }
 
     }
@@ -87,8 +87,8 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
 
         init {
             ensureAtLeast(nextIndex, 0, "The next index must be at least 0")
-            ensureAtMaximum(nextIndex, tokenSequence.size(),
-                    "The next index must be at maximum ${tokenSequence.size()}")
+            ensureAtMaximum(nextIndex, tokenSequence.size,
+                    "The next index must be at maximum ${tokenSequence.size}")
         }
 
         /**
@@ -190,7 +190,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         override fun hasNext(): Boolean {
             ensureEqual(modificationCount, tokenSequence.modificationCount, null,
                     ConcurrentModificationException::class.java)
-            return nextIndex < tokenSequence.size()
+            return nextIndex < tokenSequence.size
         }
 
         override fun hasPrevious(): Boolean {
@@ -213,7 +213,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         override fun nextIndex(): Int {
             ensureEqual(modificationCount, tokenSequence.modificationCount, null,
                     ConcurrentModificationException::class.java)
-            return if (nextIndex < tokenSequence.size()) nextIndex else -1
+            return if (nextIndex < tokenSequence.size) nextIndex else -1
         }
 
         override fun previous(): TokenType {
@@ -279,33 +279,26 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
     /**
      * The number of tokens that are contained by the sequence.
      */
-    fun size() = tokens.size
+    val size: Int
+        get() = tokens.size
 
     override val length = tokens.fold(0) { length, token -> length + token.length }
 
-    override fun getToken() =
-            tokens.fold("") { text, token ->
-                "$text${if (text.isNotEmpty()) delimiter else ""}${token.getToken()}"
-            }
-
-    override fun setToken(token: CharSequence) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun get(index: Int): Char = getToken()[index]
+    override var token: CharSequence
+        get() = tokens.fold("") { text, token ->
+            "$text${if (text.isNotEmpty()) delimiter else ""}${token.token}"
+        }
+        set(_) {
+            throw UnsupportedOperationException()
+        }
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
         this.positions.add(position)
     }
 
-    override fun subSequence(startIndex: Int, endIndex: Int) =
-            getToken().subSequence(startIndex, endIndex)
-
-    override fun getPositions() = positions
-
     override fun iterator() = tokens.iterator()
 
-    override fun toString() = getToken()
+    override fun toString() = token.toString()
 
 }

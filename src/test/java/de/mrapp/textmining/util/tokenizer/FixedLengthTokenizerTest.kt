@@ -13,8 +13,10 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import kotlin.test.Test
+import kotlin.test.fail
 
 /**
  * Tests the functionality of the class [FixedLengthTokenizerTest].
@@ -42,9 +44,9 @@ class FixedLengthTokenizerTest {
         assertEquals(2, substrings.size)
 
         for (substring in substrings) {
-            val positions = substring.getPositions()
+            val positions = substring.positions
 
-            when (substring.getToken()) {
+            when (substring.token) {
                 "wi" -> assertTrue(positions.contains(0))
                 "rk" -> assertTrue(positions.contains(2))
                 else -> fail()

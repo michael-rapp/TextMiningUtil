@@ -28,8 +28,8 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 1.2.0
  */
-data class NGram(val n: Int, private var token: CharSequence,
-                 private val positions: MutableSet<Int> = mutableSetOf()) : Token {
+data class NGram(val n: Int, override var token: CharSequence,
+                 override val positions: MutableSet<Int> = mutableSetOf()) : Token {
 
     init {
         ensureAtLeast(n, 1, "The degree must be at least 1")
@@ -61,25 +61,10 @@ data class NGram(val n: Int, private var token: CharSequence,
     constructor(n: Int, token: CharSequence, positions: Collection<Int>) :
             this(n, token, HashSet(positions))
 
-    override fun getToken() = token
-
-    override fun setToken(token: CharSequence) {
-        this.token = token
-    }
-
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
         this.positions.add(position)
     }
-
-    override fun getPositions() = positions
-
-    override val length = token.length
-
-    override fun get(index: Int) = token[index]
-
-    override fun subSequence(startIndex: Int, endIndex: Int) =
-            token.subSequence(startIndex, endIndex)
 
     override fun toString() = token.toString()
 

@@ -41,18 +41,18 @@ class ProcessorTest {
         sequence.delimiter = ","
         sequence.addPosition(0)
         val mappedSequence = processor.process(sequence)
-        assertEquals(sequence.getPositions(), mappedSequence.getPositions())
+        assertEquals(sequence.positions, mappedSequence.positions)
         assertEquals(sequence.delimiter, mappedSequence.delimiter)
         val iterator = mappedSequence.iterator()
         assertTrue(iterator.hasNext())
         val mutableToken1 = iterator.next()
-        assertEquals(token1.getToken(), mutableToken1.getToken())
+        assertEquals(token1.token, mutableToken1.token)
         assertTrue(iterator.hasNext())
         val mutableToken2 = iterator.next()
-        assertEquals(token2.getToken(), mutableToken2.getToken())
+        assertEquals(token2.token, mutableToken2.token)
         assertTrue(iterator.hasNext())
         val mutableToken3 = iterator.next()
-        assertEquals(token1.getToken(), mutableToken3.getToken())
+        assertEquals(token1.token, mutableToken3.token)
         assertFalse(iterator.hasNext())
     }
 
@@ -61,7 +61,7 @@ class ProcessorTest {
         val processor = Processor.tokenize(RegexTokenizer.splitByWhitespace())
         val tokens = processor.process("foo bar foobar")
         assertEquals(3, tokens.size)
-        val tokenStrings = tokens.map { it.getToken() }
+        val tokenStrings = tokens.map { it.token }
         assertTrue(tokenStrings.containsAll(listOf("foo", "bar", "foobar")))
     }
 
@@ -86,7 +86,7 @@ class ProcessorTest {
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.next().getCurrent<ValueToken<Int>>().value)
         assertTrue(iterator.hasNext())
-        assertEquals("four", iterator.next().getCurrent<Substring>().getToken())
+        assertEquals("four", iterator.next().getCurrent<Substring>().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -112,7 +112,7 @@ class ProcessorTest {
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.next().getCurrent<ValueToken<Int>>().value)
         assertTrue(iterator.hasNext())
-        assertEquals("four", iterator.next().getCurrent<Substring>().getToken())
+        assertEquals("four", iterator.next().getCurrent<Substring>().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -123,13 +123,13 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.remove<Substring> { token -> token.getToken().startsWith("t") }
+        val processor = Processor.remove<Substring> { token -> token.token.startsWith("t") }
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
-        assertEquals("one", iterator.next().getToken())
+        assertEquals("one", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("four", iterator.next().getToken())
+        assertEquals("four", iterator.next().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -144,9 +144,9 @@ class ProcessorTest {
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
-        assertEquals("one", iterator.next().getToken())
+        assertEquals("one", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("four", iterator.next().getToken())
+        assertEquals("four", iterator.next().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -157,13 +157,13 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.retain<Substring> { token -> token.getToken().startsWith("t") }
+        val processor = Processor.retain<Substring> { token -> token.token.startsWith("t") }
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
-        assertEquals("two", iterator.next().getToken())
+        assertEquals("two", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("three", iterator.next().getToken())
+        assertEquals("three", iterator.next().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -178,9 +178,9 @@ class ProcessorTest {
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
-        assertEquals("two", iterator.next().getToken())
+        assertEquals("two", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("three", iterator.next().getToken())
+        assertEquals("three", iterator.next().token)
         assertFalse(iterator.hasNext())
     }
 
@@ -192,11 +192,11 @@ class ProcessorTest {
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
         val processor = Processor.ensureAllMatch<Substring>(predicate = { token ->
-            token.getToken().isNotEmpty()
+            token.token.isNotEmpty()
         })
         assertEquals(sequence, processor.process(sequence))
         val processor2 = Processor.ensureAllMatch<Substring>(predicate = { token ->
-            token.getToken().startsWith("t")
+            token.token.startsWith("t")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
     }
@@ -209,11 +209,11 @@ class ProcessorTest {
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
         val processor = Processor.ensureAnyMatch<Substring>(predicate = { token ->
-            token.getToken().startsWith("t")
+            token.token.startsWith("t")
         })
         assertEquals(sequence, processor.process(sequence))
         val processor2 = Processor.ensureAnyMatch<Substring>(predicate = { token ->
-            token.getToken().startsWith("x")
+            token.token.startsWith("x")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
     }
@@ -226,11 +226,11 @@ class ProcessorTest {
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
         val processor = Processor.ensureNoneMatch<Substring>(predicate = { token ->
-            token.getToken().startsWith("x")
+            token.token.startsWith("x")
         })
         assertEquals(sequence, processor.process(sequence))
         val processor2 = Processor.ensureNoneMatch<Substring>(predicate = { token ->
-            token.getToken().startsWith("t")
+            token.token.startsWith("t")
         })
         assertFailsWith(MalformedTextException::class) { processor2.process(sequence) }
     }
@@ -242,17 +242,17 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val processor = Processor.forEach<Substring> { it.setToken("${it.getToken()} modified") }
+        val processor = Processor.forEach<Substring> { it.token = "${it.token} modified" }
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
-        assertEquals("one modified", iterator.next().getToken())
+        assertEquals("one modified", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("two modified", iterator.next().getToken())
+        assertEquals("two modified", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("three modified", iterator.next().getToken())
+        assertEquals("three modified", iterator.next().token)
         assertTrue(iterator.hasNext())
-        assertEquals("four modified", iterator.next().getToken())
+        assertEquals("four modified", iterator.next().token)
         assertFalse(iterator.hasNext())
     }
 
