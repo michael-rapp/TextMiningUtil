@@ -13,9 +13,12 @@
  */
 package de.mrapp.textmining.util.tokenizer
 
+import de.mrapp.textmining.util.metrics.LevenshteinDistance
 import de.mrapp.textmining.util.parser.Dictionary
+import de.mrapp.textmining.util.parser.Matcher
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 /**
@@ -30,6 +33,19 @@ class DictionaryTokenizerTest {
         val dictionary = Dictionary<String, String>()
         val dictionaryTokenizer = DictionaryTokenizer(dictionary)
         assertEquals(dictionary, dictionaryTokenizer.dictionary)
+        assertNull(dictionaryTokenizer.metric)
+        assertEquals(0.0, dictionaryTokenizer.threshold)
+    }
+
+    @Test
+    fun testConstructorWithMetricArgument() {
+        val dictionary = Dictionary<String, String>()
+        val metric = LevenshteinDistance()
+        val threshold = 0.5
+        val dictionaryTokenizer = DictionaryTokenizer(dictionary, metric, threshold)
+        assertEquals(dictionary, dictionaryTokenizer.dictionary)
+        assertEquals(metric, dictionaryTokenizer.metric)
+        assertEquals(threshold, dictionaryTokenizer.threshold)
     }
 
     @Test
@@ -44,6 +60,21 @@ class DictionaryTokenizerTest {
         assertTrue(tokens.contains(Substring("foo", 3)))
         assertTrue(tokens.contains(Substring("yyy", 6)))
         assertTrue(tokens.contains(Substring("bar", 9)))
+        assertTrue(tokens.contains(Substring("zzz", 12)))
+    }
+
+    @Test
+    fun testTokenizeUsingMetric() {
+        val dictionary = Dictionary<String, String>()
+        dictionary.addEntry(Dictionary.Entry("foo", "foo2"))
+        dictionary.addEntry(Dictionary.Entry("bar", "bar2"))
+        val dictionaryTokenizer = DictionaryTokenizer(dictionary, LevenshteinDistance(), 1.0)
+        val tokens = dictionaryTokenizer.tokenize("xxxfooyyybalzzz")
+        assertEquals(5, tokens.size)
+        assertTrue(tokens.contains(Substring("xxx", 0)))
+        assertTrue(tokens.contains(Substring("foo", 3)))
+        assertTrue(tokens.contains(Substring("yyy", 6)))
+        assertTrue(tokens.contains(Substring("bal", 9)))
         assertTrue(tokens.contains(Substring("zzz", 12)))
     }
 
