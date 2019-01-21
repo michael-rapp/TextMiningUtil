@@ -4,6 +4,7 @@
 
 A feature release, which introduces the following changes:
 
+- Added helper classes for parsing texts.
 - Added a helper method to create case-insensitive metrics to the interface `TextMetric`.
 - Added class `TextMetric.Comparator`.
 - `Tokenizer`s and `TextMetric`s can now be applied to `CharSequence`s.
