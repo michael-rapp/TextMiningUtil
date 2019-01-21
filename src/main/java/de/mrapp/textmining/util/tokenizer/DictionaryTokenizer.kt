@@ -46,15 +46,15 @@ class DictionaryTokenizer<K : CharSequence>(val dictionary: Dictionary<K, *>) :
                 }
             }
 
-            if (match != null) {
+            currentIndex = if (match != null) {
                 val token = text.substring(currentIndex, match.start)
                 addToken(map, token, currentIndex) { t, p -> Substring(t, p) }
                 addToken(map, match.token, match.start) { t, p -> Substring(t, p) }
-                currentIndex = match.end
+                match.end
             } else {
                 val token = text.substring(currentIndex, text.length)
                 addToken(map, token, currentIndex) { t, p -> Substring(t, p) }
-                currentIndex = text.length
+                text.length
             }
         }
     }
