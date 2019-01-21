@@ -139,10 +139,11 @@ interface Matcher<F, S> {
                     "The threshold must be at maximum ${metric.maxValue}")
             return object : Matcher<F, S> {
 
+                private val comparator = TextMetric.Comparator(metric)
+
                 override fun getMatch(first: F, second: S): Match<F, S>? {
                     val heuristicValue = metric.evaluate(first, second)
-                    val matches = if (metric.isGainMetric) heuristicValue >= threshold else
-                        heuristicValue <= threshold
+                    val matches = comparator.compare(heuristicValue, threshold) <= 0
                     return if (matches) Match(first, second, heuristicValue) else null
                 }
 
