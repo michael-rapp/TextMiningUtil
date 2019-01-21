@@ -29,7 +29,7 @@ class DictionaryTest {
         dictionary.addEntry(Dictionary.Entry("three", 3))
         val entry = dictionary.lookup("two")
         assertNotNull(entry)
-        assertEquals("two", entry!!.key)
+        assertEquals("two", entry.key)
         assertEquals(2, entry.value)
         assertEquals(AssociationType.BIDIRECTIONAL, entry.associationType)
     }
