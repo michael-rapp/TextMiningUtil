@@ -207,6 +207,31 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that applies a specific [ifProcessor] to all tokens of a
+         * [TokenSequence] if a [predicate] is met. Optionally, a [elseProcessor] can be applied to
+         * all tokens that do not meet the [predicate].
+         */
+        @JvmOverloads
+        fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
+                                            ifProcessor: Processor<TokenType, TokenType>,
+                                            elseProcessor: Processor<TokenType, TokenType>? = null):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    return TokenSequence.createMapped(input) { i ->
+                        if (predicate.invoke(i)) {
+                            ifProcessor.process(i)
+                        } else {
+                            elseProcessor?.process(i) ?: i
+                        }
+                    }
+                }
+
+            }
+        }
+
+        /**
          * Creates and returns a processor that uses a specific [dictionary] to translate the
          * [MutableToken]s of a [TokenSequence]. The tokens are converted into [ValueToken]s that
          * contain the translation as their values.
