@@ -35,13 +35,16 @@ class DictionaryTokenizerTest {
     @Test
     fun testTokenize() {
         val dictionary = Dictionary<String, String>()
-        dictionary.addEntry(Dictionary.Entry("foo", "bar"))
+        dictionary.addEntry(Dictionary.Entry("foo", "foo2"))
+        dictionary.addEntry(Dictionary.Entry("bar", "bar2"))
         val dictionaryTokenizer = DictionaryTokenizer(dictionary)
-        val tokens = dictionaryTokenizer.tokenize("xxxfooyyy")
-        assertEquals(3, tokens.size)
+        val tokens = dictionaryTokenizer.tokenize("xxxfooyyybarzzz")
+        assertEquals(5, tokens.size)
         assertTrue(tokens.contains(Substring("xxx", 0)))
         assertTrue(tokens.contains(Substring("foo", 3)))
         assertTrue(tokens.contains(Substring("yyy", 6)))
+        assertTrue(tokens.contains(Substring("bar", 9)))
+        assertTrue(tokens.contains(Substring("zzz", 12)))
     }
 
 }

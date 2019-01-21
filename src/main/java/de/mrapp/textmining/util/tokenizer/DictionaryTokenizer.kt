@@ -16,8 +16,9 @@ package de.mrapp.textmining.util.tokenizer
 import de.mrapp.textmining.util.parser.Dictionary
 
 /**
- * Allows to split texts based on a [Dictionary]. E.g. given a dictionary that contains the entry
- * "ex", the text "text" is split into the substrings "t", "ex", and "t".
+ * Allows to split texts based on a [Dictionary]. E.g. given a dictionary that contains the entries
+ * "one" and "two", the text "abconedeftwo" is split into the substrings "abc", "one", "def", and
+ * "two".
  *
  * @property dictionary The dictionary that is used by the tokenizer
  * @author Michael Rapp
@@ -35,12 +36,12 @@ class DictionaryTokenizer<K : CharSequence>(val dictionary: Dictionary<K, *>) :
             val iterator = dictionary.iterator()
             var match: Match? = null
 
-            while (iterator.hasNext() && match == null) {
+            while (iterator.hasNext()) {
                 val entry = iterator.next()
                 val key = entry.key.toString()
                 val i = text.indexOf(key, currentIndex)
 
-                if (i != -1) {
+                if (i != -1 && (match == null || match.start > i)) {
                     val token = text.substring(i, i + key.length)
                     match = Match(i, i + key.length, token)
                 }
