@@ -17,6 +17,7 @@ import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEmpty
+import java.util.*
 
 /**
  * A token that can optionally have a certain value assigned to it. Additionally, the token may have
@@ -31,9 +32,10 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class ValueToken<T> @JvmOverloads constructor(override var token: CharSequence, var value: T?,
-                                                   var associationType: AssociationType? = null,
-                                                   override val positions: MutableSet<Int> = mutableSetOf()) : Token {
+data class ValueToken<T> @JvmOverloads constructor(
+        override var token: CharSequence, var value: T?,
+        var associationType: AssociationType? = null,
+        override val positions: SortedSet<Int> = TreeSet()) : Token {
 
     init {
         ensureNotEmpty(token, "The token may not be empty")
@@ -51,7 +53,7 @@ data class ValueToken<T> @JvmOverloads constructor(override var token: CharSeque
     @JvmOverloads
     constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
                 vararg positions: Int) :
-            this(token, value, associationType, positions.toHashSet())
+            this(token, value, associationType, positions.toList())
 
     /**
      * Creates a new token that can optionally have a certain value assigned to it.
@@ -64,7 +66,7 @@ data class ValueToken<T> @JvmOverloads constructor(override var token: CharSeque
     @JvmOverloads
     constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
                 positions: Collection<Int>) :
-            this(token, value, associationType, HashSet(positions))
+            this(token, value, associationType, TreeSet(positions))
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")

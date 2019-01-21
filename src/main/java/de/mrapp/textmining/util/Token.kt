@@ -14,6 +14,7 @@
 package de.mrapp.textmining.util
 
 import java.io.Serializable
+import java.util.*
 
 /**
  * Defines the interface, a token, a text can be split into, must implement.
@@ -28,7 +29,7 @@ interface Token : CharSequence, Serializable {
     /**
      * A set that contains the positions the token occurs at.
      */
-    val positions: Set<Int>
+    val positions: SortedSet<Int>
 
     /**
      * Adds a new [position] the token occurs at.

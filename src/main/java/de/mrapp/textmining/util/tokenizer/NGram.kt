@@ -17,6 +17,7 @@ import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEmpty
+import java.util.*
 
 /**
  * A n-Gram, which consists of a sequence of characters, taken from a longer text or word.
@@ -29,7 +30,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @since 1.2.0
  */
 data class NGram(val n: Int, override var token: CharSequence,
-                 override val positions: MutableSet<Int> = mutableSetOf()) : Token {
+                 override val positions: SortedSet<Int> = TreeSet()) : Token {
 
     init {
         ensureAtLeast(n, 1, "The degree must be at least 1")
@@ -47,7 +48,7 @@ data class NGram(val n: Int, override var token: CharSequence,
      * original text
      */
     constructor(n: Int, token: CharSequence, vararg positions: Int) :
-            this(n, token, positions.toHashSet())
+            this(n, token, positions.toList())
 
     /**
      * Creates a new substring, which consists of a sequence of characters, taken from a longer
@@ -59,7 +60,7 @@ data class NGram(val n: Int, override var token: CharSequence,
      * original text
      */
     constructor(n: Int, token: CharSequence, positions: Collection<Int>) :
-            this(n, token, HashSet(positions))
+            this(n, token, TreeSet(positions))
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")

@@ -17,6 +17,7 @@ import de.mrapp.textmining.util.Token
 import de.mrapp.util.Condition.ensureAtLeast
 import de.mrapp.util.Condition.ensureEqual
 import de.mrapp.util.Condition.ensureNotEmpty
+import java.util.*
 
 /**
  * A substring, which consists of a sequence of characters, taken from a longer text.
@@ -28,7 +29,7 @@ import de.mrapp.util.Condition.ensureNotEmpty
  * @since 1.2.0
  */
 data class Substring(override var token: CharSequence,
-                     override val positions: MutableSet<Int> = mutableSetOf()) : Token {
+                     override val positions: SortedSet<Int> = TreeSet()) : Token {
 
     init {
         ensureNotEmpty(token, "The token may not be empty")
@@ -43,7 +44,7 @@ data class Substring(override var token: CharSequence,
      * @param positions An array, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(token: CharSequence, vararg positions: Int) : this(token, positions.toHashSet())
+    constructor(token: CharSequence, vararg positions: Int) : this(token, positions.toList())
 
     /**
      * Creates a new substring, which consists of a sequence of characters, taken from a longer
@@ -53,7 +54,7 @@ data class Substring(override var token: CharSequence,
      * @param positions A collection, which contains the position(s) of the substring's token in the
      * original text
      */
-    constructor(token: CharSequence, positions: Collection<Int>) : this(token, HashSet(positions))
+    constructor(token: CharSequence, positions: Collection<Int>) : this(token, TreeSet(positions))
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")

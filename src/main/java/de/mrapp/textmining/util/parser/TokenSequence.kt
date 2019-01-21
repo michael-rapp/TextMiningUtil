@@ -23,7 +23,6 @@ import de.mrapp.util.Condition.ensureTrue
 import java.util.*
 import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 /**
  * A sequence of several tokens. As the sequence implements the interface [Token], it can be used as
@@ -40,7 +39,7 @@ import kotlin.collections.HashSet
  */
 data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
         private val tokens: MutableList<TokenType> = ArrayList(),
-        override val positions: MutableSet<Int> = mutableSetOf(),
+        override val positions: SortedSet<Int> = TreeSet(),
         var delimiter: CharSequence = "") : Iterable<TokenType>, Token {
 
     companion object {
@@ -64,7 +63,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                                                 mapper: (I) -> O): TokenSequence<O> {
             return TokenSequence(
                     sequence.iterator().asSequence().map { mapper.invoke(it) }.toMutableList(),
-                    HashSet(sequence.positions), sequence.delimiter)
+                    TreeSet(sequence.positions), sequence.delimiter)
         }
 
     }
