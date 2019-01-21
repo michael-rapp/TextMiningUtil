@@ -25,7 +25,7 @@ import kotlin.test.assertFailsWith
  *
  * @author Michael Rapp
  */
-class EnNumericValueParserTest {
+class EnNumberParserTest {
 
     private val parser = NumberParser.Builder().build(Locale.ENGLISH)
 
