@@ -29,4 +29,28 @@ class TextMetricTest {
         assertEquals(0.0, caseInsensitiveMetric.evaluate("foo", "FOO"))
     }
 
+    @Test
+    fun testComparatorIfMetricIsGainMetric() {
+        val metric = LevenshteinSimilarity()
+        val comparator = TextMetric.Comparator(metric)
+        assertEquals(0, comparator.compare(null, null))
+        assertEquals(1, comparator.compare(null, 0.5))
+        assertEquals(-1, comparator.compare(0.5, null))
+        assertEquals(1, comparator.compare(0.1, 0.5))
+        assertEquals(0, comparator.compare(0.5, 0.5))
+        assertEquals(-1, comparator.compare(0.9, 0.5))
+    }
+
+    @Test
+    fun testComparatorIfMetricIsLossMetric() {
+        val metric = LevenshteinDissimilarity()
+        val comparator = TextMetric.Comparator(metric)
+        assertEquals(0, comparator.compare(null, null))
+        assertEquals(1, comparator.compare(null, 0.5))
+        assertEquals(-1, comparator.compare(0.5, null))
+        assertEquals(-1, comparator.compare(0.1, 0.5))
+        assertEquals(0, comparator.compare(0.5, 0.5))
+        assertEquals(1, comparator.compare(0.9, 0.5))
+    }
+
 }

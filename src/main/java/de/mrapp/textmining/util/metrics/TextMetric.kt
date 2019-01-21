@@ -22,6 +22,29 @@ package de.mrapp.textmining.util.metrics
  */
 interface TextMetric {
 
+    /**
+     * A comparator that allows to compare heuristic values according to a specific [TextMetric].
+     * The comparator implicitly takes into account whether the metric is a gain metric or a loss
+     * metric.
+     *
+     * @property metric The metric that has been used to calculate the heuristic values
+     */
+    class Comparator(val metric: TextMetric) : kotlin.Comparator<Double> {
+
+        override fun compare(o1: Double?, o2: Double?): Int {
+            if (o1 == null && o2 == null) {
+                return 0
+            } else if (o1 == null) {
+                return 1
+            } else if (o2 == null) {
+                return -1
+            } else {
+                return if (metric.isGainMetric) o2.compareTo(o1) else o1.compareTo(o2)
+            }
+        }
+
+    }
+
     companion object {
 
         /**
