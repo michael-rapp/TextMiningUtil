@@ -6,6 +6,8 @@ A feature release, which introduces the following changes:
 
 - Added a helper method to create case-insensitive metrics to the interface `TextMetric`.
 - `Tokenizer`s and `TextMetric`s can now be applied to `CharSequence`s.
+- Updated dependency "JavaUtil" to version 2.0.2.
+- Updated Kotlin to version 1.3.11.
 
 ## Version 2.0.0 (Aug. 7th 2018)
 
