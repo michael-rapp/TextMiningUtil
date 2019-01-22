@@ -94,7 +94,9 @@ class DictionaryTokenizer<K : CharSequence> constructor(
                 val key = entry.key.toString()
                 val nextMatch = findMatch(key, text, currentIndex)
 
-                if (nextMatch != null && (match == null || match.start > nextMatch.start)) {
+                if (nextMatch != null && (match == null || match.start > nextMatch.start ||
+                                (match.start == nextMatch.start &&
+                                        nextMatch.token.length > match.token.length))) {
                     match = nextMatch
                 }
             }
