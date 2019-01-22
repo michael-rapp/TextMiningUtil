@@ -66,10 +66,16 @@ class DictionaryTokenizer<K : CharSequence> constructor(
             val substring = token.token.toString()
             val h = metric.evaluate(key, substring)
 
-            if (comparator.compare(h, threshold) <= 0 && (bestMatch == null ||
-                            (comparator.compare(h, bestMatch.heuristicValue) < 0))) {
+            if (comparator.compare(h, threshold) <= 0) {
                 val start = startIndex + token.positions.first()
-                bestMatch = Match(start, start + token.length, substring, h)
+
+                if (bestMatch == null || (comparator.compare(h, bestMatch.heuristicValue) < 0) ||
+                        (comparator.compare(h, bestMatch.heuristicValue) == 0 &&
+                                (start < bestMatch.start
+                                        || Math.abs(key.length - substring.length)
+                                        < Math.abs(key.length - bestMatch.token.length)))) {
+                    bestMatch = Match(start, start + token.length, substring, h)
+                }
             }
         }
 
@@ -94,8 +100,11 @@ class DictionaryTokenizer<K : CharSequence> constructor(
             }
 
             currentIndex = if (match != null) {
-                val token = text.substring(currentIndex, match.start)
-                addToken(map, token, currentIndex) { t, p -> Substring(t, p) }
+                if (match.start > currentIndex) {
+                    val token = text.substring(currentIndex, match.start)
+                    addToken(map, token, currentIndex) { t, p -> Substring(t, p) }
+                }
+
                 addToken(map, match.token, match.start) { t, p -> Substring(t, p) }
                 match.end
             } else {

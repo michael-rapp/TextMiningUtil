@@ -15,7 +15,6 @@ package de.mrapp.textmining.util.tokenizer
 
 import de.mrapp.textmining.util.metrics.LevenshteinDistance
 import de.mrapp.textmining.util.parser.Dictionary
-import de.mrapp.textmining.util.parser.Matcher
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -61,6 +60,29 @@ class DictionaryTokenizerTest {
         assertTrue(tokens.contains(Substring("yyy", 6)))
         assertTrue(tokens.contains(Substring("bar", 9)))
         assertTrue(tokens.contains(Substring("zzz", 12)))
+    }
+
+    @Test
+    fun testTokenizeIfEntireTextIsInDictionary() {
+        val dictionary = Dictionary<String, String>()
+        dictionary.addEntry(Dictionary.Entry("foo", "foo2"))
+        val dictionaryTokenizer = DictionaryTokenizer(dictionary)
+        val tokens = dictionaryTokenizer.tokenize("foo")
+        assertEquals(1, tokens.size)
+        assertTrue(tokens.contains(Substring("foo", 0)))
+    }
+
+    @Test
+    fun testTokenizeIfSubstringsAreInDictionary() {
+        val dictionary = Dictionary<String, String>()
+        dictionary.addEntry(Dictionary.Entry("foo", "foo2"))
+        dictionary.addEntry(Dictionary.Entry("foobar", "foobar2"))
+        dictionary.addEntry(Dictionary.Entry("bar", "bar2"))
+        val dictionaryTokenizer = DictionaryTokenizer(dictionary)
+        val tokens = dictionaryTokenizer.tokenize("foobarxxx")
+        assertEquals(2, tokens.size)
+        assertTrue(tokens.contains(Substring("foobar", 0)))
+        assertTrue(tokens.contains(Substring("xxx", 6)))
     }
 
     @Test
