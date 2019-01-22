@@ -55,6 +55,22 @@ class TokenSequenceTest {
     }
 
     @Test
+    fun testCreateSortedWithMapperArgument() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens) { token -> MutableToken(token) }
+        val iterator = sequence.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals(token1, iterator.next().getCurrent())
+        assertTrue(iterator.hasNext())
+        assertEquals(token2, iterator.next().getCurrent())
+        assertTrue(iterator.hasNext())
+        assertEquals(token1, iterator.next().getCurrent())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
     fun testCreateMapped() {
         val token1 = Substring("foo", positions = listOf(0, 2))
         val token2 = Substring("bar", positions = listOf(1))

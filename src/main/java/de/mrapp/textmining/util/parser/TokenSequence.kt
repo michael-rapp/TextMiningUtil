@@ -50,8 +50,22 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
          * multiple times in the sequence.
          */
         fun <T : Token> createSorted(tokens: Iterable<T>): TokenSequence<T> {
-            val sortedMap = TreeMap<Int, T>()
-            tokens.forEach { it.positions.forEach { position -> sortedMap[position] = it } }
+            return createSorted(tokens) { token -> token }
+        }
+
+        /**
+         * Creates a new sequence from several [tokens] of type [I] that are mapped to a different
+         * type [O]. The tokens are ordered by their positions (see [Token.positions]). If a token
+         * corresponds to multiple positions, it will occur multiple times in the sequence.
+         */
+        fun <I : Token, O : Token> createSorted(tokens: Iterable<I>,
+                                                mapper: (I) -> O): TokenSequence<O> {
+            val sortedMap = TreeMap<Int, O>()
+            tokens.forEach {
+                it.positions.forEach { position ->
+                    sortedMap[position] = mapper.invoke(it)
+                }
+            }
             return TokenSequence(sortedMap.values.toMutableList())
         }
 
