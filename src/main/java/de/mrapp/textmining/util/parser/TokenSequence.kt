@@ -290,6 +290,16 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
     fun sequenceIterator(index: Int = 0) = TokenSequence.Iterator(this, index, modificationCount)
 
     /**
+     * Returns a list that contains all of the sequence's tokens.
+     */
+    fun getAllTokens(): List<TokenType> = tokens
+
+    /**
+     * Returns the token at a specific [index].
+     */
+    fun getToken(index: Int) = tokens[index]
+
+    /**
      * The number of tokens that are contained by the sequence.
      */
     val size: Int
