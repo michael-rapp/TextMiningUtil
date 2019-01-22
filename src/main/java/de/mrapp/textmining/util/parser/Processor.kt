@@ -207,25 +207,26 @@ interface Processor<I, O> {
         }
 
         /**
-         * Creates and returns a processor that applies a specific [ifProcessor] to all tokens of a
-         * [TokenSequence] if a [predicate] is met. Optionally, a [elseProcessor] can be applied to
+         * Creates and returns a processor that applies a specific [ifAction] to all tokens of a
+         * [TokenSequence] if a [predicate] is met. Optionally, a [elseAction] can be applied to
          * all tokens that do not meet the [predicate].
          */
         @JvmOverloads
         fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
-                                            ifProcessor: Processor<TokenType, TokenType>,
-                                            elseProcessor: Processor<TokenType, TokenType>? = null):
+                                            ifAction: (TokenType) -> Unit,
+                                            elseAction: ((TokenType) -> Unit)? = null):
                 Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
             return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
 
                 override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
-                    return TokenSequence.createMapped(input) { i ->
+                    input.iterator().forEach { i ->
                         if (predicate.invoke(i)) {
-                            ifProcessor.process(i)
+                            ifAction.invoke(i)
                         } else {
-                            elseProcessor?.process(i) ?: i
+                            elseAction?.invoke(i)
                         }
                     }
+                    return input
                 }
 
             }

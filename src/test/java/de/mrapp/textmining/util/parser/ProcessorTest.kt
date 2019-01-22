@@ -263,10 +263,8 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val ifProcessor = Processor.map<Substring, Substring> { i ->
-            i.token = "${i.token} modified"; i
-        }
-        val processor = Processor.conditional({ i -> i.startsWith("t") }, ifProcessor)
+        val processor = Processor.conditional<Substring>({ i -> i.startsWith("t") },
+                { i -> i.token = "${i.token} modified" })
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
@@ -287,14 +285,9 @@ class ProcessorTest {
         val token3 = Substring("three")
         val token4 = Substring("four")
         val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
-        val ifProcessor = Processor.map<Substring, Substring> { i ->
-            i.token = "${i.token} modified"; i
-        }
-        val elseProcessor = Processor.map<Substring, Substring> { i ->
-            i.token = "${i.token} unmodified"; i
-        }
-        val processor = Processor.conditional({ i -> i.startsWith("t") }, ifProcessor,
-                elseProcessor)
+        val processor = Processor.conditional<Substring>({ i -> i.startsWith("t") },
+                { i -> i.token = "${i.token} modified" },
+                { i -> i.token = "${i.token} unmodified" })
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
