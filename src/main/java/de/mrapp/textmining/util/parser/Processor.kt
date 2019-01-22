@@ -191,6 +191,15 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that applies a specific [processor] to each token in a
+         * [TokenSequence].
+         */
+        fun <TokenType : Token> forEach(processor: Processor<TokenType, *>):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return forEach { token -> processor.process(token) }
+        }
+
+        /**
          * Creates and returns a processor that performs a specific [action] for each token in a
          * [TokenSequence].
          */
@@ -207,8 +216,22 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that applies a specific [ifProcessor] to all tokens of a
+         * [TokenSequence] that meet a certain [predicate]. Optionally, a [elseProcessor] is applied
+         * to all tokens that do not meet the [predicate].
+         */
+        @JvmOverloads
+        fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
+                                            ifProcessor: Processor<TokenType, *>,
+                                            elseProcessor: Processor<TokenType, *>? = null):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return conditional(predicate, { token -> ifProcessor.process(token) },
+                    { token -> elseProcessor?.process(token) })
+        }
+
+        /**
          * Creates and returns a processor that applies a specific [ifAction] to all tokens of a
-         * [TokenSequence] if a [predicate] is met. Optionally, a [elseAction] can be applied to
+         * [TokenSequence] that meet a certain [predicate]. Optionally, a [elseAction] is applied to
          * all tokens that do not meet the [predicate].
          */
         @JvmOverloads

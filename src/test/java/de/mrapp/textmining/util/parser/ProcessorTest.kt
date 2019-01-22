@@ -279,7 +279,31 @@ class ProcessorTest {
     }
 
     @Test
-    fun testConditionalWithElseProcessor() {
+    fun testConditionalUsingProcessor() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val ifProcessor = Processor.map<Substring, Substring> { i ->
+            i.token = "${i.token} modified"; i
+        }
+        val processor = Processor.conditional({ i -> i.startsWith("t") }, ifProcessor)
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("one", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("two modified", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("three modified", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("four", iterator.next().token)
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
+    fun testConditionalWithElse() {
         val token1 = Substring("one")
         val token2 = Substring("two")
         val token3 = Substring("three")
@@ -288,6 +312,35 @@ class ProcessorTest {
         val processor = Processor.conditional<Substring>({ i -> i.startsWith("t") },
                 { i -> i.token = "${i.token} modified" },
                 { i -> i.token = "${i.token} unmodified" })
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertTrue(iterator.hasNext())
+        assertEquals("one unmodified", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("two modified", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("three modified", iterator.next().token)
+        assertTrue(iterator.hasNext())
+        assertEquals("four unmodified", iterator.next().token)
+        assertFalse(iterator.hasNext())
+    }
+
+
+    @Test
+    fun testConditionalUsingProcessorWithElse() {
+        val token1 = Substring("one")
+        val token2 = Substring("two")
+        val token3 = Substring("three")
+        val token4 = Substring("four")
+        val sequence = TokenSequence(mutableListOf(token1, token2, token3, token4))
+        val ifProcessor = Processor.map<Substring, Substring> { i ->
+            i.token = "${i.token} modified"; i
+        }
+        val elseProcessor = Processor.map<Substring, Substring> { i ->
+            i.token = "${i.token} unmodified"; i
+        }
+        val processor = Processor.conditional({ i -> i.startsWith("t") }, ifProcessor,
+                elseProcessor)
         val result = processor.process(sequence)
         val iterator = result.iterator()
         assertTrue(iterator.hasNext())
