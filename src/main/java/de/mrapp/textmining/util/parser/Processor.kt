@@ -222,10 +222,10 @@ interface Processor<I, O> {
          */
         @JvmOverloads
         fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
-                                            ifProcessor: Processor<TokenType, *>,
+                                            ifProcessor: Processor<TokenType, *>?,
                                             elseProcessor: Processor<TokenType, *>? = null):
                 Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
-            return conditional(predicate, { token -> ifProcessor.process(token) },
+            return conditional(predicate, { token -> ifProcessor?.process(token) },
                     { token -> elseProcessor?.process(token) })
         }
 
@@ -236,7 +236,7 @@ interface Processor<I, O> {
          */
         @JvmOverloads
         fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
-                                            ifAction: (TokenType) -> Unit,
+                                            ifAction: ((TokenType) -> Unit)?,
                                             elseAction: ((TokenType) -> Unit)? = null):
                 Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
             return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
@@ -244,7 +244,7 @@ interface Processor<I, O> {
                 override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
                     input.iterator().forEach { i ->
                         if (predicate.invoke(i)) {
-                            ifAction.invoke(i)
+                            ifAction?.invoke(i)
                         } else {
                             elseAction?.invoke(i)
                         }
