@@ -15,6 +15,7 @@ package de.mrapp.textmining.util.parser.numbers
 
 import de.mrapp.textmining.util.parser.MalformedTextException
 import java.util.*
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -28,6 +29,12 @@ import kotlin.test.assertFailsWith
 class EnNumberParserTest {
 
     private val parser = NumberParser.Builder().build(Locale.ENGLISH)
+
+    @Ignore
+    @Test
+    fun test() {
+        assertEquals(101, parser.parse("hundred-and-one"))
+    }
 
     @Test
     fun testParseThrowsMalformedTextException() {

@@ -70,8 +70,7 @@ class EnNumberParser(
                     val first = tokenToRetain.getCurrent<ValueToken<Factor>>().value
                     val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
 
-                    if (second.value !is Number ||
-                            (second.value as? Factor)?.rightOperand != null) {
+                    if (second.value !is Number) {
                         throw MalformedTextException()
                     }
 
@@ -98,7 +97,7 @@ class EnNumberParser(
                     val first = tokenToRetain.getCurrent<ValueToken<Factor>>().value
                     val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
 
-                    if (second.value !is Number || (second.value as? Factor)?.leftOperand != null) {
+                    if (second.value !is Number) {
                         throw MalformedTextException()
                     }
 
@@ -204,24 +203,33 @@ class EnNumberParser(
         dictionary.addEntry(Dictionary.Entry("eight", Number(8)))
         dictionary.addEntry(Dictionary.Entry("nine", Number(9)))
         dictionary.addEntry(Dictionary.Entry("ten", Number(10)))
-        dictionary.addEntry(Dictionary.Entry("teen", Factor(10, leftOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("teen", Factor(10,
+                leftOperand = Summand(minValue = 4, maxValue = 9))))
         dictionary.addEntry(Dictionary.Entry("eleven", Number(11)))
         dictionary.addEntry(Dictionary.Entry("twelve", Number(12)))
         dictionary.addEntry(Dictionary.Entry("thirteen", Number(13)))
         dictionary.addEntry(Dictionary.Entry("fifteen", Number(15)))
         dictionary.addEntry(Dictionary.Entry("eighteen", Number(18)))
-        dictionary.addEntry(Dictionary.Entry("twenty", Number(20, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("thirty", Number(30, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("forty", Number(40, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("fifty", Number(50, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("sixty", Number(60, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("seventy", Number(70, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("eighty", Number(80, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("ninety", Number(90, rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("hundred", Number(100, leftOperand = Multiplier(),
+        dictionary.addEntry(Dictionary.Entry("twenty", Number(20,
+                rightOperand = Summand(minValue = 1, maxValue = 9))))
+        dictionary.addEntry(Dictionary.Entry("thirty", Number(30,
                 rightOperand = Summand())))
-        dictionary.addEntry(Dictionary.Entry("and", Number(0, leftOperand = Summand(),
+        dictionary.addEntry(Dictionary.Entry("forty", Number(40,
                 rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("fifty", Number(50,
+                rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("sixty", Number(60,
+                rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("seventy", Number(70,
+                rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("eighty", Number(80,
+                rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("ninety", Number(90,
+                rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("hundred", Number(100,
+                leftOperand = Multiplier(minValue = 1, maxValue = 9), rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("and", Number(0,
+                leftOperand = Summand(), rightOperand = Summand())))
     }
 
     override fun onParse(text: CharSequence) = parser.parse(text)

@@ -13,16 +13,25 @@
  */
 package de.mrapp.textmining.util.parser.numbers
 
+import de.mrapp.textmining.util.parser.MalformedTextException
+import de.mrapp.util.Condition
+
 /**
  * An operator that sums up two [NumericValue]s.
  *
- * @property value The summand
+ * @property minValue The minimum value of the second value
+ * @property maxValue The maximum value of the second value
  * @author Michael Rapp
  * @since 2.1.0
  */
-class Summand : Operand<Int> {
+class Summand(val minValue: Int = Int.MIN_VALUE, val maxValue: Int = Int.MAX_VALUE) : Operand<Int> {
 
-    override fun apply(first: NumericValue<Int>, second: NumericValue<Int>) =
-            Number(first.value + second.value)
+    override fun apply(first: NumericValue<Int>, second: NumericValue<Int>): NumericValue<Int> {
+        Condition.ensureAtLeast(second.value, minValue, "The value must be at least $minValue",
+                MalformedTextException::class.java)
+        Condition.ensureAtMaximum(second.value, maxValue, "The value must be at maximum $maxValue",
+                MalformedTextException::class.java)
+        return Number(first.value + second.value)
+    }
 
 }
