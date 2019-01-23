@@ -14,14 +14,15 @@
 package de.mrapp.textmining.util.parser.numbers
 
 /**
- * Represents a summand, a [Number] can be summed up with.
+ * An operator that sums up two [NumericValue]s.
  *
  * @property value The summand
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Summand(override var value: Int) : Modifier<Int> {
+class Summand : Operand<Int> {
 
-    override fun apply(value: NumericValue<Int>) = Number(value.value + this.value)
+    override fun apply(first: NumericValue<Int>, second: NumericValue<Int>) =
+            Number(first.value + second.value)
 
 }

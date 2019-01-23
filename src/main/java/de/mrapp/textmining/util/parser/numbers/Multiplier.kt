@@ -14,14 +14,15 @@
 package de.mrapp.textmining.util.parser.numbers
 
 /**
- * Represents a multiplier, a [Number] can be multiplied by.
+ * An operator that multiplies two [NumericValue]s.
  *
  * @param value The multiplier
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Multiplier(override var value: Int) : Modifier<Int> {
+class Multiplier : Operand<Int> {
 
-    override fun apply(value: NumericValue<Int>) = Number(this.value * value.value)
+    override fun apply(first: NumericValue<Int>, second: NumericValue<Int>) =
+            Number(first.value * second.value)
 
 }

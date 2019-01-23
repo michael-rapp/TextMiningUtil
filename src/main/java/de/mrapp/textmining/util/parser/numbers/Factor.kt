@@ -14,14 +14,14 @@
 package de.mrapp.textmining.util.parser.numbers
 
 /**
- * Represents an integer number that can be both, a [Number] as well as a [Summand].
+ * Represents an integer number. It can be aggregated with the number left or right of it using
+ * [Operand]s.
  *
- * @property value The integer number or summand
+ * @property value        The integer number
+ * @property leftOperand  The left operand
+ * @property rightOperand The right operand
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class NumberOrSummand(override var value: Int) : Modifier<Int> {
-
-    override fun apply(value: NumericValue<Int>) = Number(value.value + this.value)
-
-}
+open class Factor(override var value: Int, var leftOperand: Operand<Int>? = null,
+                  var rightOperand: Operand<Int>? = null) : NumericValue<Int>

@@ -14,11 +14,14 @@
 package de.mrapp.textmining.util.parser.numbers
 
 /**
- * Represents an integer number that can be multiplied by a [Multiplier] or summed up with a
- * [Summand].
+ * Represents an integer number. It can be aggregated with the number left or right of it using
+ * [Operand]s.
  *
- * @property value The integer number
+ * @property value        The integer number
+ * @property leftOperand  The left operand
+ * @property rightOperand The right operand
  * @author Michael Rapp
  * @since 2.1.0
  */
-data class Number(override var value: Int) : NumericValue<Int>
+class Number(value: Int, leftOperand: Operand<Int>? = null, rightOperand: Operand<Int>? = null) :
+        Factor(value, leftOperand, rightOperand)
