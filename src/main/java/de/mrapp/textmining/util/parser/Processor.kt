@@ -269,8 +269,7 @@ interface Processor<I, O> {
             return forEach { token ->
                 val entry = dictionary.lookup(token.token)
                 entry?.let { it ->
-                    val valueToken = ValueToken(token.token, it.value, it.associationType,
-                            token.positions)
+                    val valueToken = ValueToken(token.token, it.value, token.positions)
                     revision?.let { token.mutate(token, revision) } ?: token.mutate(valueToken)
                 }
             }
@@ -296,8 +295,7 @@ interface Processor<I, O> {
                 val matches = dictionary.lookup(token.token, matcher)
                 matches.getBestMatch(tieBreaker)?.let { it ->
                     val entry = it.first
-                    val valueToken = ValueToken(token.token, entry.value, entry.associationType,
-                            token.positions)
+                    val valueToken = ValueToken(token.token, entry.value, token.positions)
                     revision?.let { token.mutate(valueToken, revision) } ?: token.mutate(valueToken)
                 }
             }

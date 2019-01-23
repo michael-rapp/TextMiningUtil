@@ -31,11 +31,8 @@ class Dictionary<K, V> : Iterable<Dictionary.Entry<K, V>>, Serializable {
      *
      * @property key             The known value to be translated
      * @property value           The translation
-     * @property associationType An optional association type
      */
-    data class Entry<K, V> @JvmOverloads constructor(
-            val key: K, val value: V, val associationType: AssociationType? = null) :
-            Serializable
+    data class Entry<K, V>(val key: K, val value: V) : Serializable
 
     private val entries: MutableMap<K, Entry<K, V>> = HashMap()
 

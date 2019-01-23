@@ -25,13 +25,12 @@ class DictionaryTest {
     fun testLookupByKey() {
         val dictionary = Dictionary<String, Int>()
         dictionary.addEntry(Dictionary.Entry("one", 1))
-        dictionary.addEntry(Dictionary.Entry("two", 2, AssociationType.BIDIRECTIONAL))
+        dictionary.addEntry(Dictionary.Entry("two", 2))
         dictionary.addEntry(Dictionary.Entry("three", 3))
         val entry = dictionary.lookup("two")
         assertNotNull(entry)
         assertEquals("two", entry.key)
         assertEquals(2, entry.value)
-        assertEquals(AssociationType.BIDIRECTIONAL, entry.associationType)
     }
 
     @Test

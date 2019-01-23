@@ -71,7 +71,7 @@ class EnNumberParser(
                     val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
 
                     if (second.value !is Number ||
-                            second.associationType == AssociationType.RIGHT) {
+                            (second.value as? Factor)?.rightOperand != null) {
                         throw MalformedTextException()
                     }
 
@@ -81,7 +81,6 @@ class EnNumberParser(
 
                     if (first.leftOperand != null) {
                         (modifiedNumber as Number).leftOperand = first.leftOperand
-                        newValue.associationType = AssociationType.LEFT
                     }
 
                     tokenToRetain.mutate(newValue)
@@ -90,8 +89,7 @@ class EnNumberParser(
             }
         }
 
-        private fun mergeLeft(iterator: TokenSequence.Iterator<MutableToken>,
-                              input: TokenSequence<MutableToken>) {
+        private fun mergeLeft(iterator: TokenSequence.Iterator<MutableToken>) {
             val previousIndex = iterator.previousIndex()
 
             if (previousIndex > 0) {
@@ -100,8 +98,7 @@ class EnNumberParser(
                     val first = tokenToRetain.getCurrent<ValueToken<Factor>>().value
                     val second = tokenToMerge.getCurrent<ValueToken<NumericValue<Int>>>()
 
-                    if (second.value !is Number ||
-                            second.associationType == AssociationType.LEFT) {
+                    if (second.value !is Number || (second.value as? Factor)?.leftOperand != null) {
                         throw MalformedTextException()
                     }
 
@@ -111,7 +108,6 @@ class EnNumberParser(
 
                     if (first.rightOperand != null) {
                         (modifiedNumber as Number).rightOperand = first.rightOperand
-                        newValue.associationType = AssociationType.RIGHT
                     }
 
                     tokenToRetain.mutate(newValue)
@@ -121,29 +117,24 @@ class EnNumberParser(
         }
 
         override fun process(input: TokenSequence<MutableToken>): TokenSequence<MutableToken> {
-            var stop = false
+            val iterator: TokenSequence.Iterator<MutableToken> = input.sequenceIterator()
+            while (iterator.findNext({ token ->
+                        val number = token.getCurrent<ValueToken<NumericValue<Int>>>().value
+                                as? Factor
+                        number?.leftOperand != null || number?.rightOperand != null
+                    })) {
+                val token = iterator.next().getCurrent<ValueToken<NumericValue<Int>>>()
+                val factor = token.value as Factor
 
-            while (!stop) {
-                val iterator: TokenSequence.Iterator<MutableToken> = input.sequenceIterator()
-                if (iterator.findNext({ token ->
-                            val number = token.getCurrent<ValueToken<NumericValue<Int>>>().value
-                                    as? Factor
-                            number?.leftOperand != null || number?.rightOperand != null
-                        })) {
-                    val token = iterator.next().getCurrent<ValueToken<NumericValue<Int>>>()
-
-                    when (token.associationType) {
-                        AssociationType.BIDIRECTIONAL -> {
-                            mergeLeft(iterator, input)
-                            mergeRight(iterator, input)
-                        }
-                        AssociationType.LEFT -> mergeLeft(iterator, input)
-                        AssociationType.RIGHT -> mergeRight(iterator, input)
-                        else -> throw IllegalStateException(
-                                "Invalid association type ${token.associationType} for numeric value ${token.value!!.javaClass.simpleName}")
-                    }
+                if (factor.leftOperand != null && factor.rightOperand != null) {
+                    mergeLeft(iterator)
+                    mergeRight(iterator, input)
+                } else if (factor.leftOperand != null) {
+                    mergeLeft(iterator)
+                } else if (factor.rightOperand != null) {
+                    mergeRight(iterator, input)
                 } else {
-                    stop = true
+                    throw IllegalStateException("Left and right operand is null")
                 }
             }
 
@@ -213,33 +204,24 @@ class EnNumberParser(
         dictionary.addEntry(Dictionary.Entry("eight", Number(8)))
         dictionary.addEntry(Dictionary.Entry("nine", Number(9)))
         dictionary.addEntry(Dictionary.Entry("ten", Number(10)))
-        dictionary.addEntry(Dictionary.Entry("teen", Factor(10, leftOperand = Summand()),
-                AssociationType.LEFT))
+        dictionary.addEntry(Dictionary.Entry("teen", Factor(10, leftOperand = Summand())))
         dictionary.addEntry(Dictionary.Entry("eleven", Number(11)))
         dictionary.addEntry(Dictionary.Entry("twelve", Number(12)))
         dictionary.addEntry(Dictionary.Entry("thirteen", Number(13)))
         dictionary.addEntry(Dictionary.Entry("fifteen", Number(15)))
         dictionary.addEntry(Dictionary.Entry("eighteen", Number(18)))
-        dictionary.addEntry(Dictionary.Entry("twenty", Number(20, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("thirty", Number(30, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("forty", Number(40, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("fifty", Number(50, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("sixty", Number(60, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("seventy", Number(70, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("eighty", Number(80, rightOperand = Summand()),
-                AssociationType.RIGHT))
-        dictionary.addEntry(Dictionary.Entry("ninety", Number(90, rightOperand = Summand()),
-                AssociationType.RIGHT))
+        dictionary.addEntry(Dictionary.Entry("twenty", Number(20, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("thirty", Number(30, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("forty", Number(40, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("fifty", Number(50, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("sixty", Number(60, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("seventy", Number(70, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("eighty", Number(80, rightOperand = Summand())))
+        dictionary.addEntry(Dictionary.Entry("ninety", Number(90, rightOperand = Summand())))
         dictionary.addEntry(Dictionary.Entry("hundred", Number(100, leftOperand = Multiplier(),
-                rightOperand = Summand()), AssociationType.BIDIRECTIONAL))
+                rightOperand = Summand())))
         dictionary.addEntry(Dictionary.Entry("and", Number(0, leftOperand = Summand(),
-                rightOperand = Summand()), AssociationType.BIDIRECTIONAL))
+                rightOperand = Summand())))
     }
 
     override fun onParse(text: CharSequence) = parser.parse(text)

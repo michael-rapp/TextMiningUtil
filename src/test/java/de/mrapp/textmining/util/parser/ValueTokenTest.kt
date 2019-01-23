@@ -26,25 +26,23 @@ class ValueTokenTest {
     fun testConstructor() {
         val token = "token"
         val value = "foo"
-        val associationType = AssociationType.LEFT
         val position = 1
-        val valueToken = ValueToken(token, value, associationType, position)
+        val valueToken = ValueToken(token, value, position)
         assertEquals(token, valueToken.token)
         assertEquals(1, valueToken.positions.size)
         assertTrue(valueToken.positions.contains(position))
         assertEquals(token.length, valueToken.length)
-        assertEquals(associationType, valueToken.associationType)
         assertEquals(value, valueToken.value)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun testConstructorThrowsExceptionIfTokenIsEmpty() {
-        ValueToken("", "foo", AssociationType.LEFT, 0)
+        ValueToken("", "foo", 0)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun testConstructorThrowsExceptionIfPositionIsLessThanZero() {
-        ValueToken("token", "foo", AssociationType.LEFT, -1)
+        ValueToken("token", "foo", -1)
     }
 
 }

@@ -20,21 +20,16 @@ import de.mrapp.util.Condition.ensureNotEmpty
 import java.util.*
 
 /**
- * A token that can optionally have a certain value assigned to it. Additionally, the token may have
- * an association type assigned that specifies whether the token is left-associative
- * [AssociationType.LEFT], right-associative [AssociationType.RIGHT], or both
- * [AssociationType.BIDIRECTIONAL].
+ * A token that can optionally have a certain value assigned to it.
  *
  * @property token           The token
  * @property value           The value that is associated with the token
- * @property associationType The association type of the token
  * @property positions       A set that contains the position(s) of the token
  * @author Michael Rapp
  * @since 2.1.0
  */
 data class ValueToken<T> @JvmOverloads constructor(
         override var token: CharSequence, var value: T?,
-        var associationType: AssociationType? = null,
         override val positions: SortedSet<Int> = TreeSet()) : Token {
 
     init {
@@ -47,26 +42,20 @@ data class ValueToken<T> @JvmOverloads constructor(
      *
      * @param token           The token
      * @param value           The value that is associated with the token
-     * @param associationType The association type of the token
      * @param positions       The position(s) of the token
      */
-    @JvmOverloads
-    constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
-                vararg positions: Int) :
-            this(token, value, associationType, positions.toList())
+    constructor(token: CharSequence, value: T?, vararg positions: Int) :
+            this(token, value, positions.toList())
 
     /**
      * Creates a new token that can optionally have a certain value assigned to it.
      *
      * @param token           The token
      * @param value           The value that is associated with the token
-     * @param associationType The association type of the token
      * @param positions       A collection that contains the position(s) of the token
      */
-    @JvmOverloads
-    constructor(token: CharSequence, value: T?, associationType: AssociationType? = null,
-                positions: Collection<Int>) :
-            this(token, value, associationType, TreeSet(positions))
+    constructor(token: CharSequence, value: T?, positions: Collection<Int>) :
+            this(token, value, TreeSet(positions))
 
     override fun addPosition(position: Int) {
         ensureAtLeast(position, 0, "The position must be at least 0")
