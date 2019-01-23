@@ -115,12 +115,13 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
             ensureEqual(modificationCount, tokenSequence.modificationCount, null,
                     ConcurrentModificationException::class.java)
             val tokenToMerge = tokenSequence.tokens[index]
-            val tokenToRetain = tokenSequence.tokens[lastIndex!!]
+            val currentIndex = if (lastIndex!! < nextIndex) lastIndex!! else nextIndex
+            val tokenToRetain = tokenSequence.tokens[currentIndex]
             val newToken = mergerFunction.invoke(tokenToRetain, tokenToMerge)
-            tokenSequence.tokens[lastIndex!!] = newToken
+            tokenSequence.tokens[currentIndex] = newToken
             tokenSequence.tokens.removeAt(index)
 
-            if (lastIndex!! > index) {
+            if (currentIndex > index) {
                 lastIndex = lastIndex!! - 1
                 nextIndex--
             }
@@ -138,10 +139,11 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
                     IllegalArgumentException::class.java)
             ensureEqual(modificationCount, tokenSequence.modificationCount, null,
                     ConcurrentModificationException::class.java)
-            val tokenToDivide = tokenSequence.tokens[lastIndex!!]
+            val currentIndex = if (lastIndex!! < nextIndex) lastIndex!! else nextIndex
+            val tokenToDivide = tokenSequence.tokens[currentIndex]
             val (existingToken, newToken) = dividerFunction.invoke(tokenToDivide)
-            tokenSequence.tokens[lastIndex!!] = existingToken
-            tokenSequence.tokens.add(lastIndex!! + 1, newToken)
+            tokenSequence.tokens[currentIndex] = existingToken
+            tokenSequence.tokens.add(currentIndex + 1, newToken)
             modificationCount++
             tokenSequence.modificationCount++
         }

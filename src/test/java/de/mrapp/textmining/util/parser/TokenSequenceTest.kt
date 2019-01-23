@@ -355,6 +355,55 @@ class TokenSequenceTest {
     }
 
     @Test
+    fun testSequenceIteratorReverseMergeWithPreceedingToken() {
+        val token1 = Substring("0", positions = listOf(0))
+        val token2 = Substring("1", positions = listOf(1))
+        val token3 = Substring("2", positions = listOf(3))
+        val token4 = Substring("3", positions = listOf(4))
+        val token5 = Substring("4", positions = listOf(5))
+        val tokens = mutableListOf(token1, token2, token3, token4, token5)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size)
+
+        assertTrue(iterator.hasPrevious())
+        assertEquals(4, iterator.previousIndex())
+        assertEquals("4", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(3, iterator.previousIndex())
+        assertEquals("3", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(2, iterator.previousIndex())
+        assertEquals("2", iterator.previous().token)
+        iterator.merge(1) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.token = "${tokenToMerge.token},${tokenToRetain.token}"
+            tokenToRetain
+        }
+        assertTrue(iterator.hasPrevious())
+        assertEquals(0, iterator.previousIndex())
+        assertEquals("0", iterator.previous().token)
+        assertFalse(iterator.hasPrevious())
+        assertEquals(-1, iterator.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.previous() }
+
+        val iterator2 = sequence.sequenceIterator(sequence.size)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(3, iterator2.previousIndex())
+        assertEquals("4", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(2, iterator2.previousIndex())
+        assertEquals("3", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(1, iterator2.previousIndex())
+        assertEquals("1,2", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(0, iterator2.previousIndex())
+        assertEquals("0", iterator2.previous().token)
+        assertFalse(iterator2.hasPrevious())
+        assertEquals(-1, iterator2.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator2.previous() }
+    }
+
+    @Test
     fun testSequenceIteratorMergeWithSubsequentToken() {
         val token1 = Substring("0", positions = listOf(0))
         val token2 = Substring("1", positions = listOf(1))
@@ -404,6 +453,58 @@ class TokenSequenceTest {
     }
 
     @Test
+    fun testSequenceIteratorReverseMergeWithSubsequentToken() {
+        val token1 = Substring("0", positions = listOf(0))
+        val token2 = Substring("1", positions = listOf(1))
+        val token3 = Substring("2", positions = listOf(3))
+        val token4 = Substring("3", positions = listOf(4))
+        val token5 = Substring("4", positions = listOf(5))
+        val tokens = mutableListOf(token1, token2, token3, token4, token5)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(tokens.size)
+
+        assertTrue(iterator.hasPrevious())
+        assertEquals(4, iterator.previousIndex())
+        assertEquals("4", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(3, iterator.previousIndex())
+        assertEquals("3", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(2, iterator.previousIndex())
+        assertEquals("2", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(1, iterator.previousIndex())
+        assertEquals("1", iterator.previous().token)
+        iterator.merge(3) { tokenToRetain, tokenToMerge ->
+            tokenToRetain.token = "${tokenToRetain.token},${tokenToMerge.token}"
+            tokenToRetain
+        }
+        assertTrue(iterator.hasPrevious())
+        assertEquals(0, iterator.previousIndex())
+        assertEquals("0", iterator.previous().token)
+        assertFalse(iterator.hasPrevious())
+        assertEquals(-1, iterator.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.previous() }
+
+        val iterator2 = sequence.sequenceIterator(sequence.size)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(3, iterator2.previousIndex())
+        assertEquals("4", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(2, iterator2.previousIndex())
+        assertEquals("2", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(1, iterator2.previousIndex())
+        assertEquals("1,3", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(0, iterator2.previousIndex())
+        assertEquals("0", iterator2.previous().token)
+        assertFalse(iterator2.hasPrevious())
+        assertEquals(-1, iterator2.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator2.previous() }
+    }
+
+    @Test
     fun testSequenceIteratorSplit() {
         val token1 = Substring("foo", positions = listOf(0, 2))
         val token2 = Substring("bar", positions = listOf(1))
@@ -424,6 +525,9 @@ class TokenSequenceTest {
         assertTrue(iterator.hasNext())
         assertEquals(3, iterator.nextIndex())
         assertEquals("foo", iterator.next().token)
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
 
         val iterator2 = sequence.sequenceIterator()
         assertTrue(iterator2.hasNext())
@@ -438,6 +542,49 @@ class TokenSequenceTest {
         assertTrue(iterator2.hasNext())
         assertEquals(3, iterator2.nextIndex())
         assertEquals("foo", iterator2.next().token)
+        assertFalse(iterator.hasNext())
+        assertEquals(-1, iterator.nextIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.next() }
+    }
+
+    @Test
+    fun testSequenceIteratorReverseSplit() {
+        val token1 = Substring("foo", positions = listOf(0, 2))
+        val token2 = Substring("bar", positions = listOf(1))
+        val tokens = mutableListOf(token1, token2)
+        val sequence = TokenSequence.createSorted(tokens)
+        val iterator = sequence.sequenceIterator(sequence.size)
+
+        assertTrue(iterator.hasPrevious())
+        assertEquals(2, iterator.previousIndex())
+        assertEquals("foo", iterator.previous().token)
+        assertTrue(iterator.hasPrevious())
+        assertEquals(1, iterator.previousIndex())
+        assertEquals("bar", iterator.previous().token)
+        iterator.split { Pair(Substring("b"), Substring("ar")) }
+        assertTrue(iterator.hasPrevious())
+        assertEquals(0, iterator.previousIndex())
+        assertEquals("foo", iterator.previous().token)
+        assertFalse(iterator.hasPrevious())
+        assertEquals(-1, iterator.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.previous() }
+
+        val iterator2 = sequence.sequenceIterator(sequence.size)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(3, iterator2.previousIndex())
+        assertEquals("foo", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(2, iterator2.previousIndex())
+        assertEquals("ar", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(1, iterator2.previousIndex())
+        assertEquals("b", iterator2.previous().token)
+        assertTrue(iterator2.hasPrevious())
+        assertEquals(0, iterator2.previousIndex())
+        assertEquals("foo", iterator2.previous().token)
+        assertFalse(iterator.hasPrevious())
+        assertEquals(-1, iterator.previousIndex())
+        assertFailsWith(NoSuchElementException::class) { iterator.previous() }
     }
 
     @Test
@@ -515,7 +662,6 @@ class TokenSequenceTest {
         assertFalse(result)
         assertEquals(1, iterator.nextIndex())
     }
-
 
     @Test
     fun testFindPrevious1() {
