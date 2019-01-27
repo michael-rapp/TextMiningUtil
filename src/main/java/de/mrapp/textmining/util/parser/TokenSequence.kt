@@ -294,12 +294,7 @@ data class TokenSequence<TokenType : Token> @JvmOverloads constructor(
     /**
      * Returns a list that contains all of the sequence's tokens.
      */
-    fun getAllTokens(): List<TokenType> = tokens
-
-    /**
-     * Returns the token at a specific [index].
-     */
-    fun getToken(index: Int) = tokens[index]
+    fun toList(): List<TokenType> = tokens.toList()
 
     /**
      * The number of tokens that are contained by the sequence.

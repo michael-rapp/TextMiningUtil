@@ -42,7 +42,7 @@ class EnNumberParser(
 
             while (iterator.findNext({ token -> token.getCurrent<Token>() is TokenSequence<*> })) {
                 val tokenSequence = iterator.next().getCurrent<TokenSequence<MutableToken>>()
-                val tokens = tokenSequence.getAllTokens()
+                val tokens = tokenSequence.toList()
 
                 for (i in tokens.size - 1 downTo 0) {
                     if (i == tokens.size - 1) {
