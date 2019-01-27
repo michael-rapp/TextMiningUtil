@@ -1,10 +1,13 @@
 # TextMiningUtil - RELEASE NOTES
 
-## Version 2.1.0 (Sep. 4th 2018)
+## Version 2.1.0 (Jan. 27th 2019)
 
 A feature release, which introduces the following changes:
 
-- Added helper classes for parsing texts.
+- Added interface `TextParser` as well as the implementations `AbstractTextParser` and `GradualTextParser`.
+- Added types of tokens, such as `MutableToken`, `ValueToken` and `TokenSequence`, that are useful when parsing texts.
+- Added class `Dictionary` that allows to translate parts of texts using key-value pairs.
+- Added interface `Processor` and class `ProcessorChain`.
 - Added a helper method to create case-insensitive metrics to the interface `TextMetric`.
 - Added class `TextMetric.Comparator`.
 - `Tokenizer`s and `TextMetric`s can now be applied to `CharSequence`s.
