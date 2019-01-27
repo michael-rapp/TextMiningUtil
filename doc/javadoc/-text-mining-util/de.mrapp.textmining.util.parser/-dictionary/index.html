@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Dictionary - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../index.html">de.mrapp.textmining.util.parser</a>&nbsp;/&nbsp;<a href="./index.html">Dictionary</a><br/>
+<br/>
+<h1>Dictionary</h1>
+<code><span class="keyword">class </span><span class="identifier">Dictionary</span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html"><span class="identifier">Iterable</span></a><span class="symbol">&lt;</span><a href="-entry/index.html"><span class="identifier">Entry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html"><span class="identifier">Serializable</span></a></code>
+<p>A dictionary that contains several entries, which can be used to identify known values and
+assign them to predefined translations.</p>
+<h3>Parameters</h3>
+<p><a name="K"></a>
+<code>K</code> - The type of the values to be translated</p>
+<p><a name="V"></a>
+<code>V</code> - The type of the translations</p>
+<p><strong>Author</strong><br/>
+Michael Rapp</p>
+<p><strong>Since</strong><br/>
+2.1.0</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-entry/index.html">Entry</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Entry</span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html"><span class="identifier">Serializable</span></a></code>
+<p>An entry of a <a href="./index.html">Dictionary</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Dictionary</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>A dictionary that contains several entries, which can be used to identify known values and
+assign them to predefined translations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-entry.html">addEntry</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addEntry</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.Dictionary$addEntry(de.mrapp.textmining.util.parser.Dictionary.Entry((de.mrapp.textmining.util.parser.Dictionary.K, de.mrapp.textmining.util.parser.Dictionary.V)))/entry">entry</span><span class="symbol">:</span>&nbsp;<a href="-entry/index.html"><span class="identifier">Entry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a new <a href="add-entry.html#de.mrapp.textmining.util.parser.Dictionary$addEntry(de.mrapp.textmining.util.parser.Dictionary.Entry((de.mrapp.textmining.util.parser.Dictionary.K, de.mrapp.textmining.util.parser.Dictionary.V)))/entry">entry</a> to the dictionary.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="iterator.html">iterator</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">iterator</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-iterator/index.html"><span class="identifier">MutableIterator</span></a><span class="symbol">&lt;</span><a href="-entry/index.html"><span class="identifier">Entry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="lookup.html">lookup</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">lookup</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.K)/key">key</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-entry/index.html"><span class="identifier">Entry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Returns the entry that corresponds to a specific <a href="lookup.html#de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.K)/key">key</a>.</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">lookup</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Matcher((de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Dictionary.K)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="lookup.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Matcher((de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Dictionary.K)))/matcher">matcher</span><span class="symbol">:</span>&nbsp;<a href="../-matcher/index.html"><span class="identifier">Matcher</span></a><span class="symbol">&lt;</span><a href="lookup.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-matches/index.html"><span class="identifier">Matches</span></a><span class="symbol">&lt;</span><a href="-entry/index.html"><span class="identifier">Entry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="lookup.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Returns <a href="../-matches/index.html">Matches</a> for all entries that match a certain <a href="lookup.html#de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Matcher((de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Dictionary.K)))/value">value</a> according to a given
+<a href="lookup.html#de.mrapp.textmining.util.parser.Dictionary$lookup(de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Matcher((de.mrapp.textmining.util.parser.Dictionary.lookup.T, de.mrapp.textmining.util.parser.Dictionary.K)))/matcher">matcher</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

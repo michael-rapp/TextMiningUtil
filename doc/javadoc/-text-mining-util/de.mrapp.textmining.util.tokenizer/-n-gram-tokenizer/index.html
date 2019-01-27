@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>NGramTokenizer - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../index.html">de.mrapp.textmining.util.tokenizer</a>&nbsp;/&nbsp;<a href="./index.html">NGramTokenizer</a><br/>
+<br/>
+<h1>NGramTokenizer</h1>
+<code><span class="keyword">class </span><span class="identifier">NGramTokenizer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="../-n-gram/index.html"><span class="identifier">NGram</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to create n-grams from texts. E.g. the substrings "t", "te", "tex", "ext", "xt" and "t"
+can be created from the text "text". In general, the <a href="./index.html">NGramTokenizer</a> less tokens than the class
+<a href="../-substring-tokenizer/index.html">SubstringTokenizer</a>.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">NGramTokenizer</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGramTokenizer$<init>(kotlin.Int, kotlin.Int)/minLength">minLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1<span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGramTokenizer$<init>(kotlin.Int, kotlin.Int)/maxLength">maxLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Integer.MAX_VALUE<span class="symbol">)</span></code>
+<p>Allows to create n-grams from texts. E.g. the substrings "t", "te", "tex", "ext", "xt" and "t"
+can be created from the text "text". In general, the <a href="./index.html">NGramTokenizer</a> less tokens than the class
+<a href="../-substring-tokenizer/index.html">SubstringTokenizer</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="max-length.html">maxLength</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">maxLength</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The maximum length of the n-grams that are created by the tokenizer</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="min-length.html">minLength</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">minLength</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The minimum length of the n-grams that are created by the tokenizer</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="on-tokenize.html">onTokenize</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onTokenize</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGramTokenizer$onTokenize(kotlin.String, kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.NGram)))/text">text</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGramTokenizer$onTokenize(kotlin.String, kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.NGram)))/map">map</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-n-gram/index.html"><span class="identifier">NGram</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>The method, which is invoked on subclasses in order to tokenize a specific <a href="../-abstract-tokenizer/on-tokenize.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$onTokenize(kotlin.String, kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.TokenType)))/text">text</a>. The tokens
+should be added to the given <a href="../-abstract-tokenizer/on-tokenize.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$onTokenize(kotlin.String, kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.TokenType)))/map">map</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-abstract-tokenizer/add-token.html">addToken</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">&gt;</span> <span class="identifier">addToken</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/map">map</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-abstract-tokenizer/add-token.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/tokenFactory">tokenFactory</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="../-abstract-tokenizer/add-token.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a new <a href="../-abstract-tokenizer/add-token.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/token">token</a> to a <a href="../-abstract-tokenizer/add-token.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/map">map</a>, if it is not already contained. Otherwise, the token's
+<a href="../-abstract-tokenizer/add-token.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/position">position</a> is added to the existing token. A <a href="../-abstract-tokenizer/add-token.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/tokenFactory">tokenFactory</a> for converting the given <a href="../-abstract-tokenizer/add-token.html#de.mrapp.textmining.util.tokenizer.AbstractTokenizer$addToken(kotlin.collections.MutableMap((kotlin.String, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)), kotlin.String, kotlin.Int, kotlin.Function2((kotlin.String, kotlin.Int, de.mrapp.textmining.util.tokenizer.AbstractTokenizer.addToken.T)))/token">token</a>
+to the type <a href="../-abstract-tokenizer/add-token.html#T">T</a> must be provided.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-abstract-tokenizer/tokenize.html">tokenize</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">tokenize</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.AbstractTokenizer$tokenize(kotlin.CharSequence)/text">text</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="../-abstract-tokenizer/index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">&gt;</span></code>
+<p>Splits a specific <a href="../-tokenizer/tokenize.html#de.mrapp.textmining.util.tokenizer.Tokenizer$tokenize(kotlin.CharSequence)/text">text</a> into tokens.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

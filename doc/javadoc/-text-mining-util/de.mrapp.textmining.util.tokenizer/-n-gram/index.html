@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>NGram - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../index.html">de.mrapp.textmining.util.tokenizer</a>&nbsp;/&nbsp;<a href="./index.html">NGram</a><br/>
+<br/>
+<h1>NGram</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">NGram</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a></code>
+<p>A n-Gram, which consists of a sequence of characters, taken from a longer text or word.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.IntArray)/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.IntArray)/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.IntArray)/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.collections.Collection((kotlin.Int)))/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.collections.Collection((kotlin.Int)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, kotlin.collections.Collection((kotlin.Int)))/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<p>Creates a new substring, which consists of a sequence of characters, taken from a longer
+text.</p>
+<code><span class="identifier">NGram</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, java.util.SortedSet((kotlin.Int)))/n">n</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, java.util.SortedSet((kotlin.Int)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$<init>(kotlin.Int, kotlin.CharSequence, java.util.SortedSet((kotlin.Int)))/positions">positions</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/SortedSet.html"><span class="identifier">SortedSet</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;TreeSet()<span class="symbol">)</span></code>
+<p>A n-Gram, which consists of a sequence of characters, taken from a longer text or word.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="n.html">n</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">n</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The degree of the n-gram</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="positions.html">positions</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">positions</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/SortedSet.html"><span class="identifier">SortedSet</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>A set that contains the position(s) of the substring's token in the original
+    text</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="token.html">token</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">token</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a></code>
+<p>The token of the substring</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../de.mrapp.textmining.util/-token/length.html">length</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">length</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-position.html">addPosition</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addPosition</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.tokenizer.NGram$addPosition(kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a new <a href="../../de.mrapp.textmining.util/-token/add-position.html#de.mrapp.textmining.util.Token$addPosition(kotlin.Int)/position">position</a> the token occurs at.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../de.mrapp.textmining.util/-token/get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.Token$get(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html"><span class="identifier">Char</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../de.mrapp.textmining.util/-token/sub-sequence.html">subSequence</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">subSequence</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.Token$subSequence(kotlin.Int, kotlin.Int)/startIndex">startIndex</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.Token$subSequence(kotlin.Int, kotlin.Int)/endIndex">endIndex</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
