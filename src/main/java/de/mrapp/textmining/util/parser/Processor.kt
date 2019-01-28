@@ -69,6 +69,27 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that removes leading and trailing whitespace from tokens.
+         */
+        fun <TokenType : Token> trim(): Processor<TokenType, Unit> {
+            return object : Processor<TokenType, Unit> {
+
+                override fun process(input: TokenType) {
+                    input.token = input.trim()
+                }
+            }
+        }
+
+        /**
+         * Creates and returns a processor that removes leading and trailing whitespace from all
+         * tokens that are contained by a [TokenSequence].
+         */
+        fun <TokenType : Token> trimSequence():
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return Processor.forEach(Processor.trim())
+        }
+
+        /**
          * Creates and returns a processor that removes all tokens from a [TokenSequence] that match
          * a given [value] according to a specific [matcher].
          */

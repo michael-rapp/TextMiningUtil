@@ -66,6 +66,28 @@ class ProcessorTest {
     }
 
     @Test
+    fun testTrim() {
+        val token = Substring("   foo  ")
+        val processor = Processor.trim<Substring>()
+        processor.process(token)
+        assertEquals("foo", token.toString())
+    }
+
+    @Test
+    fun testTrimSequence() {
+        val token1 = Substring("  foo ", 0, 2)
+        val token2 = Substring("   bar  ", 1)
+        val sequence = TokenSequence.createSorted(listOf(token1, token2))
+        val processor = Processor.trimSequence<Substring>()
+        val result = processor.process(sequence)
+        val iterator = result.iterator()
+        assertEquals("foo", iterator.next().toString())
+        assertEquals("bar", iterator.next().toString())
+        assertEquals("foo", iterator.next().toString())
+        assertFalse(iterator.hasNext())
+    }
+
+    @Test
     fun testTranslate() {
         val dictionary = Dictionary<CharSequence, Int>()
         dictionary.addEntry(Dictionary.Entry("one", 1))
