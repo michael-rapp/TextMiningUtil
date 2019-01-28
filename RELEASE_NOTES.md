@@ -1,5 +1,11 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 2.1.1 (Jan. 28th 2019)
+
+A minor release, which introduces the following changes:
+
+- `Tokenizer`s do now handle empty tokens properly.
+
 ## Version 2.1.0 (Jan. 27th 2019)
 
 A feature release, which introduces the following changes:
