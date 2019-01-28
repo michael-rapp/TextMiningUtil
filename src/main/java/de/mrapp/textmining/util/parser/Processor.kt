@@ -268,7 +268,7 @@ interface Processor<I, O> {
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
                 val entry = dictionary.lookup(token.token)
-                entry?.let { it ->
+                entry?.let {
                     val valueToken = ValueToken(token.token, it.value, token.positions)
                     revision?.let { token.mutate(token, revision) } ?: token.mutate(valueToken)
                 }
@@ -293,7 +293,7 @@ interface Processor<I, O> {
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
                 val matches = dictionary.lookup(token.token, matcher)
-                matches.getBestMatch(tieBreaker)?.let { it ->
+                matches.getBestMatch(tieBreaker)?.let {
                     val entry = it.first
                     val valueToken = ValueToken(token.token, entry.value, token.positions)
                     revision?.let { token.mutate(valueToken, revision) } ?: token.mutate(valueToken)
