@@ -1,7 +1,0 @@
-$dokka.format:html
-$dokka.linkExtension:html
-
-de.mrapp.textmining.util
-de.mrapp.textmining.util.metrics
-de.mrapp.textmining.util.parser
-de.mrapp.textmining.util.tokenizer
