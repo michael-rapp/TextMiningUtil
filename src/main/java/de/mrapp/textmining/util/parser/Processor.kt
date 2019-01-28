@@ -69,6 +69,27 @@ interface Processor<I, O> {
         }
 
         /**
+         * Creates and returns a processor that removes leading and trailing whitespace from tokens.
+         */
+        fun <TokenType : Token> trim(): Processor<TokenType, Unit> {
+            return object : Processor<TokenType, Unit> {
+
+                override fun process(input: TokenType) {
+                    input.token = input.trim()
+                }
+            }
+        }
+
+        /**
+         * Creates and returns a processor that removes leading and trailing whitespace from all
+         * tokens that are contained by a [TokenSequence].
+         */
+        fun <TokenType : Token> trimSequence():
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return Processor.forEach(Processor.trim())
+        }
+
+        /**
          * Creates and returns a processor that removes all tokens from a [TokenSequence] that match
          * a given [value] according to a specific [matcher].
          */
@@ -268,7 +289,7 @@ interface Processor<I, O> {
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
                 val entry = dictionary.lookup(token.token)
-                entry?.let { it ->
+                entry?.let {
                     val valueToken = ValueToken(token.token, it.value, token.positions)
                     revision?.let { token.mutate(token, revision) } ?: token.mutate(valueToken)
                 }
@@ -293,7 +314,7 @@ interface Processor<I, O> {
                 Processor<TokenSequence<MutableToken>, TokenSequence<MutableToken>> {
             return forEach { token ->
                 val matches = dictionary.lookup(token.token, matcher)
-                matches.getBestMatch(tieBreaker)?.let { it ->
+                matches.getBestMatch(tieBreaker)?.let {
                     val entry = it.first
                     val valueToken = ValueToken(token.token, entry.value, token.positions)
                     revision?.let { token.mutate(valueToken, revision) } ?: token.mutate(valueToken)

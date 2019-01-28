@@ -36,8 +36,10 @@ abstract class AbstractTokenizer<TokenType : Token> : Tokenizer<TokenType> {
         var existingToken = map[token]
 
         if (existingToken == null) {
-            existingToken = tokenFactory.invoke(token, position)
-            map[token] = existingToken
+            if (token.isNotEmpty()) {
+                existingToken = tokenFactory.invoke(token, position)
+                map[token] = existingToken
+            }
         } else {
             existingToken.addPosition(position)
         }

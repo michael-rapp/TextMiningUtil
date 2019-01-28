@@ -74,7 +74,7 @@ class RegexTokenizerTest {
 
     @Test
     fun testTokenize3() {
-        val substrings = RegexTokenizer(",").tokenize("foo,bar,foobar")
+        val substrings = RegexTokenizer(",").tokenize("foo,bar,,foobar")
         assertEquals(3, substrings.size)
 
         for (substring in substrings) {
@@ -83,7 +83,7 @@ class RegexTokenizerTest {
             when (substring.token) {
                 "foo" -> assertTrue(positions.contains(0))
                 "bar" -> assertTrue(positions.contains(4))
-                "foobar" -> assertTrue(positions.contains(8))
+                "foobar" -> assertTrue(positions.contains(9))
                 else -> fail()
             }
         }
