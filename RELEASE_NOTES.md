@@ -5,6 +5,7 @@
 A minor release, which introduces the following changes:
 
 - `Tokenizer`s do now handle empty tokens properly.
+- Add predefined `Processor` for removing leading and trailing whitespace from tokens.
 
 ## Version 2.1.0 (Jan. 27th 2019)
 
