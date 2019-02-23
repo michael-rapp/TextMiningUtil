@@ -1,5 +1,12 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 2.1.2 (Feb. 23th 2019)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "JavaUtil" to version 2.1.1.
+- Updated Kotlin to version 1.3.21.
+
 ## Version 2.1.1 (Jan. 28th 2019)
 
 A minor release, which introduces the following changes:
