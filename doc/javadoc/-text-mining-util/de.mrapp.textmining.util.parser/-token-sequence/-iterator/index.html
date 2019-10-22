@@ -1,0 +1,140 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TokenSequence.Iterator - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../../index.html">de.mrapp.textmining.util.parser</a>&nbsp;/&nbsp;<a href="../index.html">TokenSequence</a>&nbsp;/&nbsp;<a href="./index.html">Iterator</a><br/>
+<br/>
+<h1>Iterator</h1>
+<code><span class="keyword">class </span><span class="identifier">Iterator</span><span class="symbol">&lt;</span><span class="identifier">TokenType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list-iterator/index.html"><span class="identifier">MutableListIterator</span></a><span class="symbol">&lt;</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">&gt;</span></code>
+<p>A <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list-iterator/index.html">MutableListIterator</a> that allows to traverse and modify a <a href="../index.html">TokenSequence</a>.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Iterator</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$<init>(de.mrapp.textmining.util.parser.TokenSequence((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType)), kotlin.Int, kotlin.Long)/tokenSequence">tokenSequence</span><span class="symbol">:</span>&nbsp;<a href="../index.html"><span class="identifier">TokenSequence</span></a><span class="symbol">&lt;</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$<init>(de.mrapp.textmining.util.parser.TokenSequence((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType)), kotlin.Int, kotlin.Long)/nextIndex">nextIndex</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$<init>(de.mrapp.textmining.util.parser.TokenSequence((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType)), kotlin.Int, kotlin.Long)/modificationCount">modificationCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span></code>
+<p>A <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list-iterator/index.html">MutableListIterator</a> that allows to traverse and modify a <a href="../index.html">TokenSequence</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$add(de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="find-next.html">findNext</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">findNext</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/maxSteps">maxSteps</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Searches for the next token that matches a specific <a href="find-next.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</a>. If such a token is
+found, true will be returned and calling <a href="next.html">next</a> will result in the found token to be
+returned. If no matching token can be found, false will be returned and the iterator will
+point to the token that is located after the token, the search looked at last.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="find-previous.html">findPrevious</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">findPrevious</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findPrevious(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findPrevious(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/maxSteps">maxSteps</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Searches for the last token that matches a specific <a href="find-previous.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$findPrevious(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</a>. If such a token is
+found, true will be returned and calling <a href="previous.html">previous</a> will result in the found token to be
+returned. If no matching token can be found, false will be returned and the iterator will
+point to the token that is located before the token, the search looked at last.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="has-next.html">hasNext</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hasNext</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="has-previous.html">hasPrevious</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hasPrevious</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="merge.html">merge</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">merge</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$merge(kotlin.Int, kotlin.Function2((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, , )))/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$merge(kotlin.Int, kotlin.Function2((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, , )))/mergerFunction">mergerFunction</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Merges the current token with the token at a specific <a href="merge.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$merge(kotlin.Int, kotlin.Function2((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, , )))/index">index</a> using a specific
+<a href="merge.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$merge(kotlin.Int, kotlin.Function2((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, , )))/mergerFunction">mergerFunction</a>. The token at the given <a href="merge.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$merge(kotlin.Int, kotlin.Function2((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, , )))/index">index</a> will be removed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="next.html">next</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">next</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="next-index.html">nextIndex</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nextIndex</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="previous.html">previous</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">previous</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="previous-index.html">previousIndex</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">previousIndex</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="remove.html">remove</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">remove</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="set.html">set</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">set</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$set(de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="split.html">split</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">split</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$split(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Pair((, )))))/dividerFunction">dividerFunction</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html"><span class="identifier">Pair</span></a><span class="symbol">&lt;</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Splits the current token into a prefix and a suffix using a specific <a href="split.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$split(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Pair((, )))))/dividerFunction">dividerFunction</a>.
+The divider function must return the token, the original token should be split into.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

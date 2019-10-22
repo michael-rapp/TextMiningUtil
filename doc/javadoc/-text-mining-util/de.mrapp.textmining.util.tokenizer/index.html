@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>de.mrapp.textmining.util.tokenizer - TextMiningUtil</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="./index.html">de.mrapp.textmining.util.tokenizer</a><br/>
+<br/>
+<h2>Package de.mrapp.textmining.util.tokenizer</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-abstract-tokenizer/index.html">AbstractTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AbstractTokenizer</span><span class="symbol">&lt;</span><span class="identifier">TokenType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-tokenizer/index.html"><span class="identifier">Tokenizer</span></a><span class="symbol">&lt;</span><a href="-abstract-tokenizer/index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">&gt;</span></code>
+<p>An abstract base class for all tokenizers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-dictionary-tokenizer/index.html">DictionaryTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DictionaryTokenizer</span><span class="symbol">&lt;</span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="-substring/index.html"><span class="identifier">Substring</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to split texts based on a <a href="../de.mrapp.textmining.util.parser/-dictionary/index.html">Dictionary</a>. E.g. given a dictionary that contains the entries
+"one" and "two", the text "abconedeftwo" is split into the substrings "abc", "one", "def", and
+"two".</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-fixed-length-tokenizer/index.html">FixedLengthTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">FixedLengthTokenizer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="-substring/index.html"><span class="identifier">Substring</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to split texts into substrings with a fixed length. E.g. given the length 2, the text
+"text" is split into the substrings "te", "xt".</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-n-gram/index.html">NGram</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">NGram</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a></code>
+<p>A n-Gram, which consists of a sequence of characters, taken from a longer text or word.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-n-gram-tokenizer/index.html">NGramTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">NGramTokenizer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="-n-gram/index.html"><span class="identifier">NGram</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to create n-grams from texts. E.g. the substrings "t", "te", "tex", "ext", "xt" and "t"
+can be created from the text "text". In general, the <a href="-n-gram-tokenizer/index.html">NGramTokenizer</a> less tokens than the class
+<a href="-substring-tokenizer/index.html">SubstringTokenizer</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-regex-tokenizer/index.html">RegexTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RegexTokenizer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="-substring/index.html"><span class="identifier">Substring</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to split texts into substrings using regular expressions.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-substring/index.html">Substring</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Substring</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a></code>
+<p>A substring, which consists of a sequence of characters, taken from a longer text.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-substring-tokenizer/index.html">SubstringTokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SubstringTokenizer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-tokenizer/index.html"><span class="identifier">AbstractTokenizer</span></a><span class="symbol">&lt;</span><a href="-substring/index.html"><span class="identifier">Substring</span></a><span class="symbol">&gt;</span></code>
+<p>Allows to create substrings from texts. E.g. the substrings "t", "e", "x", "t", "te", "ex", "xt",
+"tex" and "ext" can be created from the text "text".</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-tokenizer/index.html">Tokenizer</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Tokenizer</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">TokenType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../de.mrapp.textmining.util/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">&gt;</span></code>
+<p>Defines the interface, a class, which allows to split texts into tokens, must implement.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

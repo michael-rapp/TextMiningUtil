@@ -1,0 +1,289 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TextMetric - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../index.html">de.mrapp.textmining.util.metrics</a>&nbsp;/&nbsp;<a href="./index.html">TextMetric</a><br/>
+<br/>
+<h1>TextMetric</h1>
+<code><span class="keyword">interface </span><span class="identifier">TextMetric</span></code>
+<p>Defines the interface, a metric, which allows to calculate heuristic values, which specify the
+similarity or dissimilarity of texts, must implement.</p>
+<p><strong>Author</strong><br/>
+Michael Rapp</p>
+<p><strong>Since</strong><br/>
+1.0.0</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-comparator/index.html">Comparator</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Comparator</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparator/index.html"><span class="identifier">Comparator</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code>
+<p>A comparator that allows to compare heuristic values according to a specific <a href="./index.html">TextMetric</a>.
+The comparator implicitly takes into account whether the metric is a gain metric or a loss
+metric.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-gain-metric.html">isGainMetric</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">isGainMetric</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>True, if the metric is a gain metric, i.e. that two strings that evaluate to a greater
+heuristic value are considered to be more similar than two strings that evaluate to a smaller
+heuristic value, false otherwise.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-loss-metric.html">isLossMetric</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">isLossMetric</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>True, if the metric is a loss metric, i.e. that two strings that evaluate to a smaller
+heuristic value are considered to be more similar than two strings that evaluate to a greater
+heuristic value, false otherwise.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="max-value.html">maxValue</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">maxValue</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code>
+<p>The maximum heuristic value, which is possibly calculated by the metric.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="min-value.html">minValue</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">minValue</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code>
+<p>The minimum heuristic value, which is possibly calculated by the metric.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="evaluate.html">evaluate</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">evaluate</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.metrics.TextMetric$evaluate(kotlin.CharSequence, kotlin.CharSequence)/text1">text1</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.metrics.TextMetric$evaluate(kotlin.CharSequence, kotlin.CharSequence)/text2">text2</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code>
+<p>Calculates the heuristic value of two texts, <a href="evaluate.html#de.mrapp.textmining.util.metrics.TextMetric$evaluate(kotlin.CharSequence, kotlin.CharSequence)/text1">text1</a> and <a href="evaluate.html#de.mrapp.textmining.util.metrics.TextMetric$evaluate(kotlin.CharSequence, kotlin.CharSequence)/text2">text2</a>, according to the metric.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="case-insensitive.html">caseInsensitive</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">caseInsensitive</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.metrics.TextMetric.Companion$caseInsensitive(de.mrapp.textmining.util.metrics.TextMetric)/metric">metric</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Creates and returns a case-insensitive metric from an existing <a href="case-insensitive.html#de.mrapp.textmining.util.metrics.TextMetric.Companion$caseInsensitive(de.mrapp.textmining.util.metrics.TextMetric)/metric">metric</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-damerau-levenshtein-dissimilarity/index.html">DamerauLevenshteinDissimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DamerauLevenshteinDissimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Damerau-Levenshtein dissimilarity is the loss metric pendant to the <a href="../-damerau-levenshtein-distance/index.html">DamerauLevenshteinDistance</a>.
+It measures the percentage of single-character edits (insertions, deletions, or substitutions)
+and transpositions of adjacent characters that are necessary to change one text into another,
+among the number of characters of the longer of both texts. Damerau-Levenshtein dissimilarity
+always evaluates to heuristic values within the interval <a href="#">0,1</a>. Texts that evaluate to greater
+heuristic values are considered to be less similar than texts that evaluate to smaller heuristic
+values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-damerau-levenshtein-distance/index.html">DamerauLevenshteinDistance</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DamerauLevenshteinDistance</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Allows to calculate the distance between texts according to the Damerau-Levenshtein distance
+(also referred to as "unrestricted edit distance"). The Damerau-Levenshtein distance measures the
+number of single-character edits (insertions, deletions, substitutions) and transposition of
+adjacent characters that are needed to make the texts equal to each other. Unlike the optimal
+string alignment distance, the Damerau-Levensthein distance does not have any restrictions and
+does meet the properties of the triangle inequality.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-damerau-levenshtein-similarity/index.html">DamerauLevenshteinSimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DamerauLevenshteinSimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Damerau-Levenshtein similarity is the gain metric pendant to the [ ]. It measures the percentage
+of single-character edits (insertions, deletions, or substitutions) and transpositions of
+adjacent characters that are necessary to change one text into another, among the number of
+characters of the longer of both texts. Damerau-Levenshtein similarity always evaluates to
+heuristic values within the interval <a href="#">0,1</a>. Texts that evaluate to greater heuristic values are
+considered to be more similar than texts that evaluate to smaller heuristic values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dice-coefficient/index.html">DiceCoefficient</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DiceCoefficient</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Allows to measure the similarity of texts according to the Dice coefficient. The dice coefficient
+measures the percentage of n-grams, which occur in both texts. It always evaluates to a heuristic
+value within the interval <a href="#">0,1</a>. Texts that reach a greater heuristic value are considered to be
+more similar than texts that reach a smaller heuristic value. The dice coefficient can also be
+applied to texts with different lengths.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-hamming-accuracy/index.html">HammingAccuracy</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">HammingAccuracy</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Hamming accuracy is the gain metric pendant to the <a href="../-hamming-distance/index.html">HammingDistance</a>. It measures the percentage
+of characters at corresponding positions that are equal. Hamming accuracy always evaluates to
+heuristic values within the interval <a href="#">0,1</a>. Texts that evaluate to greater heuristic values are
+considered to be more similar than texts that evaluate to smaller heuristic values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-hamming-distance/index.html">HammingDistance</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">HammingDistance</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Allows to calculate the distance of texts according to the Hamming distance. The Hamming distance
+is defined as the number of characters at corresponding positions that are not equal. It can only
+be used for texts with the same length.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-hamming-loss/index.html">HammingLoss</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">HammingLoss</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Hamming loss is the loss metric pendant to the <a href="../-hamming-distance/index.html">HammingDistance</a>. It measures the percentage of
+characters at corresponding positions that are not equal. Hamming loss always evaluates to
+heuristic values in the interval <a href="#">0,1</a>. Texts that evaluate to a greater heuristic value are
+considered to be more dissimilar than texts that evaluate to smaller values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-levenshtein-dissimilarity/index.html">LevenshteinDissimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">LevenshteinDissimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Levenshtein dissimilarity is the loss metric pendant to the <a href="../-levenshtein-distance/index.html">LevenshteinDistance</a>. It measures
+the percentage of single-character edits (insertions, deletions, or substitutions) that are
+necessary to change one text into another, among the number of characters of the longer of both
+texts. Levenshtein dissimilarity always evaluates to heuristic values within the interval <a href="#">0,1</a>.
+Texts that evaluate to greater heuristic values are considered to be less similar than texts that
+evaluate to smaller heuristic values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-levenshtein-distance/index.html">LevenshteinDistance</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">LevenshteinDistance</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Allows to calculate the distance of texts according to the Levenshtein distance. The Levenshtein
+distance measures the number of single-character edits (insertions, deletions or substitutions)
+that are necessary to change one text into another. It can also be used for texts with different
+lengths.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-levenshtein-similarity/index.html">LevenshteinSimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">LevenshteinSimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Levenshtein similarity is the gain metric pendant to the <a href="../-levenshtein-distance/index.html">LevenshteinDistance</a>. It measures
+the percentage of single-character edits (insertions, deletions, or substitutions) that are
+necessary to change one text into another, among the number of characters of the longer of both
+texts. Levenshtein similarity always evaluates to heuristic values within the interval <a href="#">0,1</a>.
+Texts that evaluate to greater heuristic values are considered to be more similar than texts that
+evaluate to smaller heuristic values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-optimal-string-alignment-dissimilarity/index.html">OptimalStringAlignmentDissimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">OptimalStringAlignmentDissimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Optimal string alignment dissimilarity (abbreviated as OSA dissimilarity) is the loss metric
+pendant to the <a href="../-optimal-string-alignment-distance/index.html">OptimalStringAlignmentDistance</a>. It measures the percentage of single-character
+edits (insertions, deletions, or substitutions) and transpositions of adjacent characters that
+are necessary to change one text into another, among the number of characters of the longer of
+both texts. OSA dissimilarity always evaluates to heuristic values within the interval <a href="#">0,1</a>.
+Texts that evaluate to greater heuristic values are considered to be less similar than texts that
+evaluate to smaller heuristic values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-optimal-string-alignment-distance/index.html">OptimalStringAlignmentDistance</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">OptimalStringAlignmentDistance</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Allows to calculate the distance between texts according to the optimal string alignment distance
+(abbreviated as OSA distance, also referred to as "restricted edit distance" or "restricted
+Damerau-Levenshtein distance"). The OSA distance measures the number of single-character edits
+(insertions, deletions, substitutions) and transpositions of two adjacent characters that are
+needed to make the texts equal to each other. Unlike the Damerau-Levensthein distance, the OSA
+distance does not allow substrings to be edited more than once. Furthermore, it does not meet the
+properties of the triangle inequality.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-optimal-string-alignment-similarity/index.html">OptimalStringAlignmentSimilarity</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">OptimalStringAlignmentSimilarity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TextMetric</span></a></code>
+<p>Optimal string alignment similarity (abbreviated as OSA similarity) is the gain metric pendant to
+the <a href="../-optimal-string-alignment-distance/index.html">OptimalStringAlignmentDistance</a>. It measures the percentage of single-character edits
+(insertions, deletions, or substitutions) and transpositions of adjacent characters that are
+necessary to change one text into another, among the number of characters of the longer of both
+texts. OSA similarity always evaluates to heuristic values within the interval <a href="#">0,1</a>. Texts that
+evaluate to greater heuristic values are considered to be more similar than texts that evaluate
+to smaller heuristic values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

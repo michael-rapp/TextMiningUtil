@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TokenSequence.Iterator.findNext - TextMiningUtil</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">TextMiningUtil</a>&nbsp;/&nbsp;<a href="../../index.html">de.mrapp.textmining.util.parser</a>&nbsp;/&nbsp;<a href="../index.html">TokenSequence</a>&nbsp;/&nbsp;<a href="index.html">Iterator</a>&nbsp;/&nbsp;<a href="./find-next.html">findNext</a><br/>
+<br/>
+<h1>findNext</h1>
+<a name="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)"></a>
+<code><span class="identifier">@JvmOverloads</span> <span class="keyword">fun </span><span class="identifier">findNext</span><span class="symbol">(</span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#TokenType"><span class="identifier">TokenType</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/maxSteps">maxSteps</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Searches for the next token that matches a specific <a href="find-next.html#de.mrapp.textmining.util.parser.TokenSequence.Iterator$findNext(kotlin.Function1((de.mrapp.textmining.util.parser.TokenSequence.Iterator.TokenType, kotlin.Boolean)), kotlin.Int)/matcherFunction">matcherFunction</a>. If such a token is
+found, true will be returned and calling <a href="next.html">next</a> will result in the found token to be
+returned. If no matching token can be found, false will be returned and the iterator will
+point to the token that is located after the token, the search looked at last.</p>
+<h3>Parameters</h3>
+<p><a name="maxSteps"></a>
+<code>maxSteps</code> - The maximum steps to look ahead or -1, if the search should be continued
+    until the end of the sequence is reached</p>
+</BODY>
+</HTML>
