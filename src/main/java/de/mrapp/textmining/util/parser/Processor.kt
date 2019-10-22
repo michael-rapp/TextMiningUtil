@@ -86,7 +86,7 @@ interface Processor<I, O> {
          */
         fun <TokenType : Token> trimSequence():
                 Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
-            return Processor.forEach(Processor.trim())
+            return forEach(trim())
         }
 
         /**
@@ -238,6 +238,48 @@ interface Processor<I, O> {
 
         /**
          * Creates and returns a processor that applies a specific [ifProcessor] to all tokens of a
+         * [TokenSequence] that are located at positions for which are certain [predicate] is
+         * satisfied. Optionally, a [elseProcessor] is applied to all tokens that are located at
+         * positions for which the [predicate] is not satisfied.
+         */
+        @JvmOverloads
+        fun <TokenType : Token> positional(predicate: (Int, Int) -> Boolean,
+                                           ifProcessor: Processor<TokenType, *>?,
+                                           elseProcessor: Processor<TokenType, *>? = null):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return positional(predicate, { token -> ifProcessor?.process(token) },
+                    { token -> elseProcessor?.process(token) })
+        }
+
+        /**
+         * Creates and returns a processor that applies a specific [ifAction] to all tokens of a
+         * [TokenSequence] that are located at positions for which are certain [predicate] is
+         * satisfied. Optionally, an [elseAction] is applied to all tokens that are located at
+         * positions for which the [predicate] is not satisfied.
+         */
+        @JvmOverloads
+        fun <TokenType : Token> positional(predicate: (Int, Int) -> Boolean,
+                                           ifAction: ((TokenType) -> Unit)?,
+                                           elseAction: ((TokenType) -> Unit)? = null):
+                Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+            return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
+
+                override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
+                    input.iterator().withIndex().forEach { (index, token) ->
+                        if (predicate.invoke(index, input.size)) {
+                            ifAction?.invoke(token)
+                        } else {
+                            elseAction?.invoke(token)
+                        }
+                    }
+                    return input
+                }
+
+            }
+        }
+
+        /**
+         * Creates and returns a processor that applies a specific [ifProcessor] to all tokens of a
          * [TokenSequence] that meet a certain [predicate]. Optionally, a [elseProcessor] is applied
          * to all tokens that do not meet the [predicate].
          */
@@ -252,8 +294,8 @@ interface Processor<I, O> {
 
         /**
          * Creates and returns a processor that applies a specific [ifAction] to all tokens of a
-         * [TokenSequence] that meet a certain [predicate]. Optionally, a [elseAction] is applied to
-         * all tokens that do not meet the [predicate].
+         * [TokenSequence] that meet a certain [predicate]. Optionally, an [elseAction] is applied
+         * to all tokens that do not meet the [predicate].
          */
         @JvmOverloads
         fun <TokenType : Token> conditional(predicate: (TokenType) -> Boolean,
@@ -263,11 +305,11 @@ interface Processor<I, O> {
             return object : Processor<TokenSequence<TokenType>, TokenSequence<TokenType>> {
 
                 override fun process(input: TokenSequence<TokenType>): TokenSequence<TokenType> {
-                    input.iterator().forEach { i ->
-                        if (predicate.invoke(i)) {
-                            ifAction?.invoke(i)
+                    input.iterator().forEach { token ->
+                        if (predicate.invoke(token)) {
+                            ifAction?.invoke(token)
                         } else {
-                            elseAction?.invoke(i)
+                            elseAction?.invoke(token)
                         }
                     }
                     return input
