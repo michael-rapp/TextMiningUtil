@@ -1,5 +1,6 @@
 # Build files
 build/
+out/
 
 # Compiled class file
 *.class
