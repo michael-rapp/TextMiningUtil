@@ -1,5 +1,13 @@
 # TextMiningUtil - RELEASE NOTES
 
+## Version 2.1.3 (Oct. 23th 2019)
+
+A minor release, which introduces the following changes:
+
+- Added `positional`-methods to interface `Processor`.
+- Updated dependency "JavaUtil" to version 2.4.0.
+- Updated Kotlin to version 1.3.50.
+
 ## Version 2.1.2 (Feb. 23th 2019)
 
 A minor release, which introduces the following changes:
